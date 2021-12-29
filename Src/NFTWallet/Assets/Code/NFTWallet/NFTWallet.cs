@@ -25,11 +25,29 @@ public class NFTWallet : MonoBehaviour
     [HideInInspector]
     public StratisUnityManager StratisUnityManager;
 
+    public GameObject[] MobileSpecific;
+    public GameObject[] StandaloneSpecific;
+
     private const string WatchedNFTsKey = "watchedNFTs";
 
     void Awake()
     {
         Instance = this;
+
+        bool enableMobile = false;
+        bool enableStandalone = false;
+
+        #if UNITY_ANDROID || UNITY_IPHONE
+                enableMobile = true;
+        #else
+                   enableStandalone = true;
+        #endif
+
+        foreach (GameObject o in MobileSpecific)
+            o.SetActive(enableMobile);
+
+        foreach (GameObject o in StandaloneSpecific)
+            o.SetActive(enableStandalone);
     }
     
     /// <returns><c>true</c> if success.</returns>

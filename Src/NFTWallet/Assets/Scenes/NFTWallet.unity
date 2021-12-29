@@ -858,9 +858,6 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSubmit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1145,7 +1142,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.027740788, y: 0.69383514}
   m_AnchorMax: {x: 0.9815185, y: 0.73049897}
-  m_AnchoredPosition: {x: -3.5629883, y: 2.777771}
+  m_AnchoredPosition: {x: -3.5629578, y: 2.777771}
   m_SizeDelta: {x: 265.90002, y: 20.31131}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &43406577
@@ -1637,9 +1634,6 @@ MonoBehaviour:
   m_CharacterValidation: 2
   m_CharacterLimit: 0
   m_OnEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
   m_OnValueChanged:
@@ -2178,9 +2172,6 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_CharacterLimit: 0
   m_OnEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
   m_OnValueChanged:
@@ -4941,9 +4932,6 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSubmit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6348,6 +6336,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ApiUrl: http://46.4.60.56:44336/
+  MobileSpecific:
+  - {fileID: 574403829}
+  - {fileID: 438312406}
+  StandaloneSpecific:
+  - {fileID: 1971966941}
+  - {fileID: 910968651}
 --- !u!4 &302973125
 Transform:
   m_ObjectHideFlags: 0
@@ -7819,9 +7813,6 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSubmit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -7963,9 +7954,6 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_CharacterLimit: 0
   m_OnEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
   m_OnValueChanged:
@@ -8130,7 +8118,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00077819824, y: 0.00009536743}
+  m_AnchoredPosition: {x: 0.00076293945, y: 0.00009536743}
   m_SizeDelta: {x: 43.215, y: 10.07}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &432264814
@@ -8441,7 +8429,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &438312407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8940,9 +8928,6 @@ MonoBehaviour:
   m_CharacterValidation: 1
   m_CharacterLimit: 0
   m_OnEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
   m_OnValueChanged:
@@ -9706,9 +9691,6 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSubmit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -9931,9 +9913,6 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSubmit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -10075,9 +10054,6 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_CharacterLimit: 0
   m_OnEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
   m_OnValueChanged:
@@ -10464,7 +10440,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &574403830
 Transform:
   m_ObjectHideFlags: 0
@@ -10514,6 +10490,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ApiUrl: http://46.4.60.56:44336/
+  MobileSpecific: []
+  StandaloneSpecific: []
 --- !u!1 &585501788
 GameObject:
   m_ObjectHideFlags: 0
@@ -12535,7 +12513,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -0.00016594}
+  m_AnchoredPosition: {x: 0, y: -0.00016784668}
   m_SizeDelta: {x: 0, y: 64.181}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &715386865
@@ -13865,9 +13843,6 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSubmit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -14009,9 +13984,6 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_CharacterLimit: 0
   m_OnEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
   m_OnValueChanged:
@@ -15259,9 +15231,6 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSubmit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -15811,7 +15780,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &910968652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18401,9 +18370,6 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSubmit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -20451,7 +20417,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -3.2537003, y: -2.6794968}
+  m_AnchoredPosition: {x: -3.2536926, y: -2.6794968}
   m_SizeDelta: {x: -37.1766, y: -42.6935}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1191608262
@@ -22836,7 +22802,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00077819824, y: 0.00009918213}
+  m_AnchoredPosition: {x: 0.00079345703, y: 0.00009918213}
   m_SizeDelta: {x: 43.215, y: 10.07}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1368931364
@@ -23323,7 +23289,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.141, y: 1}
-  m_AnchoredPosition: {x: -0.850647, y: 0.00022888184}
+  m_AnchoredPosition: {x: -0.850708, y: 0.00022888184}
   m_SizeDelta: {x: -1.7052002, y: 0.3500061}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1386526033
@@ -23646,7 +23612,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0.39}
   m_AnchorMin: {x: 0.027, y: 0.5811753}
   m_AnchorMax: {x: 0.97900003, y: 0.619}
-  m_AnchoredPosition: {x: -4.3670654, y: -0.37683105}
+  m_AnchoredPosition: {x: -4.367096, y: -0.37683105}
   m_SizeDelta: {x: 9.805176, y: -5.5838013}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1391385301
@@ -23701,9 +23667,6 @@ MonoBehaviour:
   m_CharacterValidation: 2
   m_CharacterLimit: 0
   m_OnEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
   m_OnValueChanged:
@@ -24543,9 +24506,6 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSubmit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -24687,9 +24647,6 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_CharacterLimit: 0
   m_OnEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
   m_OnValueChanged:
@@ -25563,9 +25520,6 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSubmit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -25972,9 +25926,6 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_CharacterLimit: 0
   m_OnEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
   m_OnValueChanged:
@@ -26885,9 +26836,6 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSubmit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -27560,9 +27508,6 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_CharacterLimit: 0
   m_OnEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
   m_OnValueChanged:
@@ -28402,9 +28347,6 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_CharacterLimit: 0
   m_OnEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
   m_OnValueChanged:
@@ -31439,9 +31381,6 @@ MonoBehaviour:
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
-  m_OnSubmit:
-    m_PersistentCalls:
-      m_Calls: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -32273,9 +32212,6 @@ MonoBehaviour:
   m_CharacterValidation: 0
   m_CharacterLimit: 0
   m_OnEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
   m_OnValueChanged:
@@ -33754,7 +33690,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.80300003, y: 0.83400005}
   m_AnchorMax: {x: 0.9887038, y: 0.8636075}
-  m_AnchoredPosition: {x: 2.6600037, y: 4.2857666}
+  m_AnchoredPosition: {x: 2.6599731, y: 4.2857666}
   m_SizeDelta: {x: -7.0200195, y: 1.234375}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1951979711
@@ -34328,7 +34264,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1971966942
 Transform:
   m_ObjectHideFlags: 0
@@ -34378,6 +34314,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ApiUrl: http://46.4.60.56:44336/
+  MobileSpecific: []
+  StandaloneSpecific: []
 --- !u!1 &1974176182
 GameObject:
   m_ObjectHideFlags: 0
@@ -34872,9 +34810,6 @@ MonoBehaviour:
   m_CharacterValidation: 1
   m_CharacterLimit: 0
   m_OnEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
   m_OnValueChanged:
@@ -37139,7 +37074,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.32044443, y: 0.508666}
   m_AnchorMax: {x: 0.67214817, y: 0.55549896}
-  m_AnchoredPosition: {x: 2.1183014, y: 3}
+  m_AnchoredPosition: {x: 2.1182861, y: 3}
   m_SizeDelta: {x: 0.6882019, y: -5.149002}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2084132661
@@ -37458,7 +37393,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.028740741, y: 0.2295}
   m_AnchorMax: {x: 0.9848519, y: 0.61766666}
-  m_AnchoredPosition: {x: -5.549988, y: 0.5}
+  m_AnchoredPosition: {x: -5.5500183, y: 0.5}
   m_SizeDelta: {x: 246.24646, y: 239.82361}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2092535480
@@ -38419,9 +38354,6 @@ MonoBehaviour:
   m_CharacterValidation: 1
   m_CharacterLimit: 0
   m_OnEndEdit:
-    m_PersistentCalls:
-      m_Calls: []
-  m_OnSubmit:
     m_PersistentCalls:
       m_Calls: []
   m_OnValueChanged:
