@@ -12,6 +12,8 @@ public class LoginWindow : WindowBase
 
     public Text MnemonicInputFieldPlaceholderText;
 
+    public Text NetworkInfoText;
+
     private const string MnemonicKey = "MnemonicST";
 
     async void Awake()
@@ -48,7 +50,6 @@ public class LoginWindow : WindowBase
                 return;
             }
 
-            MnemonicInputField.text = string.Empty;
             PlayerPrefs.SetString(MnemonicKey, mnemonic);
 
             bool success = await NFTWallet.Instance.InitializeAsync(mnemonic);
@@ -59,6 +60,8 @@ public class LoginWindow : WindowBase
                 await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync("Can't initialize NFT wallet. Probably can't reach API server.", "INITIALIZATION ERROR");
 
             await NFTWallet.Instance.AddKnownContractsIfMissingAsync();
+
+            MnemonicInputField.text = string.Empty;
         });
 
         RemovePlayerPrefsButton.onClick.AddListener(delegate
@@ -78,6 +81,8 @@ public class LoginWindow : WindowBase
         }
 
         NewMnemonicWarningText.gameObject.SetActive(!mnemonicExists);
+
+        NetworkInfoText.text = NFTWallet.Instance.Network.Name;
 
         return base.ShowAsync(hideOtherWindows);
     }
