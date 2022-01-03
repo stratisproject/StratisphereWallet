@@ -6335,7 +6335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e0324694c5881744b18346bf5fa9759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ApiUrl: http://46.4.60.56:44336/
+  ApiUrl: https://api-sfn-test.stratisphere.com
   MobileSpecific:
   - {fileID: 574403829}
   - {fileID: 438312406}
@@ -10432,7 +10432,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 574403830}
-  - component: {fileID: 574403832}
   - component: {fileID: 574403831}
   m_Layer: 0
   m_Name: WindowManager_mobile
@@ -10477,21 +10476,6 @@ MonoBehaviour:
   BurnWindow: {fileID: 1760052810}
   WaitTransactionWindow: {fileID: 1071883950}
   IsMobile: 1
---- !u!114 &574403832
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 574403829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e0324694c5881744b18346bf5fa9759, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ApiUrl: http://46.4.60.56:44336/
-  MobileSpecific: []
-  StandaloneSpecific: []
 --- !u!1 &585501788
 GameObject:
   m_ObjectHideFlags: 0
@@ -34256,7 +34240,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1971966942}
-  - component: {fileID: 1971966944}
   - component: {fileID: 1971966943}
   m_Layer: 0
   m_Name: WindowManager_desktop
@@ -34301,21 +34284,6 @@ MonoBehaviour:
   BurnWindow: {fileID: 1553787933}
   WaitTransactionWindow: {fileID: 885763655}
   IsMobile: 0
---- !u!114 &1971966944
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1971966941}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e0324694c5881744b18346bf5fa9759, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ApiUrl: http://46.4.60.56:44336/
-  MobileSpecific: []
-  StandaloneSpecific: []
 --- !u!1 &1974176182
 GameObject:
   m_ObjectHideFlags: 0

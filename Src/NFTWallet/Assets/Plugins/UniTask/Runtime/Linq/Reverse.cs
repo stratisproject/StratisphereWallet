@@ -1,6 +1,4 @@
 ﻿using Cysharp.Threading.Tasks.Internal;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 
 namespace Cysharp.Threading.Tasks.Linq

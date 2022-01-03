@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Sockets;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using NBitcoin;
 using Newtonsoft.Json;
@@ -16,6 +15,8 @@ public class NFTWallet : MonoBehaviour
 {
     public static NFTWallet Instance;
 
+    // Test: https://api-sfn-test.stratisphere.com
+    // Main: https://api-sfn.stratisphere.com
     public string ApiUrl = "http://localhost:44336/";
 
     public Network Network => network;
@@ -57,7 +58,7 @@ public class NFTWallet : MonoBehaviour
         {
             this.StratisUnityManager = new StratisUnityManager(new Unity3dClient(ApiUrl), Network,
                 new Mnemonic(mnemonic, Wordlist.English));
-
+            
             await this.StratisUnityManager.GetBalanceAsync();
         }
         catch (SocketException e)
