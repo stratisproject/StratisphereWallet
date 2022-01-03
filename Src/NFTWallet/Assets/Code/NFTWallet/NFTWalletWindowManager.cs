@@ -20,7 +20,7 @@ public class NFTWalletWindowManager : MonoBehaviour
     public bool IsMobile;
 
     private List<WindowBase> allWindows;
-    
+
     void Awake()
     {
         Instance = this;

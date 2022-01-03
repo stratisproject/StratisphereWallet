@@ -86,9 +86,9 @@ public class WalletWindow : WindowBase
     {
         this.AddressText.text = NFTWallet.Instance.StratisUnityManager.GetAddress().ToString();
 
-        await this.RefreshBalanceAsync();
-
         await base.ShowAsync(hideOtherWindows);
+
+        await this.RefreshBalanceAsync();
     }
 
     private async UniTask RefreshBalanceAsync()
