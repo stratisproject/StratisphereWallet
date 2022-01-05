@@ -15,13 +15,15 @@ public class NFTWallet : MonoBehaviour
 {
     public static NFTWallet Instance;
 
+    public TargetNetwork TargetNetwork = TargetNetwork.CirrusTest;
+
     // Test: https://api-sfn-test.stratisphere.com
     // Main: https://api-sfn.stratisphere.com
     public string ApiUrl = "http://localhost:44336/";
 
     public Network Network => network;
 
-    private readonly Network network = new CirrusTest();
+    private Network network;
 
     [HideInInspector]
     public StratisUnityManager StratisUnityManager;
@@ -34,6 +36,11 @@ public class NFTWallet : MonoBehaviour
     void Awake()
     {
         Instance = this;
+
+        if (TargetNetwork == TargetNetwork.CirrusTest)
+            network = new CirrusTest();
+        else
+            network = new CirrusMain();
 
         bool enableMobile = false;
         bool enableStandalone = false;
@@ -162,4 +169,10 @@ public class NFTWallet : MonoBehaviour
         string json = JsonConvert.SerializeObject(knownNfts);
         PlayerPrefs.SetString(WatchedNFTsKey, json);
     }
+}
+
+
+public enum TargetNetwork
+{
+    CirrusTest, CirrusMain
 }
