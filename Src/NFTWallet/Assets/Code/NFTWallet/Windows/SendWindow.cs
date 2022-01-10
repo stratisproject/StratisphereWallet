@@ -23,6 +23,8 @@ public class SendWindow : WindowBase
 
     void Awake()
     {
+        OwnedIdsText.text = "Owned IDs: ";
+
         NFTContractSelect_Dropdown.onValueChanged.AddListener(delegate (int optionNumber)
         {
             selectedContract = contractAddresses[optionNumber];
@@ -100,6 +102,6 @@ public class SendWindow : WindowBase
             idsString = "You don't own any NFTs of that type.";
         else idsString = string.Join(",", contractToIds.Value);
 
-        OwnedIdsText.text = idsString;
+        OwnedIdsText.text = "Owned IDs: " + idsString;
     }
 }

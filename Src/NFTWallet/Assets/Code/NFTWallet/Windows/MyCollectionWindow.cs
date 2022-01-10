@@ -44,7 +44,8 @@ public class MyCollectionWindow : WindowBase
             string contractAddr = contrAddrToOwnedIds.Key;
             List<long> ownedIds = contrAddrToOwnedIds.Value.ToList();
 
-            string nftName = knownNfts.First(x => x.ContractAddress == contractAddr).NftName;
+            DeployedNFTModel knownNft = knownNfts.FirstOrDefault(x => x.ContractAddress == contractAddr);
+            string nftName = (knownNft == null)? string.Empty : knownNft.NftName;
 
             NFTWrapper wrapper = new NFTWrapper(NFTWallet.Instance.StratisUnityManager, contractAddr);
 

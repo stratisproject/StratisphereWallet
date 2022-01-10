@@ -82,7 +82,7 @@ public class StratisUnityManager
         if (!txBuilder.Verify(tx))
             Debug.LogError("Tx wasn't fully signed!");
 
-        Debug.Log(string.Format("Created tx {0} to {1}, amount: {2}.", tx.GetHash(), destinationAddress, sendAmount));
+        Debug.Log(string.Format("Created tx {0} to {1}, amount: {2}. HEX: {3}", tx.GetHash(), destinationAddress, sendAmount, tx.ToHex()));
 
         await Client.SendTransactionAsync(new SendTransactionRequest() {Hex = tx.ToHex()});
 
