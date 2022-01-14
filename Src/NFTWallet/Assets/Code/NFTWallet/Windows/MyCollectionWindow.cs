@@ -92,22 +92,31 @@ public class MyCollectionWindow : WindowBase
         contentTransform.sizeDelta = new Vector2(contentTransform.sizeDelta.x, (cellSize + spacing) * rows);
 
         // Load images
-        foreach (CollectionItem collectionItem in this.SpawnedItems.Where(x => !x.ImageLoaded))
-        {
-            string uri = collectionItem.NFTUri;
+        List<CollectionItem> notLoaded = this.SpawnedItems.Where(
+            x => !x.ImageLoaded && x.NFTUri.StartsWith("https://") && 
+            (x.NFTUri.EndsWith(".png") || x.NFTUri.EndsWith(".jpg"))).ToList();
 
-            if (!uri.StartsWith("https://") || !(uri.EndsWith(".png") || uri.EndsWith(".jpg")))
-                continue;
-            
-            Texture2D texture = await this.GetRemoteTextureAsync(uri);
+        List<UniTask<Texture2D>> loadTasks = new List<UniTask<Texture2D>>();
+
+        for (int i = 0; i < notLoaded.Count; i++)
+        {
+            UniTask<Texture2D> loadTask = this.GetRemoteTextureAsync(notLoaded[i].NFTUri);
+            loadTasks.Add(loadTask);
+        }
+
+        Texture2D[] loaded = await UniTask.WhenAll(loadTasks);
+
+        for (int i = 0; i < loaded.Length; i++)
+        {
+            Texture2D texture = loaded[i];
 
             if (texture == null)
                 continue;
 
             Sprite sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
 
-            collectionItem.NFTImage.sprite = sprite;
-            collectionItem.ImageLoaded = true;
+            notLoaded[i].NFTImage.sprite = sprite;
+            notLoaded[i].ImageLoaded = true;
         }
     }
 
