@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class Menu : MonoBehaviour
 {
-    public Button Wallet_Button, MyCollection_Button, CreateNFT_Button, Send_Button, Mint_Button, Burn_Button, LogOutButton;
+    public Button Wallet_Button, MyCollection_Button, CreateNFT_Button, Send_Button, Mint_Button, Burn_Button, LogOutButton, MarketplaceButton;
 
     async void Awake()
     {
@@ -14,5 +14,6 @@ public class Menu : MonoBehaviour
         Mint_Button.onClick.AddListener(async delegate { await NFTWalletWindowManager.Instance.MintWindow.ShowAsync(); });
         Burn_Button.onClick.AddListener(async delegate { await NFTWalletWindowManager.Instance.BurnWindow.ShowAsync(); });
         LogOutButton.onClick.AddListener(async delegate { await NFTWalletWindowManager.Instance.LoginWindow.ShowAsync(); });
+        MarketplaceButton.onClick.AddListener(async delegate { await NFTWalletWindowManager.Instance.MarketplaceWindow.ShowAsync(); });
     }
 }

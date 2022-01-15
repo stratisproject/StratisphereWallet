@@ -66,7 +66,7 @@ public class BurnWindow : WindowBase
         string myAddress = NFTWallet.Instance.StratisUnityManager.GetAddress().ToString();
         ownedNfts = await NFTWallet.Instance.StratisUnityManager.Client.GetOwnedNftsAsync(myAddress);
 
-        this.LogAvailableIds();
+        //this.LogAvailableIds();
 
         this.contractAddresses = ownedNfts.OwnedIDsByContractAddress.Keys.ToList();
         this.selectedContract = this.contractAddresses.FirstOrDefault();
