@@ -42,7 +42,13 @@ public class StratisUnityManager
         this.network = network;
         this.mnemonic = mnemonic;
 
-        this.privateKey = this.mnemonic.DeriveExtKey().PrivateKey;
+        ExtKey extKey = this.mnemonic.DeriveExtKey();
+
+        // cirrus main m/44'/401'/0'/0/0
+        // cirrus test m/44'/400'/0'/0/0
+        ExtKey derived = extKey.Derive(new KeyPath($"m/44'/" + network.Consensus.CoinType + "'/0'/0/0"));
+
+        this.privateKey = derived.PrivateKey;
         this.publicKey = this.privateKey.PubKey;
         this.address = this.publicKey.GetAddress(network);
 
@@ -58,7 +64,12 @@ public class StratisUnityManager
 
         return balance;
     }
-
+    
+    public string SignMessage(string message)
+    {
+        return this.privateKey.SignMessage(message);
+    }
+    
     public BitcoinPubKeyAddress GetAddress()
     {
         return this.address;
