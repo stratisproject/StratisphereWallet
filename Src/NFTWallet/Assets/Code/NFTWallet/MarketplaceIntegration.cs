@@ -1,8 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
+using Unity3dApi;
 using UnityEngine;
 
 public class MarketplaceIntegration : MonoBehaviour
@@ -18,8 +22,27 @@ public class MarketplaceIntegration : MonoBehaviour
         Instance = this;
     }
 
+    public async UniTask TransferNFTToMarketplaceAsync(string transferData)
+    {
+        TransferNFTToMarketplaceModel model = JsonConvert.DeserializeObject<TransferNFTToMarketplaceModel>(transferData);
+        string[] parameters = model.parameters.Select(x => x.value).ToArray();
+        Task<string> sendTask = NFTWallet.Instance.StratisUnityManager.SendCallContractTransactionAsync(model.to, model.method, parameters);
+
+        // Call callback
+        StringContent stringContent = new StringContent(string.Empty);
+        HttpResponseMessage callbackResult = await client.PostAsync(model.callback, stringContent);
+        Debug.Log(callbackResult);
+
+        ReceiptResponse receipt = await NFTWalletWindowManager.Instance.WaitTransactionWindow.DisplayUntilSCReceiptReadyAsync(sendTask);
+        bool success = receipt.Success;
+        string resultString = string.Format("NFT send success: {0}", success);
+        await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(resultString, "NFT SEND");
+
+        Debug.Log(model.to);
+    }
+
     // TODO check if expired
-    public async UniTask LogInToNFTMarketplace(string loginData)
+    public async UniTask LogInToNFTMarketplaceAsync(string loginData)
     {
         //string testData = "sid:nftmarketplacetest.azurewebsites.net/api/login/login-callback?uid=CBN3hhkyh3ddkl98JTa4e3zn1yohMnQScs7UuG-Ok9m7uupyF4z9eM9UhBw1qOTP&exp=1642262570";
 
@@ -33,10 +56,10 @@ public class MarketplaceIntegration : MonoBehaviour
 
         Debug.Log(jsonString);
 
-        var stringContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
-        var result = await client.PostAsync("https://" + parsed.CallbackURI, stringContent);
+        StringContent stringContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+        HttpResponseMessage callbackResult = await client.PostAsync("https://" + parsed.CallbackURI, stringContent);
 
-        Debug.Log(result);
+        Debug.Log(callbackResult);
     }
 
     private async UniTask<QRDataParseResult> CallApiRequestLoginAsync()
@@ -116,4 +139,22 @@ public class StratisSignatureAuthCallbackBody
 public class LoginRequestModel
 {
     public string sid { get; set; }
+}
+
+// Sale models
+public class Parameter
+{
+    public string label { get; set; }
+    public string value { get; set; }
+}
+
+public class TransferNFTToMarketplaceModel
+{
+    public string eventId { get; set; }
+    public string sender { get; set; }
+    public string to { get; set; }
+    public int amount { get; set; }
+    public string method { get; set; }
+    public List<Parameter> parameters { get; set; }
+    public string callback { get; set; }
 }
