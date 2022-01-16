@@ -7,6 +7,8 @@ public class CollectionItem : MonoBehaviour
 
     public Image NFTImage;
 
+    public Button Sell_Button;
+
     [HideInInspector]
     public long NFTID;
 

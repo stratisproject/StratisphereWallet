@@ -81,6 +81,10 @@ public class MyCollectionWindow : WindowBase
 
                 cItem.TitleText.text = nftName;
                 cItem.DescriptionText.text = string.Format("ID: {0}", currentId);
+
+                string sellUri = MarketplaceIntegration.Instance.GetSellURI(contractAddr, currentId);
+
+                cItem.Sell_Button.onClick.AddListener(delegate { Application.OpenURL(sellUri); });
             }
         }
 

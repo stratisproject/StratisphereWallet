@@ -101,6 +101,11 @@ public class MarketplaceIntegration : MonoBehaviour
 
         return body;
     }
+
+    public string GetSellURI(string contractAddress, long tokenId)
+    {
+        return "https://nftmarketplacetest.azurewebsites.net/asset/sale/list?contract=" + contractAddress + "&tokenId=" + tokenId;
+    }
 }
 
 public class QRDataParseResult
