@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
 using Stratis.SmartContracts;
 using Unity3dApi;
 using UnityEngine;
@@ -20,6 +22,8 @@ public class MyCollectionWindow : WindowBase
     public List<CollectionItem> SpawnedItems = new List<CollectionItem>();
 
     private float defaultScrollRectVerticalPosition;
+
+    private HttpClient client = new HttpClient();
 
     void Awake()
     {
@@ -98,13 +102,25 @@ public class MyCollectionWindow : WindowBase
         // Load images
         List<CollectionItem> notLoaded = this.SpawnedItems.Where(
             x => !x.ImageLoaded && x.NFTUri.StartsWith("https://") && 
-            (x.NFTUri.EndsWith(".png") || x.NFTUri.EndsWith(".jpg"))).ToList();
+            (x.NFTUri.EndsWith(".png") || x.NFTUri.EndsWith(".jpg") || x.NFTUri.EndsWith(".json"))).ToList();
 
         List<UniTask<Texture2D>> loadTasks = new List<UniTask<Texture2D>>();
 
         for (int i = 0; i < notLoaded.Count; i++)
         {
-            UniTask<Texture2D> loadTask = this.GetRemoteTextureAsync(notLoaded[i].NFTUri);
+            string uri = notLoaded[i].NFTUri;
+            string imageURI = null;
+
+            if (uri.EndsWith(".json"))
+            {
+                string json = await this.client.GetStringAsync(uri);
+                NFTMetadataModel model = JsonConvert.DeserializeObject<NFTMetadataModel>(json);
+                imageURI = model.image;
+            }
+            else
+                imageURI = uri;
+            
+            UniTask<Texture2D> loadTask = this.GetRemoteTextureAsync(imageURI);
             loadTasks.Add(loadTask);
         }
 

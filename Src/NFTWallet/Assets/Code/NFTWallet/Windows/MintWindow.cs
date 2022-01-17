@@ -41,14 +41,22 @@ public class MintWindow : WindowBase
 
             Task<string> mintNftTask;
 
+            string jsonUri = await MarketplaceIntegration.Instance.UploadMetadataAsync(new NFTMetadataModel()
+            {
+                name = selectedNft.NftName,
+                image = uri,
+                description = "NFT minted via NFT Wallet",
+                attributes = new List<Attribute>()
+            });
+
             if (!string.IsNullOrEmpty(metadata))
             {
                 byte[] metadataBytes = Encoding.ASCII.GetBytes(metadata);
-                mintNftTask = wrapper.SafeMintAsync(mintToAddr, uri, metadataBytes);
+                mintNftTask = wrapper.SafeMintAsync(mintToAddr, jsonUri, metadataBytes);
             }
             else
             {
-                mintNftTask = wrapper.MintAsync(mintToAddr, uri);
+                mintNftTask = wrapper.MintAsync(mintToAddr, jsonUri);
             }
 
             ReceiptResponse receipt = await NFTWalletWindowManager.Instance.WaitTransactionWindow.DisplayUntilSCReceiptReadyAsync(mintNftTask);

@@ -51,4 +51,10 @@ public class WaitTransactionWindow : WindowBase
 
         await this.HideAsync();
     }
+
+    public override UniTask HideAsync()
+    {
+        this.TxHashText.text = string.Empty;
+        return base.HideAsync();
+    }
 }

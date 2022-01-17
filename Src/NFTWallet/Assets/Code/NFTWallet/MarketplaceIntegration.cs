@@ -22,6 +22,20 @@ public class MarketplaceIntegration : MonoBehaviour
         Instance = this;
     }
 
+    // Returns link to .json
+    public async UniTask<string> UploadMetadataAsync(NFTMetadataModel metadata)
+    {
+        string jsonString = JsonConvert.SerializeObject(metadata);
+        
+        StringContent stringContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
+        HttpResponseMessage callbackResult = await client.PostAsync(ApiURI + "contract/metadata", stringContent);
+
+        string result = await callbackResult.Content.ReadAsStringAsync();
+
+        Debug.Log(result);
+        return result;
+    }
+
     public async UniTask TransferNFTToMarketplaceAsync(string transferData)
     {
         TransferNFTToMarketplaceModel model = JsonConvert.DeserializeObject<TransferNFTToMarketplaceModel>(transferData);
