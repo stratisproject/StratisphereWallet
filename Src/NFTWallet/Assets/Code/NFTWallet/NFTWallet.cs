@@ -33,8 +33,8 @@ public class NFTWallet : MonoBehaviour
 
     public GameObject[] MobileSpecific;
     public GameObject[] StandaloneSpecific;
-
-    private const string WatchedNFTsKey = "watchedNFTs";
+    
+    private string WatchedNFTsKey => TargetNetwork == TargetNetwork.CirrusMain ? "watchedNFTs_main" : "watchedNFTs_test";
 
     void Awake()
     {
