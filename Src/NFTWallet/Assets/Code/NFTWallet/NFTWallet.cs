@@ -19,7 +19,10 @@ public class NFTWallet : MonoBehaviour
 
     // Test: https://api-sfn-test.stratisphere.com
     // Main: https://api-sfn.stratisphere.com
-    public string ApiUrl = "http://localhost:44336/";
+    public string TestnetApiUrl = "https://api-sfn-test.stratisphere.com/"; //http://localhost:44336/
+    public string MainnetApiUrl = "https://api-sfn.stratisphere.com/";
+
+    public string ApiUrl => TargetNetwork == TargetNetwork.CirrusMain ? MainnetApiUrl : TestnetApiUrl;
 
     public Network Network => network;
 
