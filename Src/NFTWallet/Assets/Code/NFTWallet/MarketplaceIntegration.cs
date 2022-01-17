@@ -11,7 +11,13 @@ using UnityEngine;
 
 public class MarketplaceIntegration : MonoBehaviour
 {
-    public string ApiURI = "https://nftmarketplacetest.azurewebsites.net/api/";
+    public string MarketplaceURI_Testnet = "https://nftmarketplacetest.azurewebsites.net/";
+
+    public string MarketplaceURI_Mainnet = "https://nftmarketplace.azurewebsites.net/";
+
+    public string MarketplaceURI => NFTWallet.Instance.TargetNetwork == TargetNetwork.CirrusMain ? MarketplaceURI_Mainnet : MarketplaceURI_Testnet;
+
+    public string  ApiUri => MarketplaceURI + "api/";
 
     public static MarketplaceIntegration Instance;
 
@@ -28,7 +34,7 @@ public class MarketplaceIntegration : MonoBehaviour
         string jsonString = JsonConvert.SerializeObject(metadata);
         
         StringContent stringContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
-        HttpResponseMessage callbackResult = await client.PostAsync(ApiURI + "contract/metadata", stringContent);
+        HttpResponseMessage callbackResult = await client.PostAsync(ApiUri + "contract/metadata", stringContent);
 
         string result = await callbackResult.Content.ReadAsStringAsync();
 
@@ -75,7 +81,7 @@ public class MarketplaceIntegration : MonoBehaviour
 
     private async UniTask<QRDataParseResult> CallApiRequestLoginAsync()
     {
-        HttpResponseMessage result = await client.GetAsync(ApiURI + "login");
+        HttpResponseMessage result = await client.GetAsync(ApiUri + "login");
         string content = await result.Content.ReadAsStringAsync();
 
         LoginRequestModel model = JsonConvert.DeserializeObject<LoginRequestModel>(content);
@@ -115,7 +121,7 @@ public class MarketplaceIntegration : MonoBehaviour
 
     public string GetSellURI(string contractAddress, long tokenId)
     {
-        return "https://nftmarketplacetest.azurewebsites.net/asset/sale/list?contract=" + contractAddress + "&tokenId=" + tokenId;
+        return MarketplaceURI + "asset/sale/list?contract=" + contractAddress + "&tokenId=" + tokenId;
     }
 }
 
