@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Unity3dApi;
@@ -14,7 +13,7 @@ public class MintWindow : WindowBase
 
     public Button MintButton, TrackButton, CopySelectedContractButton;
 
-    public InputField MintToAddrInputField, UriInputField, MetadataInputField, TrackContractInputField;
+    public InputField MintToAddrInputField, UriInputField, DescriptionInputField, AttributesInputField, TrackContractInputField;
 
     private List<DeployedNFTModel> nftsForDeployment;
 
@@ -31,33 +30,39 @@ public class MintWindow : WindowBase
         {
             string mintToAddr = MintToAddrInputField.text;
 
-            string metadata = MetadataInputField.text;
-            MetadataInputField.text = string.Empty;
+            string description = DescriptionInputField.text;
+            DescriptionInputField.text = string.Empty;
 
             string uri = UriInputField.text;
             UriInputField.text = "";
 
-            NFTWrapper wrapper = new NFTWrapper(NFTWallet.Instance.StratisUnityManager, selectedNft.ContractAddress);
+            List<Attribute> attributesCollection = new List<Attribute>();
+            string[] attrStr = AttributesInputField.text.Split(',');
+            AttributesInputField.text = string.Empty;
 
-            Task<string> mintNftTask;
+            foreach (string s in attrStr)
+            {
+                if (!s.Contains("-"))
+                    continue;
 
+                string[] nameVal = s.Split('-');
+
+                if (nameVal.Length != 2)
+                    continue;
+
+                attributesCollection.Add(new Attribute() { traitType = nameVal[0], value = nameVal[1]});
+            }
+            
             string jsonUri = await MarketplaceIntegration.Instance.UploadMetadataAsync(new NFTMetadataModel()
             {
                 name = selectedNft.NftName,
                 image = uri,
-                description = "NFT minted via NFT Wallet",
-                attributes = new List<Attribute>()
+                description = description,
+                attributes = attributesCollection
             });
 
-            if (!string.IsNullOrEmpty(metadata))
-            {
-                byte[] metadataBytes = Encoding.ASCII.GetBytes(metadata);
-                mintNftTask = wrapper.SafeMintAsync(mintToAddr, jsonUri, metadataBytes);
-            }
-            else
-            {
-                mintNftTask = wrapper.MintAsync(mintToAddr, jsonUri);
-            }
+            NFTWrapper wrapper = new NFTWrapper(NFTWallet.Instance.StratisUnityManager, selectedNft.ContractAddress);
+            Task<string> mintNftTask = wrapper.MintAsync(mintToAddr, jsonUri);
 
             ReceiptResponse receipt = await NFTWalletWindowManager.Instance.WaitTransactionWindow.DisplayUntilSCReceiptReadyAsync(mintNftTask);
 
@@ -78,7 +83,7 @@ public class MintWindow : WindowBase
 
             if (!success)
                 await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync("Error: invalid NFT contract address.", "ERROR");
-           else
+            else
                 await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync("NFT was added to watch list.", "NFT WATCH");
         });
 

@@ -17,7 +17,7 @@ public class MarketplaceIntegration : MonoBehaviour
 
     private HttpClient client = new HttpClient();
 
-    void Awake()
+    async void Awake()
     {
         Instance = this;
     }
@@ -45,14 +45,11 @@ public class MarketplaceIntegration : MonoBehaviour
         // Call callback
         StringContent stringContent = new StringContent(string.Empty);
         HttpResponseMessage callbackResult = await client.PostAsync(model.callback, stringContent);
-        Debug.Log(callbackResult);
-
+        
         ReceiptResponse receipt = await NFTWalletWindowManager.Instance.WaitTransactionWindow.DisplayUntilSCReceiptReadyAsync(sendTask);
         bool success = receipt.Success;
         string resultString = string.Format("NFT send success: {0}", success);
         await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(resultString, "NFT SEND");
-
-        Debug.Log(model.to);
     }
 
     // TODO check if expired
