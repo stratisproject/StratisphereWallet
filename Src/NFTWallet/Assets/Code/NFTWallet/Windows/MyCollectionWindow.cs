@@ -102,25 +102,25 @@ public class MyCollectionWindow : WindowBase
         // Load images
         List<CollectionItem> notLoaded = this.SpawnedItems.Where(
             x => !x.ImageLoaded && x.NFTUri.StartsWith("https://") && 
-            (x.NFTUri.EndsWith(".png") || x.NFTUri.EndsWith(".jpg") || x.NFTUri.EndsWith(".json"))).ToList();
+            (x.NFTUri.EndsWith(".png") || x.NFTUri.EndsWith(".gif") || x.NFTUri.EndsWith(".jpg") || x.NFTUri.EndsWith(".json"))).ToList();
 
         List<UniTask<Texture2D>> loadTasks = new List<UniTask<Texture2D>>();
 
         for (int i = 0; i < notLoaded.Count; i++)
         {
             string uri = notLoaded[i].NFTUri;
-            string imageURI = null;
+            string imageUri;
 
             if (uri.EndsWith(".json"))
             {
                 string json = await this.client.GetStringAsync(uri);
                 NFTMetadataModel model = JsonConvert.DeserializeObject<NFTMetadataModel>(json);
-                imageURI = model.image;
+                imageUri = model.image;
             }
             else
-                imageURI = uri;
+                imageUri = uri;
             
-            UniTask<Texture2D> loadTask = this.GetRemoteTextureAsync(imageURI);
+            UniTask<Texture2D> loadTask = this.GetRemoteTextureAsync(imageUri);
             loadTasks.Add(loadTask);
         }
 
