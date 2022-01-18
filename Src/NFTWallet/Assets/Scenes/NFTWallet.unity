@@ -6502,9 +6502,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e0324694c5881744b18346bf5fa9759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TargetNetwork: 0
+  TargetNetwork: 1
   TestnetApiUrl: https://api-sfn-test.stratisphere.com/
-  MainnetApiUrl: https://api-sfn.stratisphere.com/
+  MainnetApiUrl: https://unity-api.stratisplatform.com/
   MobileSpecific:
   - {fileID: 574403829}
   - {fileID: 438312406}
@@ -33576,7 +33576,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.102612294, y: 0.294}
   m_AnchorMax: {x: 0.89038736, y: 0.374}
-  m_AnchoredPosition: {x: 3.7000732, y: 4.091591}
+  m_AnchoredPosition: {x: 3.7000732, y: 4.0914993}
   m_SizeDelta: {x: 10.687988, y: -0.35299683}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1806811932
