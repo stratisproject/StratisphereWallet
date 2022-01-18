@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using NBitcoin;
 using UnityEngine;
@@ -12,9 +14,29 @@ public class LoginWindow : WindowBase
 
     public Text MnemonicInputFieldPlaceholderText;
 
-    public Text NetworkInfoText;
-
+    public Dropdown NetworkDropDown;
+    
     private const string MnemonicKey = "MnemonicST";
+
+    private List<TargetNetwork> targetNetworks = new List<TargetNetwork>();
+
+    private TargetNetwork selectedNetwork;
+
+    void Start()
+    {
+        targetNetworks.Add(NFTWallet.Instance.DefaultNetwork);
+
+        if (NFTWallet.Instance.DefaultNetwork == TargetNetwork.CirrusMain)
+            targetNetworks.Add(TargetNetwork.CirrusTest);
+        else
+            targetNetworks.Add(TargetNetwork.CirrusMain);
+
+        selectedNetwork = NFTWallet.Instance.DefaultNetwork;
+
+        NetworkDropDown.ClearOptions();
+        List<string> options = targetNetworks.Select(x => x.ToString()).ToList();
+        NetworkDropDown.AddOptions(options);
+    }
 
     async void Awake()
     {
@@ -22,6 +44,11 @@ public class LoginWindow : WindowBase
         {
             Mnemonic mnemonic = new Mnemonic(Wordlist.English, WordCount.Twelve);
             this.MnemonicInputField.text = mnemonic.ToString();
+        });
+
+        NetworkDropDown.onValueChanged.AddListener(delegate (int optionNumber)
+        {
+            selectedNetwork = targetNetworks[optionNumber];
         });
 
         this.LogInButton.onClick.AddListener(async delegate
@@ -52,7 +79,7 @@ public class LoginWindow : WindowBase
 
             PlayerPrefs.SetString(MnemonicKey, mnemonic);
 
-            bool success = await NFTWallet.Instance.InitializeAsync(mnemonic);
+            bool success = await NFTWallet.Instance.InitializeAsync(mnemonic, selectedNetwork);
 
             if (success)
                 await NFTWalletWindowManager.Instance.WalletWindow.ShowAsync();
@@ -81,8 +108,6 @@ public class LoginWindow : WindowBase
         }
 
         NewMnemonicWarningText.gameObject.SetActive(!mnemonicExists);
-
-        NetworkInfoText.text = NFTWallet.Instance.Network.Name;
 
         return base.ShowAsync(hideOtherWindows);
     }

@@ -15,14 +15,16 @@ public class NFTWallet : MonoBehaviour
 {
     public static NFTWallet Instance;
 
-    public TargetNetwork TargetNetwork = TargetNetwork.CirrusTest;
+    public TargetNetwork DefaultNetwork = TargetNetwork.CirrusMain;
+
+    public TargetNetwork CurrentNetwork => currentNetwork;
 
     // Test: https://api-sfn-test.stratisphere.com
     // Main: https://api-sfn.stratisphere.com
     public string TestnetApiUrl = "https://api-sfn-test.stratisphere.com/"; //http://localhost:44336/
     public string MainnetApiUrl = "https://api-sfn.stratisphere.com/";
 
-    public string ApiUrl => TargetNetwork == TargetNetwork.CirrusMain ? MainnetApiUrl : TestnetApiUrl;
+    public string ApiUrl => CurrentNetwork == TargetNetwork.CirrusMain ? MainnetApiUrl : TestnetApiUrl;
 
     public Network Network => network;
 
@@ -34,16 +36,13 @@ public class NFTWallet : MonoBehaviour
     public GameObject[] MobileSpecific;
     public GameObject[] StandaloneSpecific;
     
-    private string WatchedNFTsKey => TargetNetwork == TargetNetwork.CirrusMain ? "watchedNFTs_main" : "watchedNFTs_test";
+    private string WatchedNFTsKey => CurrentNetwork == TargetNetwork.CirrusMain ? "watchedNFTs_main" : "watchedNFTs_test";
+
+    private TargetNetwork currentNetwork;
 
     void Awake()
     {
         Instance = this;
-
-        if (TargetNetwork == TargetNetwork.CirrusTest)
-            network = new CirrusTest();
-        else
-            network = new CirrusMain();
 
         bool enableMobile = false;
         bool enableStandalone = false;
@@ -62,8 +61,17 @@ public class NFTWallet : MonoBehaviour
     }
     
     /// <returns><c>true</c> if success.</returns>
-    public async UniTask<bool> InitializeAsync(string mnemonic)
+    public async UniTask<bool> InitializeAsync(string mnemonic, TargetNetwork initNetwork)
     {
+        Debug.Log("Initializing: " + initNetwork.ToString());
+
+        this.currentNetwork = initNetwork;
+
+        if (CurrentNetwork == TargetNetwork.CirrusTest)
+            network = new CirrusTest();
+        else
+            network = new CirrusMain();
+
         try
         {
             this.StratisUnityManager = new StratisUnityManager(new Unity3dClient(ApiUrl), Network,
@@ -177,5 +185,6 @@ public class NFTWallet : MonoBehaviour
 
 public enum TargetNetwork
 {
-    CirrusTest, CirrusMain
+    CirrusTest = 0, 
+    CirrusMain = 1
 }

@@ -16,7 +16,7 @@ public class MarketplaceIntegration : MonoBehaviour
 
     public string MarketplaceURI_Mainnet = "https://nftmarketplace.azurewebsites.net/";
 
-    public string MarketplaceURI => NFTWallet.Instance.TargetNetwork == TargetNetwork.CirrusMain ? MarketplaceURI_Mainnet : MarketplaceURI_Testnet;
+    public string MarketplaceURI => NFTWallet.Instance.CurrentNetwork == TargetNetwork.CirrusMain ? MarketplaceURI_Mainnet : MarketplaceURI_Testnet;
 
     public string  ApiUri => MarketplaceURI + "api/";
 
