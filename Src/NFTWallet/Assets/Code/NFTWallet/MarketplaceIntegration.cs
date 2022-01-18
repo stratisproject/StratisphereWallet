@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using NBitcoin;
 using Newtonsoft.Json;
 using Unity3dApi;
 using UnityEngine;
@@ -37,6 +38,12 @@ public class MarketplaceIntegration : MonoBehaviour
         HttpResponseMessage callbackResult = await client.PostAsync(ApiUri + "contract/metadata", stringContent);
 
         string result = await callbackResult.Content.ReadAsStringAsync();
+
+        if (result.Length > 1000)
+        {
+            Debug.Log("No json metadata! " + result);
+            result = metadata.image;
+        }
 
         Debug.Log(result);
         return result;

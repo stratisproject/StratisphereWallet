@@ -28,7 +28,7 @@ public class StratisUnityManager
     // Smart contract related
     public ulong GasPrice { get; set; } = 100;
 
-    public ulong GasLimit { get; set; } = 250000;
+    public ulong GasLimit { get; set; } = 150000;
 
     public Money DefaultFee = "0.0001";
 
