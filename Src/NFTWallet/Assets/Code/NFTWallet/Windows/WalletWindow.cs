@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class WalletWindow : WindowBase
 {
-    public Button CopyAddressButton, RefreshBalanceButton, SendTxButton, FaucetButton;
+    public Button CopyAddressButton, RefreshBalanceButton, SendTxButton, FaucetButton, QRButton;
 
     public Text AddressText, BalanceText;
 
@@ -79,6 +79,11 @@ public class WalletWindow : WindowBase
             await this.RefreshBalanceAsync();
 
             PlayerPrefs.SetInt(faucetReceivedKey, 1);
+        });
+
+        QRButton.onClick.AddListener(async delegate
+        {
+            await NFTWalletWindowManager.Instance.QRWindow.ShowPopupAsync(NFTWallet.Instance.StratisUnityManager.GetAddress().ToString());
         });
     }
 
