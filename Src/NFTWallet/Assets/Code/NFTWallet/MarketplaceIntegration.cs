@@ -39,7 +39,7 @@ public class MarketplaceIntegration : MonoBehaviour
 
         string result = await callbackResult.Content.ReadAsStringAsync();
 
-        if (result.Length > 1000)
+        if (result.Length > 1000 || !result.EndsWith(".json"))
         {
             Debug.Log("No json metadata! " + result);
             result = metadata.image;
