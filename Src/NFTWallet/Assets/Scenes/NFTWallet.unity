@@ -6505,7 +6505,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DefaultNetwork: 1
   TestnetApiUrl: https://api-sfn-test.stratisphere.com/
-  MainnetApiUrl: https://unity-api.stratisplatform.com/
+  MainnetApiUrl: https://api-node1.stratisplatform.com/
   MobileSpecific:
   - {fileID: 574403829}
   - {fileID: 438312406}
@@ -30967,7 +30967,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.141, y: 0}
   m_AnchorMax: {x: 0.97, y: 1}
-  m_AnchoredPosition: {x: 0.2215271, y: 0}
+  m_AnchoredPosition: {x: 0.22155762, y: 0}
   m_SizeDelta: {x: 68.164, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1576240861
@@ -33325,7 +33325,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5586902, y: 0.91868967}
   m_AnchorMax: {x: 0.697, y: 0.95522994}
-  m_AnchoredPosition: {x: -1, y: 0.32791138}
+  m_AnchoredPosition: {x: -1, y: 0.32788086}
   m_SizeDelta: {x: 49.586, y: 5.6450005}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1728769051
@@ -34975,7 +34975,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.102612294, y: 0.294}
   m_AnchorMax: {x: 0.89038736, y: 0.374}
-  m_AnchoredPosition: {x: 3.7000732, y: 4.0904007}
+  m_AnchoredPosition: {x: 3.7000732, y: 4.09037}
   m_SizeDelta: {x: 10.687988, y: -0.35299683}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1806811932
@@ -38741,7 +38741,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.031393353, y: 0.09264216}
   m_AnchorMax: {x: 0.9026556, y: 1}
-  m_AnchoredPosition: {x: 0.004211426, y: -1.6669998}
+  m_AnchoredPosition: {x: 0.0041503906, y: -1.6669998}
   m_SizeDelta: {x: 75.913, y: 1.414}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1962078038
