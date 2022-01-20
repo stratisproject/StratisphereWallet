@@ -49,11 +49,12 @@ public class MarketplaceIntegration : MonoBehaviour
         return result;
     }
 
-    public async UniTask TransferNFTToMarketplaceAsync(string transferData)
+    public async UniTask ExecuteMarketplaceRequestAsync(string transferData)
     {
-        TransferNFTToMarketplaceModel model = JsonConvert.DeserializeObject<TransferNFTToMarketplaceModel>(transferData);
+        MarketplaceRequestModel model = JsonConvert.DeserializeObject<MarketplaceRequestModel>(transferData);
         string[] parameters = model.parameters.Select(x => x.value).ToArray();
-        Task<string> sendTask = NFTWallet.Instance.StratisUnityManager.SendCallContractTransactionAsync(model.to, model.method, parameters);
+        Money amount = new Money(Decimal.Parse(model.amount.ToString()), MoneyUnit.BTC);
+        Task<string> sendTask = NFTWallet.Instance.StratisUnityManager.SendCallContractTransactionAsync(model.to, model.method, parameters, amount);
 
         // Call callback
         StringContent stringContent = new StringContent(string.Empty);
@@ -61,8 +62,8 @@ public class MarketplaceIntegration : MonoBehaviour
         
         ReceiptResponse receipt = await NFTWalletWindowManager.Instance.WaitTransactionWindow.DisplayUntilSCReceiptReadyAsync(sendTask);
         bool success = receipt.Success;
-        string resultString = string.Format("NFT send success: {0}", success);
-        await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(resultString, "NFT SEND");
+        string resultString = string.Format("Marketplace request execution success: {0}", success);
+        await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(resultString, "EXECUTE MARKETPLACE REQUEST");
     }
 
     // TODO check if expired
@@ -177,12 +178,12 @@ public class Parameter
     public string value { get; set; }
 }
 
-public class TransferNFTToMarketplaceModel
+public class MarketplaceRequestModel
 {
     public string eventId { get; set; }
     public string sender { get; set; }
     public string to { get; set; }
-    public int amount { get; set; }
+    public decimal amount { get; set; }
     public string method { get; set; }
     public List<Parameter> parameters { get; set; }
     public string callback { get; set; }

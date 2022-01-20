@@ -19,7 +19,7 @@ public class MarketplaceWindow : WindowBase
         {
             string transferData = TransferData_InputField.text;
             TransferData_InputField.text = string.Empty;
-            await MarketplaceIntegration.Instance.TransferNFTToMarketplaceAsync(transferData);
+            await MarketplaceIntegration.Instance.ExecuteMarketplaceRequestAsync(transferData);
         });
     }
 }
