@@ -6504,8 +6504,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DefaultNetwork: 1
-  TestnetApiUrl: https://api-node1-test.stratisplatform.com/Unity3d/
-  MainnetApiUrl: https://api-node1.stratisplatform.com/Unity3d/
+  TestnetApiUrl: https://api-node1-test.stratisplatform.com/
+  MainnetApiUrl: https://api-node1.stratisplatform.com/
   MobileSpecific:
   - {fileID: 574403829}
   - {fileID: 438312406}
