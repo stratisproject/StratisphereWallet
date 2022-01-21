@@ -16522,7 +16522,7 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: "It is the first time you launch NFT wallet.\r\nPlease generate new mnemonic
-    and write it down on a pice of paper. \r\n\r\nIf you loose your mnemonic all
+    and write it down on a piece of paper. \r\n\r\nIf you loose your mnemonic all
     funds and NFTs in your wallet will be lost.\r\nNever send your mnemonic to anyone.
     \n\nAfter first login your mnemonic will be saved so you don't have to enter
     it next time. "
@@ -34975,7 +34975,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.102612294, y: 0.294}
   m_AnchorMax: {x: 0.89038736, y: 0.374}
-  m_AnchoredPosition: {x: 3.7000732, y: 4.090309}
+  m_AnchoredPosition: {x: 3.7000732, y: 4.0902786}
   m_SizeDelta: {x: 10.687988, y: -0.35299683}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1806811932
