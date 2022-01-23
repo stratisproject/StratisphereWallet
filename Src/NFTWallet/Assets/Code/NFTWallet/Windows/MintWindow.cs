@@ -11,7 +11,7 @@ public class MintWindow : WindowBase
 {
     public Dropdown NFTContractSelect_Dropdown;
 
-    public Button MintButton, TrackButton, CopySelectedContractButton;
+    public Button MintButton, TrackButton, CopySelectedContractButton, UntrackAllButton;
 
     public InputField MintToAddrInputField, UriInputField, DescriptionInputField, AttributesInputField, TrackContractInputField;
 
@@ -92,6 +92,13 @@ public class MintWindow : WindowBase
             string contrAddr = selectedNft?.ContractAddress;
 
             GUIUtility.systemCopyBuffer = contrAddr;
+        });
+
+        UntrackAllButton.onClick.AddListener(async delegate
+        {
+            NFTWallet.Instance.PersistKnownNfts(new List<DeployedNFTModel>());
+
+            await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync("Cleared");
         });
     }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -108,20 +109,27 @@ public class MyCollectionWindow : WindowBase
 
         for (int i = 0; i < notLoaded.Count; i++)
         {
-            string uri = notLoaded[i].NFTUri;
-            string imageUri;
-
-            if (uri.EndsWith(".json"))
+            try
             {
-                string json = await this.client.GetStringAsync(uri);
-                NFTMetadataModel model = JsonConvert.DeserializeObject<NFTMetadataModel>(json);
-                imageUri = model.image;
-            }
-            else
-                imageUri = uri;
+                string uri = notLoaded[i].NFTUri;
+                string imageUri;
+
+                if (uri.EndsWith(".json"))
+                {
+                    string json = await this.client.GetStringAsync(uri);
+                    NFTMetadataModel model = JsonConvert.DeserializeObject<NFTMetadataModel>(json);
+                    imageUri = model.image;
+                }
+                else
+                    imageUri = uri;
             
-            UniTask<Texture2D> loadTask = this.GetRemoteTextureAsync(imageUri);
-            loadTasks.Add(loadTask);
+                UniTask<Texture2D> loadTask = this.GetRemoteTextureAsync(imageUri);
+                loadTasks.Add(loadTask);
+            }
+            catch (Exception e)
+            {
+                UnityEngine.Debug.Log(e.ToString());
+            }
         }
 
         Texture2D[] loaded = await UniTask.WhenAll(loadTasks);
@@ -151,7 +159,7 @@ public class MyCollectionWindow : WindowBase
             
             if (www.result != UnityWebRequest.Result.Success)
             {
-                Debug.Log($"{www.error}, URL:{www.url}");
+                UnityEngine.Debug.Log($"{www.error}, URL:{www.url}");
                 return null;
             }
             
