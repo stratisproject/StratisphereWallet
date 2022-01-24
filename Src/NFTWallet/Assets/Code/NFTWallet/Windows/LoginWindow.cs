@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 public class LoginWindow : WindowBase
 {
-    public InputField MnemonicInputField;
+    public InputField MnemonicInputField, PassphraseInputField;
     public Button GenerateNewMnemonicButton, LogInButton, RemovePlayerPrefsButton;
     public Text NewMnemonicWarningText;
 
@@ -79,7 +79,13 @@ public class LoginWindow : WindowBase
 
             PlayerPrefs.SetString(MnemonicKey, mnemonic);
 
-            bool success = await NFTWallet.Instance.InitializeAsync(mnemonic, selectedNetwork);
+            string passphrase = this.PassphraseInputField.text;
+            if (string.IsNullOrEmpty(passphrase))
+                passphrase = null;
+
+            this.PassphraseInputField.text = string.Empty;
+
+            bool success = await NFTWallet.Instance.InitializeAsync(mnemonic, selectedNetwork, passphrase);
 
             if (success)
                 await NFTWalletWindowManager.Instance.WalletWindow.ShowAsync();

@@ -36,13 +36,13 @@ public class StratisUnityManager
 
     private CallDataSerializer callDataSerializer;
 
-    public StratisUnityManager(Unity3dClient client, Network network, Mnemonic mnemonic)
+    public StratisUnityManager(Unity3dClient client, Network network, Mnemonic mnemonic, string passPhrase = null)
     {
         this.Client = client;
         this.network = network;
         this.mnemonic = mnemonic;
 
-        ExtKey extKey = this.mnemonic.DeriveExtKey();
+        ExtKey extKey = this.mnemonic.DeriveExtKey(passPhrase);
 
         // cirrus main m/44'/401'/0'/0/0
         // cirrus test m/44'/400'/0'/0/0

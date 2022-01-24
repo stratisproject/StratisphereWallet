@@ -61,7 +61,7 @@ public class NFTWallet : MonoBehaviour
     }
     
     /// <returns><c>true</c> if success.</returns>
-    public async UniTask<bool> InitializeAsync(string mnemonic, TargetNetwork initNetwork)
+    public async UniTask<bool> InitializeAsync(string mnemonic, TargetNetwork initNetwork, string passphrase = null)
     {
         Debug.Log("Initializing: " + initNetwork.ToString());
 
@@ -75,7 +75,7 @@ public class NFTWallet : MonoBehaviour
         try
         {
             this.StratisUnityManager = new StratisUnityManager(new Unity3dClient(ApiUrl), Network,
-                new Mnemonic(mnemonic, Wordlist.English));
+                new Mnemonic(mnemonic, Wordlist.English), passphrase);
             
             await this.StratisUnityManager.GetBalanceAsync();
         }
