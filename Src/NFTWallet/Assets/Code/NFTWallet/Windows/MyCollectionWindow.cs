@@ -53,16 +53,7 @@ public class MyCollectionWindow : WindowBase
             string nftName = (knownNft == null)? string.Empty : knownNft.NftName;
 
             NFTWrapper wrapper = new NFTWrapper(NFTWallet.Instance.StratisUnityManager, contractAddr);
-
-            List<string> uris = new List<string>(ownedIds.Count);
-
-            foreach (long ownedId in ownedIds)
-            {
-                string uri = await wrapper.TokenURIAsync((UInt256) ownedId);
-
-                uris.Add(uri);
-            }
-
+            
             // Create item for each owned ID or enable already spawned item
             for (int i = 0; i < ownedIds.Count; i++)
             {
@@ -82,7 +73,8 @@ public class MyCollectionWindow : WindowBase
 
                 cItem.NFTID = currentId;
                 cItem.ContractAddr = contractAddr;
-                cItem.NFTUri = uris[i];
+                string uri = await wrapper.TokenURIAsync((UInt256)currentId);
+                cItem.NFTUri = uri;
 
                 cItem.TitleText.text = nftName;
                 cItem.DescriptionText.text = string.Format("ID: {0}", currentId);
