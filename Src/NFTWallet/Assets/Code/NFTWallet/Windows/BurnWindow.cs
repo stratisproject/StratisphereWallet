@@ -110,6 +110,6 @@ public class BurnWindow : WindowBase
         if (contractToIds.Value == null || !contractToIds.Value.Any())
             OwnedIdsText.text = "You don't own any NFTs of that type.";
         else
-            OwnedIdsText.text = string.Join(",", contractToIds.Value);
+            OwnedIdsText.text = string.Join(",", contractToIds.Value.Distinct());
     }
 }

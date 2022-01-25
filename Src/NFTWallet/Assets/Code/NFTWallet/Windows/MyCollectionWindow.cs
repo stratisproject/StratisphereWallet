@@ -47,7 +47,7 @@ public class MyCollectionWindow : WindowBase
         foreach (KeyValuePair<string, ICollection<long>> contrAddrToOwnedIds in myNfts.OwnedIDsByContractAddress)
         {
             string contractAddr = contrAddrToOwnedIds.Key;
-            List<long> ownedIds = contrAddrToOwnedIds.Value.ToList();
+            List<long> ownedIds = contrAddrToOwnedIds.Value.Distinct().ToList();
 
             DeployedNFTModel knownNft = knownNfts.FirstOrDefault(x => x.ContractAddress == contractAddr);
             string nftName = (knownNft == null)? string.Empty : knownNft.NftName;
