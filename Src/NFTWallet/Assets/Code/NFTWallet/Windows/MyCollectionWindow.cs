@@ -11,6 +11,7 @@ using Unity3dApi;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
+using Object = UnityEngine.Object;
 
 public class MyCollectionWindow : WindowBase
 {
@@ -162,7 +163,11 @@ public class MyCollectionWindow : WindowBase
 
         if (texture != null && (texture.width > 600 || texture.height > 600))
         {
-            texture = ResizeTexture(texture, 600, 600);
+            Texture2D resized = ResizeTexture(texture, 600, 600);
+
+            Object.Destroy(texture);
+
+            return resized;
         }
 
         return texture;
