@@ -17,6 +17,8 @@ public class MyCollectionWindow : WindowBase
 {
     public GameObject ContentGameObject;
 
+    public Text StatusText;
+
     public CollectionItem CollectionCopyFromItem;
 
     public ScrollRect ScrollRect;
@@ -34,6 +36,7 @@ public class MyCollectionWindow : WindowBase
 
     public override async UniTask ShowAsync(bool hideOtherWindows = true)
     {
+        this.StatusText.text = "loading collection";
         ScrollRect.verticalNormalizedPosition = this.defaultScrollRectVerticalPosition;
 
         // Disable prev spawned items.
@@ -58,6 +61,7 @@ public class MyCollectionWindow : WindowBase
             // Create item for each owned ID or enable already spawned item
             for (int i = 0; i < ownedIds.Count; i++)
             {
+                this.StatusText.text = contractAddr.Substring(0, 20) + "... " + (i + 1).ToString() + " / " + ownedIds.Count;
                 long currentId = ownedIds[i];
 
                 var alreadySpawnedItem = SpawnedItems.SingleOrDefault(x => x.ContractAddr == contractAddr && x.NFTID == currentId);
@@ -102,6 +106,8 @@ public class MyCollectionWindow : WindowBase
 
         for (int i = 0; i < notLoaded.Count; i++)
         {
+            this.StatusText.text = "loading textures " + (i + 1).ToString() + " / " + notLoaded.Count;
+
             try
             {
                 string uri = notLoaded[i].NFTUri;
@@ -139,6 +145,8 @@ public class MyCollectionWindow : WindowBase
             notLoaded[i].NFTImage.sprite = sprite;
             notLoaded[i].ImageLoaded = true;
         }
+
+        this.StatusText.text = string.Empty;
     }
 
     private async UniTask<Texture2D> GetRemoteTextureAsync(string url)
