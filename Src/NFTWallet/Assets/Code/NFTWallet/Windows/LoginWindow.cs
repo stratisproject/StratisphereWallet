@@ -9,7 +9,7 @@ using UnityEngine.UI;
 public class LoginWindow : WindowBase
 {
     public InputField MnemonicInputField, PassphraseInputField;
-    public Button GenerateNewMnemonicButton, LogInButton, RemovePlayerPrefsButton;
+    public Button GenerateNewMnemonicButton, LogInButton, RemovePlayerPrefsButton, SizeUpButton, SizeDownButton;
     public Text NewMnemonicWarningText;
 
     public Text MnemonicInputFieldPlaceholderText;
@@ -18,9 +18,25 @@ public class LoginWindow : WindowBase
     
     private const string MnemonicKey = "MnemonicST";
 
+    private const string ResolutionKey = "ResolutionST";
+
     private List<TargetNetwork> targetNetworks = new List<TargetNetwork>();
 
     private TargetNetwork selectedNetwork;
+
+    private readonly List<Vector2> SupportedResolutions = new List<Vector2>()
+    {
+        new Vector2(960 ,540),
+        new Vector2(1024, 576), 
+        new Vector2(1280, 720),
+        new Vector2(1366, 768),
+        new Vector2(1600, 900),
+        new Vector2(1920, 1080),
+        new Vector2(2560, 1440),
+        new Vector2(3840, 2160)
+    };
+
+    private int currentResolutionIndex = -1;
 
     void Start()
     {
@@ -36,6 +52,17 @@ public class LoginWindow : WindowBase
         NetworkDropDown.ClearOptions();
         List<string> options = targetNetworks.Select(x => x.ToString()).ToList();
         NetworkDropDown.AddOptions(options);
+
+        if (PlayerPrefs.HasKey(ResolutionKey))
+        {
+            currentResolutionIndex = PlayerPrefs.GetInt(ResolutionKey);
+        }
+        else
+        {
+            currentResolutionIndex = 4;
+        }
+
+        SetResolutionFromIndex();
     }
 
     async void Awake()
@@ -44,6 +71,24 @@ public class LoginWindow : WindowBase
         {
             Mnemonic mnemonic = new Mnemonic(Wordlist.English, WordCount.Twelve);
             this.MnemonicInputField.text = mnemonic.ToString();
+        });
+
+        this.SizeUpButton.onClick.AddListener(async delegate
+        {
+            if (currentResolutionIndex < SupportedResolutions.Count - 1)
+            {
+                currentResolutionIndex++;
+                SetResolutionFromIndex();
+            }
+        });
+
+        this.SizeDownButton.onClick.AddListener(async delegate
+        {
+            if (currentResolutionIndex > 0)
+            {
+                currentResolutionIndex--;
+                SetResolutionFromIndex();                
+            }
         });
 
         NetworkDropDown.onValueChanged.AddListener(delegate (int optionNumber)
@@ -56,6 +101,7 @@ public class LoginWindow : WindowBase
             bool presavedMnemonicExists = PlayerPrefs.HasKey(MnemonicKey);
             bool mnemonicEntered = !string.IsNullOrEmpty(MnemonicInputField.text);
 
+            PlayerPrefs.SetInt(ResolutionKey, currentResolutionIndex);
 
             if (!presavedMnemonicExists && !mnemonicEntered)
             {
@@ -94,7 +140,7 @@ public class LoginWindow : WindowBase
 
             await NFTWallet.Instance.AddKnownContractsIfMissingAsync();
 
-            MnemonicInputField.text = string.Empty;
+            MnemonicInputField.text = string.Empty;            
         });
 
         RemovePlayerPrefsButton.onClick.AddListener(delegate
@@ -116,5 +162,10 @@ public class LoginWindow : WindowBase
         NewMnemonicWarningText.gameObject.SetActive(!mnemonicExists);
 
         return base.ShowAsync(hideOtherWindows);
+    }
+
+    private void SetResolutionFromIndex()
+    {
+        Screen.SetResolution((int)SupportedResolutions[currentResolutionIndex].x, (int)SupportedResolutions[currentResolutionIndex].y, false);
     }
 }
