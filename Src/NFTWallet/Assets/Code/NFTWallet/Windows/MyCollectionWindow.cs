@@ -61,7 +61,7 @@ public class MyCollectionWindow : WindowBase
             // Create item for each owned ID or enable already spawned item
             for (int i = 0; i < ownedIds.Count; i++)
             {
-                this.StatusText.text = contractAddr.Substring(0, 20) + "... " + (i + 1).ToString() + " / " + ownedIds.Count;
+                this.StatusText.text = "loading metadata " + contractAddr.Substring(0, 15) + "... " + (i + 1).ToString() + " / " + ownedIds.Count;
                 long currentId = ownedIds[i];
 
                 var alreadySpawnedItem = SpawnedItems.SingleOrDefault(x => x.ContractAddr == contractAddr && x.NFTID == currentId);
@@ -130,6 +130,8 @@ public class MyCollectionWindow : WindowBase
                 UnityEngine.Debug.Log(e.ToString());
             }
         }
+
+        this.StatusText.text = "finalizing textures...";
 
         Texture2D[] loaded = await UniTask.WhenAll(loadTasks);
 
