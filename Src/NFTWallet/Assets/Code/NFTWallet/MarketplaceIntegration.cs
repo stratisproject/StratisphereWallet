@@ -61,16 +61,13 @@ public class MarketplaceIntegration : MonoBehaviour
         HttpResponseMessage callbackResult = await client.PostAsync(model.callback, stringContent);
         
         ReceiptResponse receipt = await NFTWalletWindowManager.Instance.WaitTransactionWindow.DisplayUntilSCReceiptReadyAsync(sendTask);
-        bool success = receipt.Success;
+        bool success = receipt?.Success ?? false;
         string resultString = string.Format("Marketplace request execution success: {0}", success);
         await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(resultString, "EXECUTE MARKETPLACE REQUEST");
     }
-
-    // TODO check if expired
+    
     public async UniTask LogInToNFTMarketplaceAsync(string loginData)
     {
-        //string testData = "sid:nftmarketplacetest.azurewebsites.net/api/login/login-callback?uid=CBN3hhkyh3ddkl98JTa4e3zn1yohMnQScs7UuG-Ok9m7uupyF4z9eM9UhBw1qOTP&exp=1642262570";
-
         QRDataParseResult parsed = this.ParseLoginData(loginData);
         
         // Sign

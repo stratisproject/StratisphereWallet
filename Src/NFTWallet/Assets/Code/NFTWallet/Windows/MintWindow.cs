@@ -66,7 +66,7 @@ public class MintWindow : WindowBase
 
             ReceiptResponse receipt = await NFTWalletWindowManager.Instance.WaitTransactionWindow.DisplayUntilSCReceiptReadyAsync(mintNftTask);
 
-            bool success = receipt.Success;
+            bool success = receipt?.Success ?? false;
             string nftId = receipt.ReturnValue;
 
             string resultString = string.Format("NFT mint success: {0}.{2}Minted NFT ID: {1}{2}If you've minted it to your address then this NFT will be shown in MY COLLECTION window.", success, nftId, Environment.NewLine);

@@ -37,7 +37,7 @@ public class WaitTransactionWindow : WindowBase
 
             await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(e.ToString(), "Error while executing smart contract call");
 
-            Debug.Log(e.ToString());
+            Debug.LogError(e.ToString());
             return null;
         }
     }
@@ -72,7 +72,7 @@ public class WaitTransactionWindow : WindowBase
 
             await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(e.ToString(), "Unexpected error");
 
-            Debug.Log(e.ToString());
+            Debug.LogError(e.ToString());
         }
     }
 
