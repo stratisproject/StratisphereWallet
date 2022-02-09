@@ -6,10 +6,10 @@ NFT wallet made with StratisUnitySDK
 
 
 
-![](.\Img\1.PNG)
+![](https://raw.githubusercontent.com/stratisproject/StratisphereWallet/main/Img/1.PNG)
 
 
 
 
 
-![](.\Img\2.PNG)
+![](https://raw.githubusercontent.com/stratisproject/StratisphereWallet/main/Img/2.PNG)
