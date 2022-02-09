@@ -54,7 +54,7 @@ public class SendWindow : WindowBase
             
             ReceiptResponse receipt = await NFTWalletWindowManager.Instance.WaitTransactionWindow.DisplayUntilSCReceiptReadyAsync(sendTask);
             
-            bool success = receipt.Success;
+            bool success = receipt?.Success ?? false;
             
             string resultString = string.Format("NFT send success: {0}", success);
             
