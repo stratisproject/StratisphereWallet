@@ -8,9 +8,11 @@ using UnityEngine.UI;
 
 public class SendWindow : WindowBase
 {
-    public Dropdown NFTContractSelect_Dropdown, NFTID_Dropdown;
+    public Dropdown NFTContractSelect_Dropdown;
 
-    public InputField DestinationAddrInputField;
+    public InputField SendIdInputField, DestinationAddrInputField;
+
+    public Text OwnedIdsText;
 
     public Button SendButton;
 
@@ -19,34 +21,29 @@ public class SendWindow : WindowBase
     private OwnedNFTsModel ownedNfts;
     private string selectedContract;
 
-    private List<long> currentIdsCollection;
-    private long selectedId;
-
     void Awake()
     {
+        OwnedIdsText.text = "Owned IDs: ";
+
         NFTContractSelect_Dropdown.onValueChanged.AddListener(delegate (int optionNumber)
         {
             selectedContract = contractAddresses[optionNumber];
-            SetupAvailableIdsForSelectedContract();
-        });
-
-        NFTID_Dropdown.onValueChanged.AddListener(delegate (int optionNumber)
-        {
-            selectedId = currentIdsCollection[optionNumber];
+            DisplayAvailableIdsForSelectedContract();
         });
 
         SendButton.onClick.AddListener(async delegate
         {
-            if (string.IsNullOrEmpty(selectedContract))
+            if (string.IsNullOrEmpty(selectedContract) || string.IsNullOrEmpty(SendIdInputField.text) || string.IsNullOrEmpty(DestinationAddrInputField.text))
             {
-                await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync("No contract or ID selected", "ERROR");
+                await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync("No contract or ID or dest address selected", "ERROR");
                 return;
             }
 
-            UInt256 sendId = UInt256.Parse(selectedId.ToString());
+            UInt256 sendId = UInt256.Parse(SendIdInputField.text);
             string destAddr = DestinationAddrInputField.text;
 
-            DestinationAddrInputField.text = string.Empty;
+            DestinationAddrInputField.text = SendIdInputField.text = string.Empty;
+
 
             NFTWrapper wrapper = new NFTWrapper(NFTWallet.Instance.StratisUnityManager, selectedContract);
             
@@ -61,7 +58,7 @@ public class SendWindow : WindowBase
             await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(resultString, "NFT SEND");
             
             this.ownedNfts.OwnedIDsByContractAddress.First(x => x.Key == selectedContract).Value.Remove((long)sendId);
-            SetupAvailableIdsForSelectedContract();
+            DisplayAvailableIdsForSelectedContract();
         });
     }
 
@@ -93,22 +90,18 @@ public class SendWindow : WindowBase
         NFTContractSelect_Dropdown.ClearOptions();
         NFTContractSelect_Dropdown.AddOptions(options);
 
-        SetupAvailableIdsForSelectedContract();
+        DisplayAvailableIdsForSelectedContract();
     }
     
-    private void SetupAvailableIdsForSelectedContract()
+    private void DisplayAvailableIdsForSelectedContract()
     {
         KeyValuePair<string, ICollection<long>> contractToIds = this.ownedNfts.OwnedIDsByContractAddress.FirstOrDefault(x => x.Key == selectedContract);
 
-        if (contractToIds.Value != null && contractToIds.Value.Any())
-        {
-            NFTID_Dropdown.options.Clear();
+        string idsString;
+        if (contractToIds.Value == null || !contractToIds.Value.Any())
+            idsString = "You don't own any NFTs of that type.";
+        else idsString = string.Join(",", contractToIds.Value);
 
-            this.currentIdsCollection = contractToIds.Value.Distinct().ToList();
-            List<string> options = this.currentIdsCollection.Select(x => x.ToString()).ToList();
-            NFTID_Dropdown.AddOptions(options);
-
-            selectedId = this.currentIdsCollection.First();
-        }
+        OwnedIdsText.text = "Owned IDs: " + idsString;
     }
 }

@@ -10,8 +10,12 @@ using UnityEngine.UI;
 
 public class BurnWindow : WindowBase
 {
-    public Dropdown NFTContractSelect_Dropdown, IDToBurn_Dropdown;
-    
+    public Dropdown NFTContractSelect_Dropdown;
+
+    public InputField BurnIdInputField;
+
+    public Text OwnedIdsText;
+
     public Button BurnButton;
 
     private List<string> contractAddresses;
@@ -19,46 +23,39 @@ public class BurnWindow : WindowBase
     private OwnedNFTsModel ownedNfts;
     private string selectedContract;
 
-    private List<long> currentIdsCollection;
-    private long selectedId;
-
     void Awake()
     {
         NFTContractSelect_Dropdown.onValueChanged.AddListener(delegate (int optionNumber)
         {
             selectedContract = contractAddresses[optionNumber];
-            SetupAvailableIdsForSelectedContract();
-        });
-
-        IDToBurn_Dropdown.onValueChanged.AddListener(delegate (int optionNumber)
-        {
-            selectedId = currentIdsCollection[optionNumber];
+            DisplayAvailableIdsForSelectedContract();
         });
 
         BurnButton.onClick.AddListener(async delegate
         {
-            if (string.IsNullOrEmpty(selectedContract))
+            if (string.IsNullOrEmpty(selectedContract) || string.IsNullOrEmpty(BurnIdInputField.text))
             {
                 await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync("No contract or ID selected", "ERROR");
                 return;
             }
 
-            UInt256 burnId = UInt256.Parse(selectedId.ToString());
+            UInt256 burnId = UInt256.Parse(BurnIdInputField.text);
+            BurnIdInputField.text = string.Empty;
 
             NFTWrapper wrapper = new NFTWrapper(NFTWallet.Instance.StratisUnityManager, selectedContract);
 
             Task<string> burnTask = wrapper.BurnAsync(burnId);
 
             ReceiptResponse receipt = await NFTWalletWindowManager.Instance.WaitTransactionWindow.DisplayUntilSCReceiptReadyAsync(burnTask);
-
-            bool success = receipt?.Success ?? false;
-
+            
+            bool success = receipt.Success;
+            
             string resultString = string.Format("NFT burn success: {0}", success);
             
             await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(resultString, "NFT BURN");
 
             this.ownedNfts.OwnedIDsByContractAddress.First(x => x.Key == selectedContract).Value.Remove((long)burnId);
-            SetupAvailableIdsForSelectedContract();
+            DisplayAvailableIdsForSelectedContract();
         });
     }
 
@@ -92,7 +89,7 @@ public class BurnWindow : WindowBase
         NFTContractSelect_Dropdown.ClearOptions();
         NFTContractSelect_Dropdown.AddOptions(options);
 
-        SetupAvailableIdsForSelectedContract();
+        DisplayAvailableIdsForSelectedContract();
     }
 
     private void LogAvailableIds()
@@ -106,19 +103,13 @@ public class BurnWindow : WindowBase
         Debug.Log(allOwnedNfts);
     }
 
-    private void SetupAvailableIdsForSelectedContract()
+    private void DisplayAvailableIdsForSelectedContract()
     {
         KeyValuePair<string, ICollection<long>> contractToIds = this.ownedNfts.OwnedIDsByContractAddress.FirstOrDefault(x => x.Key == selectedContract);
 
-        if (contractToIds.Value != null && contractToIds.Value.Any())
-        {
-            IDToBurn_Dropdown.options.Clear();
-
-            this.currentIdsCollection = contractToIds.Value.Distinct().ToList();
-            List<string> options = this.currentIdsCollection.Select(x => x.ToString()).ToList();
-            IDToBurn_Dropdown.AddOptions(options);
-
-            selectedId = this.currentIdsCollection.First();
-        }
+        if (contractToIds.Value == null || !contractToIds.Value.Any())
+            OwnedIdsText.text = "You don't own any NFTs of that type.";
+        else
+            OwnedIdsText.text = string.Join(",", contractToIds.Value.Distinct());
     }
 }

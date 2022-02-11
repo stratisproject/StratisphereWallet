@@ -25,15 +25,13 @@ public class CreateNFTWindow : WindowBase
 
             ReceiptResponse receipt = await NFTWalletWindowManager.Instance.WaitTransactionWindow.DisplayUntilSCReceiptReadyAsync(deployNFTContract);
 
-            bool success = receipt?.Success ?? false;
-
-            string resultString = "NFT deployment complete. Success: " + success + Environment.NewLine + "NFT contract address: " + receipt.NewContractAddress +
+            string resultString = "NFT deployment complete. Success: " + receipt.Success + Environment.NewLine + "NFT contract address: " + receipt.NewContractAddress +
                                   Environment.NewLine  + Environment.NewLine + "NFT contract address that you've just deployed was added to the MINT window." + 
                                   Environment.NewLine + "You now can mint NFT in the MINT window.";
 
             await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(resultString, "NFT DEPLOYMENT");
 
-            if (success)
+            if (receipt.Success)
                 await NFTWallet.Instance.RegisterKnownNFTAsync(nftName, symbol, ownerOnlyMinting, receipt.NewContractAddress, NFTWallet.Instance.StratisUnityManager.GetAddress().ToString());
         });
     }
