@@ -8363,7 +8363,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: tTfS7EtwEDEp2uyHLvMseum5hWsnqaxfuz
+  m_Text: Enter the address here...
 --- !u!222 &379619547
 CanvasRenderer:
   m_ObjectHideFlags: 0
