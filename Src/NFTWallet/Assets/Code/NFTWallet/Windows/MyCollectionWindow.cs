@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using Cysharp.Threading.Tasks.Linq;
 using Newtonsoft.Json;
 using Stratis.SmartContracts;
 using Unity3dApi;
@@ -98,9 +99,7 @@ public class MyCollectionWindow : WindowBase
         contentTransform.sizeDelta = new Vector2(contentTransform.sizeDelta.x, (cellSize + spacing) * rows);
 
         // Load images
-        List<CollectionItem> notLoaded = this.SpawnedItems.Where(
-            x => !x.ImageLoaded && x.NFTUri.StartsWith("https://") && 
-            (x.NFTUri.EndsWith(".png") || x.NFTUri.EndsWith(".gif") || x.NFTUri.EndsWith(".jpg") || x.NFTUri.EndsWith(".json"))).ToList();
+        List<CollectionItem> notLoaded = this.SpawnedItems.Where(x => !x.ImageLoaded && x.NFTUri.StartsWith("https://")).ToList();
 
         List<UniTask<Texture2D>> loadTasks = new List<UniTask<Texture2D>>();
 
@@ -111,19 +110,38 @@ public class MyCollectionWindow : WindowBase
             try
             {
                 string uri = notLoaded[i].NFTUri;
-                string imageUri;
+                string imageOrVidUri;
 
                 if (uri.EndsWith(".json"))
                 {
                     string json = await this.client.GetStringAsync(uri);
                     NFTMetadataModel model = JsonConvert.DeserializeObject<NFTMetadataModel>(json);
-                    imageUri = model.image;
+                    imageOrVidUri = model.image;
                 }
                 else
-                    imageUri = uri;
-            
-                UniTask<Texture2D> loadTask = this.GetRemoteTextureAsync(imageUri);
-                loadTasks.Add(loadTask);
+                    imageOrVidUri = uri;
+
+                bool image = (imageOrVidUri.EndsWith(".png") || imageOrVidUri.EndsWith(".jpg"));
+
+                notLoaded[i].DisplayAnimationButton.gameObject.SetActive(!image);
+
+                if (image)
+                {
+                    UniTask<Texture2D> loadTask = this.GetRemoteTextureAsync(imageOrVidUri);
+                    loadTasks.Add(loadTask);
+                }
+                else
+                {
+                    loadTasks.Add(GetNullTextureAsync());
+
+                    var index = i;
+                    notLoaded[i].DisplayAnimationButton.onClick.RemoveAllListeners();
+                    notLoaded[i].DisplayAnimationButton.onClick.AddListener(async delegate
+                    {
+                        await NFTWalletWindowManager.Instance.AnimationWindow.ShowPopupAsync(imageOrVidUri,
+                            "NFTID: " + notLoaded[index].NFTID);
+                    });
+                }
             }
             catch (Exception e)
             {
@@ -196,5 +214,10 @@ public class MyCollectionWindow : WindowBase
         RenderTexture.active = null;
         RenderTexture.ReleaseTemporary(rt);
         return nTex;
+    }
+
+    private async UniTask<Texture2D> GetNullTextureAsync()
+    {
+        return null;
     }
 }

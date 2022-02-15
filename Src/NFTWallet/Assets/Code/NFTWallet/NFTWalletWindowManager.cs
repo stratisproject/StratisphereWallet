@@ -18,6 +18,7 @@ public class NFTWalletWindowManager : MonoBehaviour
     public WaitTransactionWindow WaitTransactionWindow;
     public MarketplaceWindow MarketplaceWindow;
     public QRWindow QRWindow;
+    public DisplayAnimationWIndow AnimationWindow;
 
     public bool IsMobile;
 
@@ -28,7 +29,7 @@ public class NFTWalletWindowManager : MonoBehaviour
         Instance = this;
 
         this.allWindows = new List<WindowBase>() { LoginWindow, PopupWindow, WalletWindow, MyCollectionWindow, CreateNftWindow, 
-            SendWindow, MintWindow, BurnWindow, WaitTransactionWindow, MarketplaceWindow, QRWindow };
+            SendWindow, MintWindow, BurnWindow, WaitTransactionWindow, MarketplaceWindow, QRWindow, AnimationWindow };
     }
 
     async void Start()

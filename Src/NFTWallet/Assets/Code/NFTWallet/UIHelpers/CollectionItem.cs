@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 public class CollectionItem : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class CollectionItem : MonoBehaviour
     public Image NFTImage;
 
     public Button Sell_Button;
+
+    public Button DisplayAnimationButton;
 
     [HideInInspector]
     public long NFTID;
