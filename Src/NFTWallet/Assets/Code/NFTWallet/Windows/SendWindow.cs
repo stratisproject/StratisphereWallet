@@ -100,7 +100,7 @@ public class SendWindow : WindowBase
         string idsString;
         if (contractToIds.Value == null || !contractToIds.Value.Any())
             idsString = "You don't own any NFTs of that type.";
-        else idsString = string.Join(",", contractToIds.Value);
+        else idsString = string.Join(",", contractToIds.Value.Distinct().OrderBy(x => x));
 
         OwnedIdsText.text = "OwnedIDs:" + idsString;
     }
