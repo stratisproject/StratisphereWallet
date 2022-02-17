@@ -14,4 +14,5 @@ public class NFTMetadataModel
     public string image { get; set; }
     public string name { get; set; }
     public List<Attribute> attributes { get; set; }
+    public string category { get; set; }
 }

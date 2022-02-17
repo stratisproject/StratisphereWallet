@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class MintWindow : WindowBase
 {
-    public Dropdown NFTContractSelect_Dropdown;
+    public Dropdown NFTContractSelect_Dropdown, SelectCategory_Dropdown;
 
     public Button MintButton, TrackButton, CopySelectedContractButton, UntrackAllButton;
 
@@ -19,12 +19,26 @@ public class MintWindow : WindowBase
 
     private DeployedNFTModel selectedNft;
 
+    private readonly List<string> categories = new List<string>() { "General", "Games", "Collectibles", "Art", "Photography", "Sports" };
+
+    private string selectedCategory;
+
     void Awake()
     {
+        selectedCategory = categories.First();
+
+        SelectCategory_Dropdown.onValueChanged.AddListener(delegate (int optionNumber)
+        {
+            selectedCategory = categories[optionNumber];
+        });
+
         NFTContractSelect_Dropdown.onValueChanged.AddListener(delegate(int optionNumber)
         {
             selectedNft = nftsForDeployment[optionNumber];
         });
+
+        SelectCategory_Dropdown.ClearOptions();
+        SelectCategory_Dropdown.AddOptions(categories);
 
         MintButton.onClick.AddListener(async delegate
         {
@@ -58,7 +72,8 @@ public class MintWindow : WindowBase
                 name = selectedNft.NftName,
                 image = uri,
                 description = description,
-                attributes = attributesCollection
+                attributes = attributesCollection,
+                category = selectedCategory
             });
 
             NFTWrapper wrapper = new NFTWrapper(NFTWallet.Instance.StratisUnityManager, selectedNft.ContractAddress);
