@@ -21,12 +21,12 @@ public class DisplayAnimationWIndow : WindowBase
 
     public async UniTask ShowPopupAsync(string resourceUri, string info)
     {
-        if (!resourceUri.EndsWith(".mp4"))
-        {
-            InfoText.text = "UNSUPPORTED MEDIA TYPE";
-            await this.ShowAsync(false);
-            return;
-        }
+        //if (!resourceUri.EndsWith(".mp4"))
+        //{
+        //    InfoText.text = "UNSUPPORTED MEDIA TYPE";
+        //    await this.ShowAsync(false);
+        //    return;
+        //}
 
         Image.gameObject.SetActive(true);
         Player.url = resourceUri;

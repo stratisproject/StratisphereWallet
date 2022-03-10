@@ -118,7 +118,12 @@ public class MyCollectionWindow : WindowBase
                 if (uri.EndsWith(".json"))
                 {
                     string json = await this.client.GetStringAsync(uri);
-                    NFTMetadataModel model = JsonConvert.DeserializeObject<NFTMetadataModel>(json);
+
+                    var settings = new JsonSerializerSettings();
+                    settings.DateFormatString = "YYYY-MM-DD";
+                    settings.ContractResolver = new CustomMetadataResolver();
+
+                    NFTMetadataModel model = JsonConvert.DeserializeObject<NFTMetadataModel>(json, settings);
                     imageUri = model.Image;
 
                     if (!string.IsNullOrEmpty(model.AnimationUrl))
@@ -145,8 +150,6 @@ public class MyCollectionWindow : WindowBase
                 
                 if (animationAvailable)
                 {
-                    loadTasks.Add(GetNullTextureAsync());
-
                     var index = i;
                     notLoaded[i].DisplayAnimationButton.onClick.RemoveAllListeners();
                     notLoaded[i].DisplayAnimationButton.onClick.AddListener(async delegate
