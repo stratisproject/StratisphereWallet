@@ -110,27 +110,40 @@ public class MyCollectionWindow : WindowBase
             try
             {
                 string uri = notLoaded[i].NFTUri;
-                string imageOrVidUri;
+                string imageUri;
+
+                bool animationAvailable = false;
+                string animationUrl = null;
 
                 if (uri.EndsWith(".json"))
                 {
                     string json = await this.client.GetStringAsync(uri);
                     NFTMetadataModel model = JsonConvert.DeserializeObject<NFTMetadataModel>(json);
-                    imageOrVidUri = model.Image;
+                    imageUri = model.Image;
+
+                    if (!string.IsNullOrEmpty(model.AnimationUrl))
+                    {
+                        animationAvailable = true;
+                        animationUrl = model.AnimationUrl;
+                    }
                 }
                 else
-                    imageOrVidUri = uri;
+                    imageUri = uri;
 
-                bool image = (imageOrVidUri.EndsWith(".png") || imageOrVidUri.EndsWith(".jpg"));
+                notLoaded[i].DisplayAnimationButton.gameObject.SetActive(animationAvailable);
 
-                notLoaded[i].DisplayAnimationButton.gameObject.SetActive(!image);
-
+                bool image = (imageUri.EndsWith(".png") || imageUri.EndsWith(".jpg"));
                 if (image)
                 {
-                    UniTask<Texture2D> loadTask = this.GetRemoteTextureAsync(imageOrVidUri);
+                    UniTask<Texture2D> loadTask = this.GetRemoteTextureAsync(imageUri);
                     loadTasks.Add(loadTask);
                 }
                 else
+                {
+                    loadTasks.Add(GetNullTextureAsync());
+                }
+                
+                if (animationAvailable)
                 {
                     loadTasks.Add(GetNullTextureAsync());
 
@@ -138,7 +151,7 @@ public class MyCollectionWindow : WindowBase
                     notLoaded[i].DisplayAnimationButton.onClick.RemoveAllListeners();
                     notLoaded[i].DisplayAnimationButton.onClick.AddListener(async delegate
                     {
-                        await NFTWalletWindowManager.Instance.AnimationWindow.ShowPopupAsync(imageOrVidUri,
+                        await NFTWalletWindowManager.Instance.AnimationWindow.ShowPopupAsync(animationUrl,
                             "NFTID: " + notLoaded[index].NFTID);
                     });
                 }

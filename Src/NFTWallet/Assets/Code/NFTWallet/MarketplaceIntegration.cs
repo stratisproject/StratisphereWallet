@@ -29,7 +29,7 @@ public class MarketplaceIntegration : MonoBehaviour
         Instance = this;
     }
 
-    // Returns link to .json
+    /// <summary>Returns link to .json or to image if json upload fails</summary>
     public async UniTask<string> UploadMetadataAsync(NFTMetadataModel metadata)
     {
         string jsonString = JsonConvert.SerializeObject(metadata);

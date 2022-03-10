@@ -13,7 +13,7 @@ public class MintWindow : WindowBase
 
     public Button MintButton, TrackButton, CopySelectedContractButton, UntrackAllButton;
 
-    public InputField MintToAddrInputField, UriInputField, DescriptionInputField, AttributesInputField, TrackContractInputField;
+    public InputField MintToAddrInputField, UriInputField, DescriptionInputField, AttributesInputField, TrackContractInputField, AnimationInputField;
 
     private List<DeployedNFTModel> nftsForDeployment;
 
@@ -48,7 +48,10 @@ public class MintWindow : WindowBase
             DescriptionInputField.text = string.Empty;
 
             string uri = UriInputField.text;
-            UriInputField.text = "";
+            UriInputField.text = string.Empty;
+
+            string animationUri = AnimationInputField.text;
+            AnimationInputField.text = string.Empty;
 
             List<Attribute> attributesCollection = new List<Attribute>();
             string[] attrStr = AttributesInputField.text.Split(',');
@@ -73,7 +76,8 @@ public class MintWindow : WindowBase
                 Image = uri,
                 Description = description,
                 Attributes = attributesCollection.ToArray(),
-                Category = selectedCategory
+                Category = selectedCategory,
+                AnimationUrl = animationUri
             });
 
             NFTWrapper wrapper = new NFTWrapper(NFTWallet.Instance.StratisUnityManager, selectedNft.ContractAddress);

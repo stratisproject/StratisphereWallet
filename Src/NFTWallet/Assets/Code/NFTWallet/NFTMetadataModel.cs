@@ -34,4 +34,7 @@ public class NFTMetadataModel
 
     [JsonProperty("attributes")]
     public Attribute[] Attributes { get; set; } = Array.Empty<Attribute>();
+
+    [JsonProperty("animation_url")]
+    public string AnimationUrl { get; set; }
 }
