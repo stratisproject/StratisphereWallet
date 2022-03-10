@@ -116,7 +116,7 @@ public class MyCollectionWindow : WindowBase
                 {
                     string json = await this.client.GetStringAsync(uri);
                     NFTMetadataModel model = JsonConvert.DeserializeObject<NFTMetadataModel>(json);
-                    imageOrVidUri = model.image;
+                    imageOrVidUri = model.Image;
                 }
                 else
                     imageOrVidUri = uri;

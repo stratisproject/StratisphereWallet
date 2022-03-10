@@ -64,16 +64,16 @@ public class MintWindow : WindowBase
                 if (nameVal.Length != 2)
                     continue;
 
-                attributesCollection.Add(new Attribute() { traitType = nameVal[0], value = nameVal[1]});
+                attributesCollection.Add(new Attribute() { TraitType = nameVal[0], Value = nameVal[1]});
             }
             
             string jsonUri = await MarketplaceIntegration.Instance.UploadMetadataAsync(new NFTMetadataModel()
             {
-                name = selectedNft.NftName,
-                image = uri,
-                description = description,
-                attributes = attributesCollection,
-                category = selectedCategory
+                Name = selectedNft.NftName,
+                Image = uri,
+                Description = description,
+                Attributes = attributesCollection.ToArray(),
+                Category = selectedCategory
             });
 
             NFTWrapper wrapper = new NFTWrapper(NFTWallet.Instance.StratisUnityManager, selectedNft.ContractAddress);

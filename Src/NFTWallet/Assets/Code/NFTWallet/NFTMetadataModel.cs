@@ -1,18 +1,37 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 // URI metadata model
 public class Attribute
 {
-    public string traitType { get; set; }
-    public string value { get; set; }
+    [JsonProperty("trait_type")]
+    public string TraitType { get; set; }
+
+    [JsonProperty("value")]
+    public string Value { get; set; }
+
+    [JsonProperty("display_type")]
+    public string DisplayType { get; set; }
 }
 
 public class NFTMetadataModel
 {
-    public string description { get; set; }
-    public string externalUrl { get; set; }
-    public string image { get; set; }
-    public string name { get; set; }
-    public List<Attribute> attributes { get; set; }
-    public string category { get; set; }
+    [JsonProperty("name")]
+    public string Name { get; set; }
+
+    [JsonProperty("category")]
+    public string Category { get; set; }
+
+    [JsonProperty("image")]
+    public string Image { get; set; }
+
+    [JsonProperty("description")]
+    public string Description { get; set; }
+
+    [JsonProperty("external_url")]
+    public string ExternalUrl { get; set; }
+
+    [JsonProperty("attributes")]
+    public Attribute[] Attributes { get; set; } = Array.Empty<Attribute>();
 }
