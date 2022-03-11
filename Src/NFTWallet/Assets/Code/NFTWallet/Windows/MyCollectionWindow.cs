@@ -82,8 +82,7 @@ public class MyCollectionWindow : WindowBase
                 string uri = await wrapper.TokenURIAsync((UInt256)currentId);
                 cItem.NFTUri = uri;
 
-                cItem.TitleText.text = nftName;
-                cItem.DescriptionText.text = string.Format("ID: {0}", currentId);
+                cItem.DescriptionText.text = string.Format("{0}  ({1})", nftName, currentId);
 
                 string sellUri = MarketplaceIntegration.Instance.GetSellURI(contractAddr, currentId);
 
@@ -118,13 +117,13 @@ public class MyCollectionWindow : WindowBase
                 if (uri.EndsWith(".json"))
                 {
                     string json = await this.client.GetStringAsync(uri);
-
                     var settings = new JsonSerializerSettings();
                     settings.DateFormatString = "YYYY-MM-DD";
                     settings.ContractResolver = new CustomMetadataResolver();
-
                     NFTMetadataModel model = JsonConvert.DeserializeObject<NFTMetadataModel>(json, settings);
+
                     imageUri = model.Image;
+                    notLoaded[i].TitleText.text = model.Name;
 
                     if (!string.IsNullOrEmpty(model.AnimationUrl))
                     {

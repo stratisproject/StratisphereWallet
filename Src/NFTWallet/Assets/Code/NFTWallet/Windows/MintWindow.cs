@@ -13,7 +13,7 @@ public class MintWindow : WindowBase
 
     public Button MintButton, TrackButton, CopySelectedContractButton, UntrackAllButton;
 
-    public InputField MintToAddrInputField, UriInputField, DescriptionInputField, AttributesInputField, TrackContractInputField, AnimationInputField;
+    public InputField MintToAddrInputField, UriInputField, DescriptionInputField, AttributesInputField, TrackContractInputField, AnimationInputField, NameInputField;
 
     private List<DeployedNFTModel> nftsForDeployment;
 
@@ -42,6 +42,12 @@ public class MintWindow : WindowBase
 
         MintButton.onClick.AddListener(async delegate
         {
+            string name = NameInputField.text;
+            NameInputField.text = string.Empty;
+
+            if (string.IsNullOrEmpty(name))
+                name = selectedNft.NftName;
+
             string mintToAddr = MintToAddrInputField.text;
 
             string description = DescriptionInputField.text;
@@ -72,7 +78,7 @@ public class MintWindow : WindowBase
             
             string jsonUri = await MarketplaceIntegration.Instance.UploadMetadataAsync(new NFTMetadataModel()
             {
-                Name = selectedNft.NftName,
+                Name = name,
                 Image = uri,
                 Description = description,
                 Attributes = attributesCollection.ToArray(),
