@@ -74,8 +74,10 @@ public class NFTWallet : MonoBehaviour
 
         try
         {
+            Wordlist wordlist = Wordlist.AutoDetect(mnemonic);
+
             this.StratisUnityManager = new StratisUnityManager(new Unity3dClient(ApiUrl), Network,
-                new Mnemonic(mnemonic, Wordlist.English), passphrase);
+                new Mnemonic(mnemonic, wordlist), passphrase);
             
             await this.StratisUnityManager.GetBalanceAsync();
         }

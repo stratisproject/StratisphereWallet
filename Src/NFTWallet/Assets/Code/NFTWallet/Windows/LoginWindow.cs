@@ -14,7 +14,7 @@ public class LoginWindow : WindowBase
 
     public Text MnemonicInputFieldPlaceholderText;
 
-    public Dropdown NetworkDropDown;
+    public Dropdown NetworkDropDown, LanguageSelectDropdown;
     
     private const string MnemonicKey = "MnemonicST";
 
@@ -23,6 +23,8 @@ public class LoginWindow : WindowBase
     private List<TargetNetwork> targetNetworks = new List<TargetNetwork>();
 
     private TargetNetwork selectedNetwork;
+
+    private Wordlist selectedWordlist = Wordlist.English;
 
     private readonly List<Vector2> SupportedResolutions = new List<Vector2>()
     {
@@ -63,13 +65,17 @@ public class LoginWindow : WindowBase
         }
 
         SetResolutionFromIndex();
+
+        LanguageSelectDropdown.ClearOptions();
+        List<string> languages = Enum.GetValues(typeof(WorldistLanguage)).Cast<WorldistLanguage>().Select(x => x.ToString()).ToList();
+        LanguageSelectDropdown.AddOptions(languages);
     }
 
     async void Awake()
     {
         this.GenerateNewMnemonicButton.onClick.AddListener(delegate
         {
-            Mnemonic mnemonic = new Mnemonic(Wordlist.English, WordCount.Twelve);
+            Mnemonic mnemonic = new Mnemonic(selectedWordlist, WordCount.Twelve);
             this.MnemonicInputField.text = mnemonic.ToString();
         });
 
@@ -96,6 +102,11 @@ public class LoginWindow : WindowBase
             selectedNetwork = targetNetworks[optionNumber];
         });
 
+        LanguageSelectDropdown.onValueChanged.AddListener(delegate (int optionNumber)
+        {
+            selectedWordlist = MnemonicLanguages.GetWordlistByLanguage((WorldistLanguage)optionNumber);
+        });
+
         this.LogInButton.onClick.AddListener(async delegate
         {
             bool presavedMnemonicExists = PlayerPrefs.HasKey(MnemonicKey);
@@ -115,7 +126,8 @@ public class LoginWindow : WindowBase
             // Validate mnemonic
             try
             {
-                new Mnemonic(mnemonic, Wordlist.English);
+                Wordlist wordlist = Wordlist.AutoDetect(mnemonic);
+                new Mnemonic(mnemonic, wordlist);
             }
             catch (Exception e)
             {
