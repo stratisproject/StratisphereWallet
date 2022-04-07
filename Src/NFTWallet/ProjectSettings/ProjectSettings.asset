@@ -70,11 +70,11 @@ PlayerSettings:
   androidRenderOutsideSafeArea: 1
   androidUseSwappy: 1
   androidBlitType: 0
-  androidResizableWindow: 1
-  androidDefaultWindowWidth: 1080
-  androidDefaultWindowHeight: 2400
-  androidMinimumWindowWidth: 540
-  androidMinimumWindowHeight: 1200
+  androidResizableWindow: 0
+  androidDefaultWindowWidth: 1600
+  androidDefaultWindowHeight: 900
+  androidMinimumWindowWidth: 1600
+  androidMinimumWindowHeight: 900
   androidFullscreenMode: 3
   defaultIsNativeResolution: 1
   macRetinaSupport: 1
@@ -136,7 +136,7 @@ PlayerSettings:
     16:10: 0
     16:9: 1
     Others: 0
-  bundleVersion: 1.1
+  bundleVersion: 1.2
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -151,7 +151,7 @@ PlayerSettings:
   D3DHDRBitDepth: 0
   m_ColorGamuts: 00000000
   targetPixelDensity: 100
-  resolutionScalingMode: 1
+  resolutionScalingMode: 0
   androidSupportedAspectRatio: 1
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
