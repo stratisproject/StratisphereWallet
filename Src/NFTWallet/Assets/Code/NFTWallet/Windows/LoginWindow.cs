@@ -15,7 +15,7 @@ public class LoginWindow : WindowBase
     public Text MnemonicInputFieldPlaceholderText;
 
     public Dropdown NetworkDropDown, LanguageSelectDropdown;
-    
+
     private const string MnemonicKey = "MnemonicST";
 
     private const string ResolutionKey = "ResolutionST";
@@ -29,7 +29,7 @@ public class LoginWindow : WindowBase
     private readonly List<Vector2> SupportedResolutions = new List<Vector2>()
     {
         new Vector2(960 ,540),
-        new Vector2(1024, 576), 
+        new Vector2(1024, 576),
         new Vector2(1280, 720),
         new Vector2(1366, 768),
         new Vector2(1600, 900),
@@ -93,7 +93,7 @@ public class LoginWindow : WindowBase
             if (currentResolutionIndex > 0)
             {
                 currentResolutionIndex--;
-                SetResolutionFromIndex();                
+                SetResolutionFromIndex();
             }
         });
 
@@ -122,7 +122,7 @@ public class LoginWindow : WindowBase
             }
 
             string mnemonic = mnemonicEntered ? MnemonicInputField.text : PlayerPrefs.GetString(MnemonicKey);
-            
+
             // Validate mnemonic
             try
             {
@@ -152,7 +152,7 @@ public class LoginWindow : WindowBase
 
             await NFTWallet.Instance.AddKnownContractsIfMissingAsync();
 
-            MnemonicInputField.text = string.Empty;            
+            MnemonicInputField.text = string.Empty;
         });
 
         RemovePlayerPrefsButton.onClick.AddListener(delegate

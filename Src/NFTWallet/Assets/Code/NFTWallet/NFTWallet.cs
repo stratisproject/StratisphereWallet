@@ -35,7 +35,7 @@ public class NFTWallet : MonoBehaviour
 
     public GameObject[] MobileSpecific;
     public GameObject[] StandaloneSpecific;
-    
+
     private string WatchedNFTsKey => CurrentNetwork == TargetNetwork.CirrusMain ? "watchedNFTs_main" : "watchedNFTs_test";
 
     private TargetNetwork currentNetwork;
@@ -59,7 +59,7 @@ public class NFTWallet : MonoBehaviour
         foreach (GameObject o in StandaloneSpecific)
             o.SetActive(enableStandalone);
     }
-    
+
     /// <returns><c>true</c> if success.</returns>
     public async UniTask<bool> InitializeAsync(string mnemonic, TargetNetwork initNetwork, string passphrase = null)
     {
@@ -78,7 +78,7 @@ public class NFTWallet : MonoBehaviour
 
             this.StratisUnityManager = new StratisUnityManager(new Unity3dClient(ApiUrl), Network,
                 new Mnemonic(mnemonic, wordlist), passphrase);
-            
+
             await this.StratisUnityManager.GetBalanceAsync();
         }
         catch (SocketException e)
@@ -162,7 +162,7 @@ public class NFTWallet : MonoBehaviour
             Symbol = symbol,
             OwnerAddress = ownerAddress
         });
-        
+
         this.PersistKnownNfts(knownNfts);
     }
 
@@ -188,6 +188,6 @@ public class NFTWallet : MonoBehaviour
 
 public enum TargetNetwork
 {
-    CirrusTest = 0, 
+    CirrusTest = 0,
     CirrusMain = 1
 }

@@ -6,13 +6,17 @@ public class TargetFPS : MonoBehaviour
 
     void Awake()
     {
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = TargetFramerate;
+        #if !UNITY_ANDROID && !UNITY_IPHONE
+                QualitySettings.vSyncCount = 0;
+                Application.targetFrameRate = TargetFramerate;
+        #endif
     }
 
     void Update()
     {
-        if (Application.targetFrameRate != TargetFramerate)
-            Application.targetFrameRate = TargetFramerate;
+        #if !UNITY_ANDROID && !UNITY_IPHONE
+                if (Application.targetFrameRate != TargetFramerate)
+                    Application.targetFrameRate = TargetFramerate;
+        #endif
     }
 }
