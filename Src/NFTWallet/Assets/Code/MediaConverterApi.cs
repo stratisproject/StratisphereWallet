@@ -77,23 +77,20 @@ namespace MediaConverterApi
                     var url_ = urlBuilder_.ToString();
                     request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
 
-                    using (var content = new System.Net.Http.MultipartFormDataContent())
+                    var content = new System.Net.Http.MultipartFormDataContent();
+
+                    var existingFiles = filesPath
+                        .Where(filesPath => System.IO.File.Exists(filesPath))
+                        .ToList();
+
+                    foreach (var file in existingFiles)
                     {
-                        var existingFiles = filesPath
-                            .Where(filesPath => System.IO.File.Exists(filesPath))
-                            .ToList();
+                        var stream = System.IO.File.OpenRead(file);
+                        var fileName = System.IO.Path.GetFileName(file);
+                        content.Add(new System.Net.Http.StreamContent(stream), fileName, fileName);
+                    }
 
-                        foreach (var file in existingFiles)
-                        {
-                            using (var stream = System.IO.File.OpenRead(file))
-                            {
-                                var fileName = System.IO.Path.GetFileName(file);
-                                content.Add(new System.Net.Http.StreamContent(stream), fileName, fileName);
-                            }
-                        }
-
-                        request_.Content = content;
-                    };
+                    request_.Content = content;
 
                     PrepareRequest(client_, request_, url_);
 
@@ -178,7 +175,7 @@ namespace MediaConverterApi
                     {
                         Links = links
                     };
-                    request_.Content = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value));
+                    request_.Content = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(body, _settings.Value), System.Text.Encoding.UTF8, "application/json");
 
                     PrepareRequest(client_, request_, url_);
 

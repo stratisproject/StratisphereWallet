@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -52,7 +53,7 @@ public class MediaConverterManager
             if (result != null && result.Progress == MediaConverterApi.ConversionResultModel.ConversionProgress.COMPLETE)
             {
                 return items
-                    .Select(path => result.Links.TryGetValue(path, out var value) ? value : "")
+                    .Select(path => result.Links.TryGetValue(Path.GetFileName(path), out var value) ? value : "")
                     .ToList();
             }
 
