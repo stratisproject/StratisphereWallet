@@ -55,16 +55,18 @@ public class LoginWindow : WindowBase
         List<string> options = targetNetworks.Select(x => x.ToString()).ToList();
         NetworkDropDown.AddOptions(options);
 
-        if (PlayerPrefs.HasKey(ResolutionKey))
-        {
-            currentResolutionIndex = PlayerPrefs.GetInt(ResolutionKey);
-        }
-        else
-        {
-            currentResolutionIndex = 4;
-        }
+        #if !UNITY_ANDROID && !UNITY_IPHONE
+                if (PlayerPrefs.HasKey(ResolutionKey))
+                {
+                    currentResolutionIndex = PlayerPrefs.GetInt(ResolutionKey);
+                }
+                else
+                {
+                    currentResolutionIndex = 4;
+                }
 
-        SetResolutionFromIndex();
+                SetResolutionFromIndex();
+        #endif
 
         LanguageSelectDropdown.ClearOptions();
         List<string> languages = Enum.GetValues(typeof(WorldistLanguage)).Cast<WorldistLanguage>().Select(x => x.ToString()).ToList();
