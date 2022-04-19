@@ -56,7 +56,7 @@ public class LoginWindow : WindowBase
         NetworkDropDown.AddOptions(options);
 
         #if !UNITY_ANDROID && !UNITY_IPHONE
-                if (PlayerPrefs.HasKey(ResolutionKey))
+                if (PlayerPrefs.HasKey(ResolutionKey) && PlayerPrefs.GetInt(ResolutionKey) >= 0)
                 {
                     currentResolutionIndex = PlayerPrefs.GetInt(ResolutionKey);
                 }
