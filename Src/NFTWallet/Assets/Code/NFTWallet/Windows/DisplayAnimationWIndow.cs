@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine.UI;
 using UnityEngine.Video;
@@ -18,16 +19,23 @@ public class DisplayAnimationWIndow : WindowBase
 
     public async UniTask ShowPopupAsync(string resourceUri, string info)
     {
-        //if (!resourceUri.EndsWith(".mp4"))
-        //{
-        //    InfoText.text = "UNSUPPORTED MEDIA TYPE";
-        //    await this.ShowAsync(false);
-        //    return;
-        //}
+        string mp4AnimationUri = resourceUri;
+
+        if (!resourceUri.EndsWith(".mp4"))
+        {
+            InfoText.text = "Converting animation to mp4...";
+            
+            IDictionary<string, string> result = await MediaConverterManager.Instance.ConvertLinksAsync(new List<string>() {resourceUri});
+
+            if (!result.TryGetValue(resourceUri, out mp4AnimationUri))
+            {
+                InfoText.text = "Conversion failed.";
+                return;
+            }
+        }
 
         Image.gameObject.SetActive(true);
-        Player.url = resourceUri;
-        Player.isLooping = true;
+        Player.url = mp4AnimationUri;
         InfoText.text = info;
 
         await this.ShowAsync(false);
