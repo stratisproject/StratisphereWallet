@@ -26,21 +26,17 @@ public class DisplayAnimationWIndow : WindowBase
         await this.ShowAsync(false);
 
         InfoText.text = string.Empty;
+        
+        InfoText.text = "Downloading and converting animation to webm...";
+        
+        IDictionary<string, string> result = await MediaConverterManager.Instance.ConvertLinksAsync(new List<string>() {resourceUri});
 
-        if (!resourceUri.EndsWith(".mp4"))
+        if (!result.TryGetValue(resourceUri, out convertedAnimationUri))
         {
-            InfoText.text = "Downloading and converting animation to webm...";
-            
-            IDictionary<string, string> result = await MediaConverterManager.Instance.ConvertLinksAsync(new List<string>() {resourceUri});
-
-            if (!result.TryGetValue(resourceUri, out convertedAnimationUri))
-            {
-                InfoText.text = "Conversion failed.";
-                return;
-            }
+            InfoText.text = "Conversion failed.";
+            return;
         }
-
-       
+        
         Player.source = VideoSource.Url;
         Player.url = convertedAnimationUri;
         Player.Prepare();
