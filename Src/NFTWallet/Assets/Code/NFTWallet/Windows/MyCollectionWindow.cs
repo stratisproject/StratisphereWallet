@@ -7,6 +7,7 @@ using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Stratis.SmartContracts;
 using Unity3dApi;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -100,6 +101,8 @@ public class MyCollectionWindow : WindowBase
 
         List<UniTask<Texture2D>> loadTasks = new List<UniTask<Texture2D>>();
 
+        List<string> animationsToConvert = new List<string>();
+
         for (int i = 0; i < notLoaded.Count; i++)
         {
             this.StatusText.text = "loading textures " + (i + 1).ToString() + " / " + notLoaded.Count;
@@ -127,6 +130,7 @@ public class MyCollectionWindow : WindowBase
                     {
                         animationAvailable = true;
                         animationUrl = model.AnimationUrl;
+                        animationsToConvert.Add(model.AnimationUrl);
                     }
                 }
                 else
@@ -161,6 +165,9 @@ public class MyCollectionWindow : WindowBase
                 UnityEngine.Debug.Log(e.ToString());
             }
         }
+
+        // Convert animations. Fire and forget
+        PreconvertAnimations(animationsToConvert);
 
         this.StatusText.text = "finalizing textures...";
 
@@ -232,5 +239,14 @@ public class MyCollectionWindow : WindowBase
     private async UniTask<Texture2D> GetNullTextureAsync()
     {
         return null;
+    }
+
+    private void PreconvertAnimations(List<string> externalLinks)
+    {
+        Task.Run(async () =>
+        {
+            await Task.Delay(1);
+            await MediaConverterManager.Instance.Client.RequestLinksConversionAsync(externalLinks);
+        });
     }
 }

@@ -50,9 +50,8 @@ public class MediaConverterManager
             {
                 return result.Links;
             }
-
-            Debug.Log("Waiting for animation conversion result...");
-            await Task.Delay(TimeSpan.FromSeconds(3));
+            
+            await Task.Delay(TimeSpan.FromSeconds(2));
         }
     }
 }

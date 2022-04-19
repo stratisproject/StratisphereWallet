@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
@@ -19,26 +20,34 @@ public class DisplayAnimationWIndow : WindowBase
 
     public async UniTask ShowPopupAsync(string resourceUri, string info)
     {
-        string mp4AnimationUri = resourceUri;
+        string convertedAnimationUri = resourceUri;
+        Image.gameObject.SetActive(false);
+
+        await this.ShowAsync(false);
+
+        InfoText.text = string.Empty;
 
         if (!resourceUri.EndsWith(".mp4"))
         {
-            InfoText.text = "Converting animation to mp4...";
+            InfoText.text = "Downloading and converting animation to webm...";
             
             IDictionary<string, string> result = await MediaConverterManager.Instance.ConvertLinksAsync(new List<string>() {resourceUri});
 
-            if (!result.TryGetValue(resourceUri, out mp4AnimationUri))
+            if (!result.TryGetValue(resourceUri, out convertedAnimationUri))
             {
                 InfoText.text = "Conversion failed.";
                 return;
             }
         }
 
-        Image.gameObject.SetActive(true);
-        Player.url = mp4AnimationUri;
+       
+        Player.source = VideoSource.Url;
+        Player.url = convertedAnimationUri;
+        Player.Prepare();
+        Player.Play();
         InfoText.text = info;
-
-        await this.ShowAsync(false);
+        Image.gameObject.SetActive(true);
+        Debug.Log(string.Format("Converted {0} to {1}", resourceUri, convertedAnimationUri));
     }
 
     public override UniTask HideAsync()
