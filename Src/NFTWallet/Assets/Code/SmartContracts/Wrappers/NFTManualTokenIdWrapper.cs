@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Stratis.SmartContracts;
 using Stratis.SmartContracts.CLR.Serialization;
 using Unity3dApi;

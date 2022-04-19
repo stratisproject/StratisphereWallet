@@ -2,24 +2,20 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using NBitcoin;
-using Stratis.SmartContracts.CLR;
-using Stratis.SmartContracts.CLR.Serialization;
-using Stratis.SmartContracts.Core;
-using Stratis.SmartContracts.RuntimeObserver;
-using Unity3dApi;
 using UnityEngine;
-using Network = NBitcoin.Network;
 
 public class MediaConverterManager
 {
+    public static MediaConverterManager Instance;
+
     public readonly MediaConverterApi.MediaConverterClient Client;
 
     public MediaConverterManager(MediaConverterApi.MediaConverterClient client)
     {
         this.Client = client;
+
+        Instance = this;
     }
 
     /// <summary>
@@ -57,8 +53,8 @@ public class MediaConverterManager
                     .ToList();
             }
 
-            Debug.Log("Waiting for result...");
-            await Task.Delay(TimeSpan.FromSeconds(5));
+            Debug.Log("Waiting for animation conversion result...");
+            await Task.Delay(TimeSpan.FromSeconds(3));
         }
     }
 }

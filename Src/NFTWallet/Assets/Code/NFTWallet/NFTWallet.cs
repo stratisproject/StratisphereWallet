@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Sockets;
 using Cysharp.Threading.Tasks;
+using MediaConverterApi;
 using NBitcoin;
 using Newtonsoft.Json;
 using Stratis.Sidechains.Networks;
@@ -24,6 +25,8 @@ public class NFTWallet : MonoBehaviour
     public string TestnetApiUrl = "https://api-sfn-test.stratisphere.com/"; //http://localhost:44336/
     public string MainnetApiUrl = "https://api-sfn.stratisphere.com/";
 
+    public string MediaConversionApiUrl = "http://148.251.15.126:7110/";
+
     public string ApiUrl => CurrentNetwork == TargetNetwork.CirrusMain ? MainnetApiUrl : TestnetApiUrl;
 
     public Network Network => network;
@@ -43,6 +46,8 @@ public class NFTWallet : MonoBehaviour
     void Awake()
     {
         Instance = this;
+
+        MediaConverterManager manager = new MediaConverterManager(new MediaConverterClient(MediaConversionApiUrl));
 
         bool enableMobile = false;
         bool enableStandalone = false;
