@@ -3672,7 +3672,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.8924787, y: 0.04445979}
   m_AnchorMax: {x: 0.9313099, y: 0.11677012}
-  m_AnchoredPosition: {x: 0.100097656, y: -2.3618774}
+  m_AnchoredPosition: {x: 0.100097656, y: -2.3620605}
   m_SizeDelta: {x: 0, y: -3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &100273296
@@ -5489,7 +5489,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.047692064, y: 0.889185}
   m_AnchorMax: {x: 0.16138412, y: 0.89900005}
-  m_AnchoredPosition: {x: -0.40563965, y: 124.82347}
+  m_AnchoredPosition: {x: -0.40563965, y: 124.82349}
   m_SizeDelta: {x: -0.8080292, y: -11.578125}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &160322277
@@ -18594,8 +18594,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.046291426, y: 0.04745062}
   m_AnchorMax: {x: 0.94558865, y: 0.92700005}
-  m_AnchoredPosition: {x: -0.66796875, y: 0.6130371}
-  m_SizeDelta: {x: -0.6520004, y: -2.914}
+  m_AnchoredPosition: {x: 39.768005, y: 0.6130371}
+  m_SizeDelta: {x: -861.201, y: -2.914}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &608851350
 MonoBehaviour:
@@ -23839,10 +23839,10 @@ RectTransform:
   m_Father: {fileID: 1863379943}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.9531772, y: 0.91139483}
+  m_AnchorMin: {x: 0.92700005, y: 0.94746035}
   m_AnchorMax: {x: 0.99564564, y: 0.99000007}
-  m_AnchoredPosition: {x: -0.6999512, y: -0.100097656}
-  m_SizeDelta: {x: -0.6756134, y: -0.018600464}
+  m_AnchoredPosition: {x: -0.099975586, y: 0.6199341}
+  m_SizeDelta: {x: -1.8899994, y: -1.4599991}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &808789929
 MonoBehaviour:
@@ -33591,7 +33591,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.047692064, y: 0.89900005}
   m_AnchorMax: {x: 0.43800002, y: 0.9588151}
-  m_AnchoredPosition: {x: 0.055908203, y: 84.61034}
+  m_AnchoredPosition: {x: 0.055908203, y: 84.61035}
   m_SizeDelta: {x: 140.922, y: -56.309998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1168607090
@@ -43707,7 +43707,7 @@ VideoPlayer:
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: _MainTex
   m_RenderMode: 2
-  m_AspectRatio: 2
+  m_AspectRatio: 3
   m_DataSource: 1
   m_PlaybackSpeed: 1
   m_AudioOutputMode: 2
@@ -60881,7 +60881,7 @@ VideoPlayer:
   m_ControlledAudioTrackCount: 1
   m_PlayOnAwake: 1
   m_SkipOnDrop: 1
-  m_Looping: 0
+  m_Looping: 1
   m_WaitForFirstFrame: 1
   m_FrameReadyEventEnabled: 0
   m_VideoShaders: []
