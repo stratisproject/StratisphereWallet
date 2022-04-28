@@ -102,6 +102,8 @@ public class MyCollectionWindow : WindowBase
 
         List<string> animationsToConvert = new List<string>();
 
+        List<NFTMetadataModel> metadataModels = new List<NFTMetadataModel>();
+
         for (int i = 0; i < notLoaded.Count; i++)
         {
             this.StatusText.text = "loading textures " + (i + 1).ToString() + " / " + notLoaded.Count;
@@ -121,6 +123,8 @@ public class MyCollectionWindow : WindowBase
                     settings.DateFormatString = "YYYY-MM-DD";
                     settings.ContractResolver = new CustomMetadataResolver();
                     NFTMetadataModel model = JsonConvert.DeserializeObject<NFTMetadataModel>(json, settings);
+
+                    metadataModels.Add(model);
 
                     imageUri = model.Image;
                     notLoaded[i].TitleText.text = model.Name;
@@ -167,6 +171,9 @@ public class MyCollectionWindow : WindowBase
                 UnityEngine.Debug.Log(e.ToString());
             }
         }
+
+        var allModels = JsonConvert.SerializeObject(metadataModels);
+        Debug.Log(allModels);
 
         // Convert animations. Fire and forget
         PreconvertAnimations(animationsToConvert);
