@@ -125,10 +125,13 @@ public class MyCollectionWindow : WindowBase
                     imageUri = model.Image;
                     notLoaded[i].TitleText.text = model.Name;
 
-                    if (!string.IsNullOrEmpty(model.AnimationUrl))
+                    string animationUri = (!string.IsNullOrEmpty(model.AnimationUrl)) ? model.AnimationUrl : 
+                                            (model.Image.EndsWith(".webp") || model.Image.EndsWith(".gif") || model.Image.EndsWith(".mp4")) ? model.Image : null;
+
+                    if (animationUri != null)
                     {
                         animationAvailable = true;
-                        animationUrl = model.AnimationUrl;
+                        animationUrl = animationUri;
                         animationsToConvert.Add(model.AnimationUrl);
                     }
                 }

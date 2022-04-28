@@ -162,7 +162,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.05530794, y: 0.032185186}
   m_AnchorMax: {x: 0.9480001, y: 0.42000002}
-  m_AnchoredPosition: {x: 9.450623, y: -2.0424805}
+  m_AnchoredPosition: {x: 9.450684, y: -2.0424805}
   m_SizeDelta: {x: 15.204848, y: 1.3476849}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &878433
@@ -18594,7 +18594,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.046291426, y: 0.04745062}
   m_AnchorMax: {x: 0.94558865, y: 0.92700005}
-  m_AnchoredPosition: {x: 39.768005, y: 0.6130371}
+  m_AnchoredPosition: {x: 39.767944, y: 0.6130371}
   m_SizeDelta: {x: -861.201, y: -2.914}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &608851350
@@ -43715,7 +43715,7 @@ VideoPlayer:
   - {fileID: 0}
   m_DirectAudioVolumes:
   - 1
-  m_Url: https://raw.githubusercontent.com/noescape00/TestImgs/main/animation/ww1.webm
+  m_Url: 
   m_EnabledAudioTracks: 01
   m_DirectAudioMutes: 00
   m_ControlledAudioTrackCount: 1
@@ -61138,7 +61138,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.05530794, y: 0.032185186}
   m_AnchorMax: {x: 0.9480001, y: 0.42000002}
-  m_AnchoredPosition: {x: 6.880615, y: 387.00397}
+  m_AnchoredPosition: {x: 6.8807373, y: 387.00397}
   m_SizeDelta: {x: 15.204726, y: 142.99768}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2134121195
