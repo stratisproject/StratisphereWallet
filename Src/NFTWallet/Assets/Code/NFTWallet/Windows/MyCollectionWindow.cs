@@ -100,8 +100,30 @@ public class MyCollectionWindow : WindowBase
 
         List<UniTask<Texture2D>> loadTasks = new List<UniTask<Texture2D>>();
 
-        List<string> animationsToConvert = new List<string>();
+        // Preload json
+        Dictionary<string, string> jsonUriToJson = new Dictionary<string, string>();
+        object locker = new object();
+        List<Task> tasks = new List<Task>();
 
+        foreach (string uri in notLoaded.Select(x => x.NFTUri).Where(x => x.EndsWith(".json")))
+        {
+            string u = uri;
+            var task = Task.Run(async () =>
+            {
+                string json = await this.client.GetStringAsync(u);
+
+                lock (locker)
+                {
+                    jsonUriToJson.Add(u, json);
+                }
+            });
+
+            tasks.Add(task);
+        }
+
+        await Task.WhenAll(tasks);
+
+        List<string> animationsToConvert = new List<string>();
         List<NFTMetadataModel> metadataModels = new List<NFTMetadataModel>();
 
         for (int i = 0; i < notLoaded.Count; i++)
@@ -118,7 +140,7 @@ public class MyCollectionWindow : WindowBase
 
                 if (uri.EndsWith(".json"))
                 {
-                    string json = await this.client.GetStringAsync(uri);
+                    string json = jsonUriToJson[uri];
                     var settings = new JsonSerializerSettings();
                     settings.DateFormatString = "YYYY-MM-DD";
                     settings.ContractResolver = new CustomMetadataResolver();
