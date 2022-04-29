@@ -162,7 +162,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.05530794, y: 0.032185186}
   m_AnchorMax: {x: 0.9480001, y: 0.42000002}
-  m_AnchoredPosition: {x: 9.450684, y: -2.0424805}
+  m_AnchoredPosition: {x: 9.450623, y: -2.0424805}
   m_SizeDelta: {x: 15.204848, y: 1.3476849}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &878433
@@ -9325,9 +9325,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e0324694c5881744b18346bf5fa9759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultNetwork: 0
+  DefaultNetwork: 1
   TestnetApiUrl: https://api-node1-test.stratisplatform.com/
-  MainnetApiUrl: https://api-node1.stratisplatform.com/
+  MainnetApiUrl: https://unity-api-ha-test.stratisplatform.com/
   MediaConversionApiUrl: http://148.251.15.126:7110/
   MobileSpecific:
   - {fileID: 574403829}
@@ -56599,7 +56599,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.031393353, y: 0.09264216}
   m_AnchorMax: {x: 0.9026556, y: 1}
-  m_AnchoredPosition: {x: 0.0041503906, y: -1.6669998}
+  m_AnchoredPosition: {x: 0.0041503906, y: -1.6670003}
   m_SizeDelta: {x: 75.913, y: 1.414}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1962078038
