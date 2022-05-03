@@ -28,13 +28,14 @@ public class NFTWalletWindowManager : MonoBehaviour
     {
         Instance = this;
 
-        this.allWindows = new List<WindowBase>() { LoginWindow, PopupWindow, WalletWindow, MyCollectionWindow, CreateNftWindow, 
+        this.allWindows = new List<WindowBase>() { LoginWindow, PopupWindow, WalletWindow, MyCollectionWindow, CreateNftWindow,
             SendWindow, MintWindow, BurnWindow, WaitTransactionWindow, MarketplaceWindow, QRWindow, AnimationWindow };
     }
 
     async void Start()
     {
         await this.LoginWindow.ShowAsync();
+        await this.LoginWindow.LogInIfMnemonicSavedAsync();
     }
 
     public async UniTask HideAllWindowsAsync()

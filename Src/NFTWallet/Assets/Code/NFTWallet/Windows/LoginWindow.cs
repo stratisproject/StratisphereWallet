@@ -40,7 +40,7 @@ public class LoginWindow : WindowBase
 
     private int currentResolutionIndex = -1;
 
-    void Start()
+    async void Start()
     {
         targetNetworks.Add(NFTWallet.Instance.DefaultNetwork);
 
@@ -111,50 +111,7 @@ public class LoginWindow : WindowBase
 
         this.LogInButton.onClick.AddListener(async delegate
         {
-            bool presavedMnemonicExists = PlayerPrefs.HasKey(MnemonicKey);
-            bool mnemonicEntered = !string.IsNullOrEmpty(MnemonicInputField.text);
-
-            PlayerPrefs.SetInt(ResolutionKey, currentResolutionIndex);
-
-            if (!presavedMnemonicExists && !mnemonicEntered)
-            {
-                // No mnemonic entered
-                await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync("You need to enter or generate mnemonic!", "ERROR");
-                return;
-            }
-
-            string mnemonic = mnemonicEntered ? MnemonicInputField.text : PlayerPrefs.GetString(MnemonicKey);
-
-            // Validate mnemonic
-            try
-            {
-                Wordlist wordlist = Wordlist.AutoDetect(mnemonic);
-                new Mnemonic(mnemonic, wordlist);
-            }
-            catch (Exception e)
-            {
-                await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(e.Message, "INCORRECT MNEMONIC");
-                return;
-            }
-
-            PlayerPrefs.SetString(MnemonicKey, mnemonic);
-
-            string passphrase = this.PassphraseInputField.text;
-            if (string.IsNullOrEmpty(passphrase))
-                passphrase = null;
-
-            this.PassphraseInputField.text = string.Empty;
-
-            bool success = await NFTWallet.Instance.InitializeAsync(mnemonic, selectedNetwork, passphrase);
-
-            if (success)
-                await NFTWalletWindowManager.Instance.WalletWindow.ShowAsync();
-            else
-                await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync("Can't initialize NFT wallet. Probably can't reach API server.", "INITIALIZATION ERROR");
-
-            await NFTWallet.Instance.AddKnownContractsIfMissingAsync();
-
-            MnemonicInputField.text = string.Empty;
+            await this.logInAsync();
         });
 
         RemovePlayerPrefsButton.onClick.AddListener(delegate
@@ -181,5 +138,64 @@ public class LoginWindow : WindowBase
     private void SetResolutionFromIndex()
     {
         Screen.SetResolution((int)SupportedResolutions[currentResolutionIndex].x, (int)SupportedResolutions[currentResolutionIndex].y, false);
+    }
+
+    public bool IsMnemonicSaved()
+    {
+        return PlayerPrefs.HasKey(MnemonicKey);
+    }
+
+    public async UniTask LogInIfMnemonicSavedAsync()
+    {
+        if (IsMnemonicSaved())
+            await this.logInAsync();
+    }
+
+    private async UniTask logInAsync()
+    {
+        bool presavedMnemonicExists = IsMnemonicSaved();
+        bool mnemonicEntered = !string.IsNullOrEmpty(MnemonicInputField.text);
+
+        PlayerPrefs.SetInt(ResolutionKey, currentResolutionIndex);
+
+        if (!presavedMnemonicExists && !mnemonicEntered)
+        {
+            // No mnemonic entered
+            await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync("You need to enter or generate mnemonic!", "ERROR");
+            return;
+        }
+
+        string mnemonic = mnemonicEntered ? MnemonicInputField.text : PlayerPrefs.GetString(MnemonicKey);
+
+        // Validate mnemonic
+        try
+        {
+            Wordlist wordlist = Wordlist.AutoDetect(mnemonic);
+            new Mnemonic(mnemonic, wordlist);
+        }
+        catch (Exception e)
+        {
+            await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(e.Message, "INCORRECT MNEMONIC");
+            return;
+        }
+
+        PlayerPrefs.SetString(MnemonicKey, mnemonic);
+
+        string passphrase = this.PassphraseInputField.text;
+        if (string.IsNullOrEmpty(passphrase))
+            passphrase = null;
+
+        this.PassphraseInputField.text = string.Empty;
+
+        bool success = await NFTWallet.Instance.InitializeAsync(mnemonic, selectedNetwork, passphrase);
+
+        if (success)
+            await NFTWalletWindowManager.Instance.WalletWindow.ShowAsync();
+        else
+            await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync("Can't initialize NFT wallet. Probably can't reach API server.", "INITIALIZATION ERROR");
+
+        await NFTWallet.Instance.AddKnownContractsIfMissingAsync();
+
+        MnemonicInputField.text = string.Empty;
     }
 }
