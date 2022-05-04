@@ -40,40 +40,7 @@ public class LoginWindow : WindowBase
 
     private int currentResolutionIndex = -1;
 
-    async void Start()
-    {
-        targetNetworks.Add(NFTWallet.Instance.DefaultNetwork);
-
-        if (NFTWallet.Instance.DefaultNetwork == TargetNetwork.CirrusMain)
-            targetNetworks.Add(TargetNetwork.CirrusTest);
-        else
-            targetNetworks.Add(TargetNetwork.CirrusMain);
-
-        selectedNetwork = NFTWallet.Instance.DefaultNetwork;
-
-        NetworkDropDown.ClearOptions();
-        List<string> options = targetNetworks.Select(x => x.ToString()).ToList();
-        NetworkDropDown.AddOptions(options);
-
-        #if !UNITY_ANDROID && !UNITY_IPHONE
-                if (PlayerPrefs.HasKey(ResolutionKey) && PlayerPrefs.GetInt(ResolutionKey) >= 0)
-                {
-                    currentResolutionIndex = PlayerPrefs.GetInt(ResolutionKey);
-                }
-                else
-                {
-                    currentResolutionIndex = 4;
-                }
-
-                SetResolutionFromIndex();
-        #endif
-
-        LanguageSelectDropdown.ClearOptions();
-        List<string> languages = Enum.GetValues(typeof(WorldistLanguage)).Cast<WorldistLanguage>().Select(x => x.ToString()).ToList();
-        LanguageSelectDropdown.AddOptions(languages);
-    }
-
-    async void Awake()
+    public async UniTask InitializeAsync()
     {
         this.GenerateNewMnemonicButton.onClick.AddListener(delegate
         {
@@ -118,6 +85,36 @@ public class LoginWindow : WindowBase
         {
             PlayerPrefs.DeleteAll();
         });
+
+        targetNetworks.Add(NFTWallet.Instance.DefaultNetwork);
+
+        if (NFTWallet.Instance.DefaultNetwork == TargetNetwork.CirrusMain)
+            targetNetworks.Add(TargetNetwork.CirrusTest);
+        else
+            targetNetworks.Add(TargetNetwork.CirrusMain);
+
+        selectedNetwork = NFTWallet.Instance.DefaultNetwork;
+
+        NetworkDropDown.ClearOptions();
+        List<string> options = targetNetworks.Select(x => x.ToString()).ToList();
+        NetworkDropDown.AddOptions(options);
+
+        #if !UNITY_ANDROID && !UNITY_IPHONE
+                if (PlayerPrefs.HasKey(ResolutionKey) && PlayerPrefs.GetInt(ResolutionKey) >= 0)
+                {
+                    currentResolutionIndex = PlayerPrefs.GetInt(ResolutionKey);
+                }
+                else
+                {
+                    currentResolutionIndex = 4;
+                }
+
+                SetResolutionFromIndex();
+        #endif
+
+        LanguageSelectDropdown.ClearOptions();
+        List<string> languages = Enum.GetValues(typeof(WorldistLanguage)).Cast<WorldistLanguage>().Select(x => x.ToString()).ToList();
+        LanguageSelectDropdown.AddOptions(languages);
     }
 
     public override UniTask ShowAsync(bool hideOtherWindows = true)

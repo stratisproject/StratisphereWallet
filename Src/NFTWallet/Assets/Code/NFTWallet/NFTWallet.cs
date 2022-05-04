@@ -16,6 +16,8 @@ public class NFTWallet : MonoBehaviour
 {
     public static NFTWallet Instance;
 
+    public bool AutoLoginEnabled = true;
+
     public TargetNetwork DefaultNetwork = TargetNetwork.CirrusMain;
 
     public TargetNetwork CurrentNetwork => currentNetwork;

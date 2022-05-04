@@ -34,8 +34,12 @@ public class NFTWalletWindowManager : MonoBehaviour
 
     async void Start()
     {
-        await this.LoginWindow.ShowAsync();
-        await this.LoginWindow.LogInIfMnemonicSavedAsync();
+        await this.LoginWindow.InitializeAsync();
+
+        if (this.LoginWindow.IsMnemonicSaved() && NFTWallet.Instance.AutoLoginEnabled)
+            await this.LoginWindow.LogInIfMnemonicSavedAsync();
+        else
+            await this.LoginWindow.ShowAsync();
     }
 
     public async UniTask HideAllWindowsAsync()
