@@ -9328,7 +9328,7 @@ MonoBehaviour:
   AutoLoginEnabled: 1
   DefaultNetwork: 1
   TestnetApiUrl: https://api-node1-test.stratisplatform.com/
-  MainnetApiUrl: https://unity-api-ha-test.stratisplatform.com/
+  MainnetApiUrl: https://unity-api-ha.stratisplatform.com/
   MediaConversionApiUrl: http://148.251.15.126:7110/
   MobileSpecific:
   - {fileID: 574403829}
