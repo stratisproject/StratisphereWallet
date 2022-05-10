@@ -46,7 +46,7 @@ public class MyCollectionWindow : WindowBase
 
         List<DeployedNFTModel> knownNfts = NFTWallet.Instance.LoadKnownNfts();
         OwnedNFTsModel myNfts = await NFTWallet.Instance.StratisUnityManager.Client.GetOwnedNftsAsync(NFTWallet.Instance.StratisUnityManager.GetAddress().ToString());
-        
+
         foreach (KeyValuePair<string, ICollection<long>> contrAddrToOwnedIds in myNfts.OwnedIDsByContractAddress)
         {
             string contractAddr = contrAddrToOwnedIds.Key;
@@ -56,7 +56,7 @@ public class MyCollectionWindow : WindowBase
             string nftName = (knownNft == null)? string.Empty : knownNft.NftName;
 
             NFTWrapper wrapper = new NFTWrapper(NFTWallet.Instance.StratisUnityManager, contractAddr);
-            
+
             // Create item for each owned ID or enable already spawned item
             for (int i = 0; i < ownedIds.Count; i++)
             {
@@ -151,7 +151,7 @@ public class MyCollectionWindow : WindowBase
                     imageUri = model.Image;
                     notLoaded[i].TitleText.text = model.Name;
 
-                    string animationUri = (!string.IsNullOrEmpty(model.AnimationUrl)) ? model.AnimationUrl : 
+                    string animationUri = (!string.IsNullOrEmpty(model.AnimationUrl)) ? model.AnimationUrl :
                                             (model.Image.EndsWith(".webp") || model.Image.EndsWith(".gif") || model.Image.EndsWith(".mp4")) ? model.Image : null;
 
                     if (animationUri != null)
@@ -166,17 +166,17 @@ public class MyCollectionWindow : WindowBase
 
                 notLoaded[i].DisplayAnimationButton.gameObject.SetActive(animationAvailable);
 
-                bool image = (imageUri.EndsWith(".png") || imageUri.EndsWith(".jpg"));
-                if (image)
-                {
+                //bool image = (imageUri.EndsWith(".png") || imageUri.EndsWith(".jpg"));
+                //if (image)
+                //{
                     UniTask<Texture2D> loadTask = this.GetRemoteTextureAsync(imageUri);
                     loadTasks.Add(loadTask);
-                }
-                else
-                {
-                    loadTasks.Add(GetNullTextureAsync());
-                }
-                
+                //}
+                //else
+                //{
+                //    loadTasks.Add(GetNullTextureAsync());
+                //}
+
                 if (animationAvailable)
                 {
                     var index = i;
@@ -222,21 +222,21 @@ public class MyCollectionWindow : WindowBase
 
     private async UniTask<Texture2D> GetRemoteTextureAsync(string url)
     {
-        Texture2D texture; 
+        Texture2D texture;
 
         using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(url))
         {
             var asyncOp = www.SendWebRequest();
-            
+
             while (asyncOp.isDone == false)
                 await Task.Delay(1000 / 30);//30 hertz
-            
+
             if (www.result != UnityWebRequest.Result.Success)
             {
                 UnityEngine.Debug.Log($"{www.error}, URL:{www.url}");
                 return null;
             }
-            
+
             texture = DownloadHandlerTexture.GetContent(www);
         }
 
