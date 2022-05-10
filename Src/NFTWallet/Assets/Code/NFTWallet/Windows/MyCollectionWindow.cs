@@ -166,16 +166,16 @@ public class MyCollectionWindow : WindowBase
 
                 notLoaded[i].DisplayAnimationButton.gameObject.SetActive(animationAvailable);
 
-                //bool image = (imageUri.EndsWith(".png") || imageUri.EndsWith(".jpg"));
-                //if (image)
-                //{
+                bool image = !(imageUri.EndsWith(".gif") || imageUri.EndsWith(".mov") || imageUri.EndsWith(".webm") || imageUri.EndsWith(".avi"));
+                if (image)
+                {
                     UniTask<Texture2D> loadTask = this.GetRemoteTextureAsync(imageUri);
                     loadTasks.Add(loadTask);
-                //}
-                //else
-                //{
-                //    loadTasks.Add(GetNullTextureAsync());
-                //}
+                }
+                else
+                {
+                    loadTasks.Add(GetNullTextureAsync());
+                }
 
                 if (animationAvailable)
                 {
