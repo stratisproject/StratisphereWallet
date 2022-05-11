@@ -90,10 +90,12 @@ public class NFTWallet : MonoBehaviour
         }
         catch (SocketException e)
         {
+            Debug.LogError(e);
             return false;
         }
         catch (HttpRequestException e)
         {
+            Debug.LogError(e);
             return false;
         }
         catch (Exception e)
@@ -102,6 +104,7 @@ public class NFTWallet : MonoBehaviour
             return false;
         }
 
+        Debug.Log("Initialized");
         return true;
     }
 

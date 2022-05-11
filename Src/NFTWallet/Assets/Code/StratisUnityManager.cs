@@ -64,12 +64,12 @@ public class StratisUnityManager
 
         return balance;
     }
-    
+
     public string SignMessage(string message)
     {
         return this.privateKey.SignMessage(message);
     }
-    
+
     public BitcoinPubKeyAddress GetAddress()
     {
         return this.address;
@@ -80,7 +80,7 @@ public class StratisUnityManager
         Coin[] coins = await this.GetCoinsAsync();
 
         BitcoinPubKeyAddress addrTo = new BitcoinPubKeyAddress(destinationAddress, this.network);
-    
+
         var txBuilder = new TransactionBuilder(this.network);
         Transaction tx = txBuilder
             .AddCoins(coins)
@@ -89,7 +89,7 @@ public class StratisUnityManager
             .SendFees(DefaultFee * coins.Length)
             .SetChange(this.address)
             .BuildTransaction(true);
-    
+
         if (!txBuilder.Verify(tx))
             Debug.LogError("Tx wasn't fully signed!");
 
@@ -179,7 +179,7 @@ public class StratisUnityManager
             .SendFees(totalFee)
             .SetChange(this.address)
             .BuildTransaction(true);
-        
+
         await Client.SendTransactionAsync(new SendTransactionRequest() { Hex = tx.ToHex() });
 
         Debug.Log("Transaction sent.");
