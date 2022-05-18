@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Unity3dApi;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class CreateNFTWindow : WindowBase
@@ -37,6 +38,8 @@ public class CreateNFTWindow : WindowBase
             string resultString = "NFT deployment complete. Success: " + receipt.Success + Environment.NewLine + "NFT contract address: " + receipt.NewContractAddress +
                                   Environment.NewLine  + Environment.NewLine + "NFT contract address that you've just deployed was added to the MINT window." +
                                   Environment.NewLine + "You now can mint NFT in the MINT window.";
+
+            Debug.Log(resultString);
 
             await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(resultString, "NFT DEPLOYMENT");
 

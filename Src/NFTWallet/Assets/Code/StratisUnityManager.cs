@@ -182,8 +182,6 @@ public class StratisUnityManager
 
         string hex = tx.ToHex();
 
-        Debug.Log(hex);
-
         await Client.SendTransactionAsync(new SendTransactionRequest() { Hex = hex });
 
         Debug.Log("Transaction sent.");

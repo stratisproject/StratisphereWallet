@@ -162,7 +162,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.05530794, y: 0.032185186}
   m_AnchorMax: {x: 0.9480001, y: 0.42000002}
-  m_AnchoredPosition: {x: 9.450562, y: -2.0424805}
+  m_AnchoredPosition: {x: 9.4505005, y: -2.0424805}
   m_SizeDelta: {x: 15.204848, y: 1.3476849}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &878433
@@ -2470,7 +2470,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00006403702}
+  m_AnchoredPosition: {x: 0, y: 14.793668}
   m_SizeDelta: {x: 0, y: 1077.751}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &73172092
@@ -9331,7 +9331,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AutoLoginEnabled: 1
   DefaultNetwork: 1
-  TestnetApiUrl: https://api-node1-test.stratisplatform.com/
+  TestnetApiUrl: https://api-node1-test.stratisplatform.com
   MainnetApiUrl: https://unity-api-ha.stratisplatform.com/
   MediaConversionApiUrl: http://148.251.15.126:7110/
   MobileSpecific:
@@ -13379,7 +13379,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.01738628, y: 0.19030003}
   m_AnchorMax: {x: 0.9845456, y: 0.8097}
-  m_AnchoredPosition: {x: 6.3200684, y: -0.42599487}
+  m_AnchoredPosition: {x: 6.320069, y: -0.42599487}
   m_SizeDelta: {x: 245.318, y: 1.29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &438266597
@@ -27986,7 +27986,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.08800001, y: 0.55200005}
   m_AnchorMax: {x: 0.24630795, y: 0.57600003}
-  m_AnchoredPosition: {x: 4.0833282, y: -0.4239807}
+  m_AnchoredPosition: {x: 4.083313, y: -0.4239807}
   m_SizeDelta: {x: 59.6702, y: 4.197323}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &922742863
@@ -31094,7 +31094,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.01738628, y: 0.19030003}
   m_AnchorMax: {x: 0.9845456, y: 0.8097}
-  m_AnchoredPosition: {x: 6.3200684, y: -0.42599487}
+  m_AnchoredPosition: {x: 6.320068, y: -0.42599487}
   m_SizeDelta: {x: 245.318, y: 1.29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1044288521
@@ -33425,7 +33425,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.32761937, y: 0.5073519}
   m_AnchorMax: {x: 0.407, y: 1}
-  m_AnchoredPosition: {x: 0.73101807, y: 1.3300934}
+  m_AnchoredPosition: {x: 0.73101807, y: 1.3300781}
   m_SizeDelta: {x: -0.57699585, y: -2.6601}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1135415244
@@ -39831,8 +39831,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 894859175}
   m_HandleRect: {fileID: 894859174}
   m_Direction: 2
-  m_Value: 0.99999154
-  m_Size: 0.9865786
+  m_Value: 0
+  m_Size: 0.9847514
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -53276,7 +53276,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.10261292, y: 0.87600005}
   m_AnchorMax: {x: 0.22900002, y: 0.9167731}
-  m_AnchoredPosition: {x: -0.47399902, y: -0.087371826}
+  m_AnchoredPosition: {x: -0.47399879, y: -0.087371826}
   m_SizeDelta: {x: 43.905, y: 9.154999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1841232521
@@ -57289,7 +57289,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.031393353, y: 0.09264216}
   m_AnchorMax: {x: 0.9026556, y: 1}
-  m_AnchoredPosition: {x: 0.0041503906, y: -1.6670003}
+  m_AnchoredPosition: {x: 0.0041503906, y: -1.6669998}
   m_SizeDelta: {x: 75.913, y: 1.414}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1962078038
@@ -61939,7 +61939,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.01738628, y: 0.19030003}
   m_AnchorMax: {x: 0.9845456, y: 0.8097}
-  m_AnchoredPosition: {x: 6.3200684, y: -0.42599487}
+  m_AnchoredPosition: {x: 6.3200645, y: -0.42599487}
   m_SizeDelta: {x: 245.318, y: 1.29}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2145830441
