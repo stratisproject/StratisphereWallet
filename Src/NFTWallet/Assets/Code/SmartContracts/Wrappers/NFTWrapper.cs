@@ -10,13 +10,18 @@ using UnityEngine;
 public class NFTWrapper
 {
     /// <summary>Deploys StandartToken contract and returns txid of deployment transaction.</summary>
-    public static async Task<string> DeployNFTContractAsync(StratisUnityManager stratisUnityManager, string name, string symbol, bool ownerOnlyMinting)
+    public static async Task<string> DeployNFTContractAsync(StratisUnityManager stratisUnityManager, string name, string symbol,
+        bool ownerOnlyMinting, string royaltyRecipient, double royaltyPercent)
     {
+        uint royaltyPercentInt = (uint) (royaltyPercent * 100);
+
         List<string> constructorParameter = new List<string>()
         {
             $"{(int)MethodParameterDataType.String}#{name}",
             $"{(int)MethodParameterDataType.String}#{symbol}",
-            $"{(int)MethodParameterDataType.Bool}#{ownerOnlyMinting}"
+            $"{(int)MethodParameterDataType.Bool}#{ownerOnlyMinting}",
+            $"{(int)MethodParameterDataType.Address}#{royaltyRecipient}",
+            $"{(int)MethodParameterDataType.UInt}#{royaltyPercentInt}"
         };
 
         string txId = await stratisUnityManager.SendCreateContractTransactionAsync(WhitelistedContracts.NFTContract.ByteCode, constructorParameter.ToArray(), 0);
@@ -85,6 +90,30 @@ public class NFTWrapper
             Parameters = new List<string>() { }
         };
         LocalExecutionResult localCallResult = await this.stratisUnityManager.Client.LocalCallAsync(localCallData);
+        return localCallResult.Return.ToString();
+    }
+
+    /// <summary>Royalty Info.</summary>
+    /// <remarks>Local call.</remarks>
+    public async Task<string> RoyaltyInfoAsync(ulong salePrice)
+    {
+        var localCallData = new LocalCallContractRequest()
+        {
+            GasPrice = 10000,
+            Amount = "0",
+            GasLimit = 250000,
+            ContractAddress = this.contractAddress,
+            MethodName = "RoyaltyInfo",
+            Sender = stratisUnityManager.GetAddress().ToString(),
+            Parameters = new List<string>()
+            {
+                $"{(int)MethodParameterDataType.UInt256}#{0}",
+                $"{(int)MethodParameterDataType.ULong}#{salePrice}"
+            }
+        };
+        LocalExecutionResult localCallResult = await this.stratisUnityManager.Client.LocalCallAsync(localCallData);
+
+        // TODO
         return localCallResult.Return.ToString();
     }
 
@@ -241,7 +270,7 @@ public class NFTWrapper
 
         return await this.stratisUnityManager.SendCallContractTransactionAsync(this.contractAddress, "TransferFrom", parameters.ToArray());
     }
-    
+
     /// <summary>Set or reaffirm the approved address for an NFT. This function can be changed to payable.</summary>
     /// <remarks>Normal call. Use returned txId to get receipt in order to get return value once transaction is mined. Return value is of <c>bool</c> type.</remarks>
     public async Task<string> ApproveAsync(string addr, UInt256 tokenId)
