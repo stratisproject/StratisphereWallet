@@ -180,7 +180,11 @@ public class StratisUnityManager
             .SetChange(this.address)
             .BuildTransaction(true);
 
-        await Client.SendTransactionAsync(new SendTransactionRequest() { Hex = tx.ToHex() });
+        string hex = tx.ToHex();
+
+        Debug.Log(hex);
+
+        await Client.SendTransactionAsync(new SendTransactionRequest() { Hex = hex });
 
         Debug.Log("Transaction sent.");
         return tx.GetHash().ToString();
