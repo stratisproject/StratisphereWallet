@@ -8,6 +8,7 @@ using MediaConverterApi;
 using NBitcoin;
 using Newtonsoft.Json;
 using Stratis.Sidechains.Networks;
+using Stratis.SmartContracts;
 using Unity3dApi;
 using UnityEngine;
 using Network = NBitcoin.Network;

@@ -95,7 +95,7 @@ public class NFTWrapper
 
     /// <summary>Royalty Info.</summary>
     /// <remarks>Local call.</remarks>
-    public async Task<string> RoyaltyInfoAsync(ulong salePrice)
+    public async Task<RoyaltyInfo> RoyaltyInfoAsync(ulong salePrice)
     {
         var localCallData = new LocalCallContractRequest()
         {
@@ -113,8 +113,18 @@ public class NFTWrapper
         };
         LocalExecutionResult localCallResult = await this.stratisUnityManager.Client.LocalCallAsync(localCallData);
 
-        // TODO
-        return localCallResult.Return.ToString();
+        List<object> result = JsonConvert.DeserializeObject<List<object>>(localCallResult.Return.ToString());
+
+        string royaltyAddr = result[0].ToString();
+        ulong royaltyAmount = ulong.Parse(result[1].ToString());
+
+        RoyaltyInfo info = new RoyaltyInfo()
+        {
+            RecipientAddress = royaltyAddr,
+            RoyaltyAmount = royaltyAmount
+        };
+
+        return info;
     }
 
     /// <summary>True if provided interface is supported.</summary>
@@ -364,4 +374,11 @@ public partial class TransferLogEvent
 
     [JsonProperty("tokenId")]
     public UInt256 TokenId { get; set; }
+}
+
+public class RoyaltyInfo
+{
+    public string RecipientAddress { get; set; }
+
+    public ulong RoyaltyAmount { get; set; }
 }
