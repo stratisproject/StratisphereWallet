@@ -33,7 +33,7 @@ public class MarketplaceIntegration : MonoBehaviour
     public async UniTask<string> UploadMetadataAsync(NFTMetadataModel metadata)
     {
         string jsonString = JsonConvert.SerializeObject(metadata);
-        
+
         StringContent stringContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
         HttpResponseMessage callbackResult = await client.PostAsync(ApiUri + "contract/metadata", stringContent);
 
@@ -59,7 +59,7 @@ public class MarketplaceIntegration : MonoBehaviour
         // Call callback
         StringContent stringContent = new StringContent(string.Empty);
         HttpResponseMessage callbackResult = await client.PostAsync(model.callback, stringContent);
-        
+
         ReceiptResponse receipt = await NFTWalletWindowManager.Instance.WaitTransactionWindow.DisplayUntilSCReceiptReadyAsync(sendTask);
         bool success = receipt.Success;
         string resultString = string.Format("Marketplace request execution success: {0}", success);
@@ -72,10 +72,10 @@ public class MarketplaceIntegration : MonoBehaviour
         //string testData = "sid:nftmarketplacetest.azurewebsites.net/api/login/login-callback?uid=CBN3hhkyh3ddkl98JTa4e3zn1yohMnQScs7UuG-Ok9m7uupyF4z9eM9UhBw1qOTP&exp=1642262570";
 
         QRDataParseResult parsed = this.ParseLoginData(loginData);
-        
+
         // Sign
         StratisSignatureAuthCallbackBody signed = SignCallback(parsed.CallbackURI);
-        
+
         // Send
         string jsonString = JsonConvert.SerializeObject(signed);
 
@@ -110,7 +110,7 @@ public class MarketplaceIntegration : MonoBehaviour
             uint exp = uint.Parse(expirationStr);
             result.ExpirationDate = exp;
         }
-        
+
         result.CallbackURI = data.Substring(4);
 
         return result;
