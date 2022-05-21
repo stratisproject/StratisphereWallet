@@ -42,7 +42,7 @@ public class MarketplaceIntegration : MonoBehaviour
         if (result.Length > 1000 || !result.EndsWith(".json"))
         {
             Debug.Log("No json metadata! " + result);
-            result = metadata.Image;
+            throw new Exception("Can't upload json metadata");
         }
 
         Debug.Log(result);

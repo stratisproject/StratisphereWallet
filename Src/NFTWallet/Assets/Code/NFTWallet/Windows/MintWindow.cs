@@ -75,16 +75,26 @@ public class MintWindow : WindowBase
 
                 attributesCollection.Add(new Attribute() { TraitType = nameVal[0], Value = nameVal[1]});
             }
-            
-            string jsonUri = await MarketplaceIntegration.Instance.UploadMetadataAsync(new NFTMetadataModel()
+
+            string jsonUri = null;
+
+            try
             {
-                Name = name,
-                Image = uri,
-                Description = description,
-                Attributes = attributesCollection.ToArray(),
-                Category = selectedCategory,
-                AnimationUrl = animationUri
-            });
+                jsonUri = await MarketplaceIntegration.Instance.UploadMetadataAsync(new NFTMetadataModel()
+                {
+                    Name = name,
+                    Image = uri,
+                    Description = description,
+                    Attributes = attributesCollection.ToArray(),
+                    Category = selectedCategory,
+                    AnimationUrl = animationUri
+                });
+            }
+            catch (Exception e)
+            {
+                await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync("Failed to upload json metadata. Maybe server is down.", "NFT MINT");
+                return;
+            }
 
             NFTWrapper wrapper = new NFTWrapper(NFTWallet.Instance.StratisUnityManager, selectedNft.ContractAddress);
             Task<string> mintNftTask = wrapper.MintAsync(mintToAddr, jsonUri);
