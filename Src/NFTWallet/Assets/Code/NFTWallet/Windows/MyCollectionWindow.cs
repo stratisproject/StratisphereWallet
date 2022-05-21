@@ -24,6 +24,8 @@ public class MyCollectionWindow : WindowBase
 
     public List<CollectionItem> SpawnedItems = new List<CollectionItem>();
 
+    public Sprite ImageNotAvailableSprite, LoadingImageSprite, NoImageButAnimationSprite;
+
     private float defaultScrollRectVerticalPosition;
 
     private HttpClient client = new HttpClient();
@@ -96,7 +98,7 @@ public class MyCollectionWindow : WindowBase
         contentTransform.sizeDelta = new Vector2(contentTransform.sizeDelta.x, (cellSize + spacing) * rows);
 
         // Load images
-        List<CollectionItem> notLoaded = this.SpawnedItems.Where(x => !x.ImageLoaded && x.NFTUri.StartsWith("https://")).ToList();
+        List<CollectionItem> notLoaded = this.SpawnedItems.Where(x => !x.ImageLoadedOrAttemptedToLoad && x.NFTUri.StartsWith("https://")).ToList();
 
         List<UniTask<Texture2D>> loadTasks = new List<UniTask<Texture2D>>();
 
@@ -166,6 +168,9 @@ public class MyCollectionWindow : WindowBase
 
                 notLoaded[i].DisplayAnimationButton.gameObject.SetActive(animationAvailable);
 
+                if (animationAvailable)
+                    notLoaded[i].NFTImage.sprite = NoImageButAnimationSprite;
+
                 bool image = !(imageUri.EndsWith(".gif") || imageUri.EndsWith(".mov") || imageUri.EndsWith(".webm") || imageUri.EndsWith(".avi"));
                 if (image)
                 {
@@ -190,7 +195,7 @@ public class MyCollectionWindow : WindowBase
             }
             catch (Exception e)
             {
-                UnityEngine.Debug.Log(e.ToString());
+                Debug.Log(e.ToString());
             }
         }
 
@@ -208,13 +213,19 @@ public class MyCollectionWindow : WindowBase
         {
             Texture2D texture = loaded[i];
 
+            notLoaded[i].ImageLoadedOrAttemptedToLoad = true;
+
             if (texture == null)
+            {
+                if (!notLoaded[i].DisplayAnimationButton.gameObject.activeSelf)
+                    notLoaded[i].NFTImage.sprite = ImageNotAvailableSprite;
+
                 continue;
+            }
 
             Sprite sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
 
             notLoaded[i].NFTImage.sprite = sprite;
-            notLoaded[i].ImageLoaded = true;
         }
 
         this.StatusText.text = string.Empty;

@@ -20,6 +20,6 @@ public class CollectionItem : MonoBehaviour
     [HideInInspector]
     public string NFTUri;
 
-    [HideInInspector] 
-    public bool ImageLoaded = false;
+    [HideInInspector]
+    public bool ImageLoadedOrAttemptedToLoad = false;
 }

@@ -9447,7 +9447,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7259ea90d6ecc1c438ad4b6d9d66fe32, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MarketplaceURI_Testnet: https://nftmarketplacetest.azurewebsites.net/
+  MarketplaceURI_Testnet: https://stratisphere.com/
   MarketplaceURI_Mainnet: https://stratisphere.com/
 --- !u!114 &302973127
 MonoBehaviour:
@@ -17764,7 +17764,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -21741,7 +21741,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &712493001
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21782,6 +21782,9 @@ MonoBehaviour:
   CollectionCopyFromItem: {fileID: 1981213269}
   ScrollRect: {fileID: 1757792256}
   SpawnedItems: []
+  ImageNotAvailableSprite: {fileID: 21300000, guid: a1d419d0737b96f4e9d2c4e3783ffc73, type: 3}
+  LoadingImageSprite: {fileID: 21300000, guid: 5ed1f3d3f15e1524c80b4e26bb4ebb98, type: 3}
+  NoImageButAnimationSprite: {fileID: 21300000, guid: 769afe6d4e653cf42bc19cc89a6cac63, type: 3}
 --- !u!114 &712493003
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32005,7 +32008,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a1d419d0737b96f4e9d2c4e3783ffc73, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 5ed1f3d3f15e1524c80b4e26bb4ebb98, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -48791,7 +48794,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0.99999994, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -52494,7 +52497,7 @@ MonoBehaviour:
   NFTID: 0
   ContractAddr: 
   NFTUri: 
-  ImageLoaded: 0
+  ImageLoadedOrAttemptedToLoad: 0
 --- !u!114 &1792828622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54052,9 +54055,9 @@ RectTransform:
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: -17}
+  m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1847042158
 MonoBehaviour:
@@ -54099,7 +54102,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 586048795}
   m_HandleRect: {fileID: 586048794}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -54621,6 +54624,9 @@ MonoBehaviour:
   CollectionCopyFromItem: {fileID: 1792828621}
   ScrollRect: {fileID: 1848989277}
   SpawnedItems: []
+  ImageNotAvailableSprite: {fileID: 21300000, guid: a1d419d0737b96f4e9d2c4e3783ffc73, type: 3}
+  LoadingImageSprite: {fileID: 21300000, guid: 5ed1f3d3f15e1524c80b4e26bb4ebb98, type: 3}
+  NoImageButAnimationSprite: {fileID: 21300000, guid: 769afe6d4e653cf42bc19cc89a6cac63, type: 3}
 --- !u!114 &1854783548
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -54877,9 +54883,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: -17}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1856518863
 MonoBehaviour:
@@ -58636,7 +58642,7 @@ MonoBehaviour:
   NFTID: 0
   ContractAddr: 
   NFTUri: 
-  ImageLoaded: 0
+  ImageLoadedOrAttemptedToLoad: 0
 --- !u!1 &1983336040
 GameObject:
   m_ObjectHideFlags: 0
@@ -61338,9 +61344,9 @@ RectTransform:
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 20}
+  m_SizeDelta: {x: 0, y: 20}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &2081270791
 MonoBehaviour:
