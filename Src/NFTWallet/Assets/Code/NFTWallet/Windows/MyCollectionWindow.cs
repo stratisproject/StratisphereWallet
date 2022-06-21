@@ -266,7 +266,8 @@ public class MyCollectionWindow : WindowBase
 
         while (true)
         {
-            await Task.WhenAny(tasks);
+            if (tasks.Count > 0)
+                await Task.WhenAny(tasks);
 
             int completedCount = tasks.Count(x => x.IsCompleted);
 
