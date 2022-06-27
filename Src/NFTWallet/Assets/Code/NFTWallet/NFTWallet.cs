@@ -8,7 +8,6 @@ using MediaConverterApi;
 using NBitcoin;
 using Newtonsoft.Json;
 using Stratis.Sidechains.Networks;
-using Stratis.SmartContracts;
 using Unity3dApi;
 using UnityEngine;
 using Network = NBitcoin.Network;
@@ -16,8 +15,6 @@ using Network = NBitcoin.Network;
 public class NFTWallet : MonoBehaviour
 {
     public static NFTWallet Instance;
-
-    public bool AutoLoginEnabled = true;
 
     public TargetNetwork DefaultNetwork = TargetNetwork.CirrusMain;
 
@@ -45,6 +42,8 @@ public class NFTWallet : MonoBehaviour
     private string WatchedNFTsKey => CurrentNetwork == TargetNetwork.CirrusMain ? "watchedNFTs_main" : "watchedNFTs_test";
 
     private TargetNetwork currentNetwork;
+
+    private const string MnemonicKey = "MnemonicST";
 
     void Awake()
     {
@@ -193,6 +192,23 @@ public class NFTWallet : MonoBehaviour
     {
         string json = JsonConvert.SerializeObject(knownNfts);
         PlayerPrefs.SetString(WatchedNFTsKey, json);
+    }
+
+    public bool IsMnemonicSaved()
+    {
+        return PlayerPrefs.HasKey(MnemonicKey);
+    }
+
+    public string GetSavedMnemonic()
+    {
+        string mnemonic = PlayerPrefs.GetString(MnemonicKey);
+
+        return mnemonic;
+    }
+
+    public void SaveMnemonic(string mnemonic)
+    {
+        PlayerPrefs.SetString(MnemonicKey, mnemonic);
     }
 }
 

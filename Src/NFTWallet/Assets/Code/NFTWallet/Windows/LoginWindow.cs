@@ -16,8 +16,6 @@ public class LoginWindow : WindowBase
 
     public Dropdown NetworkDropDown, LanguageSelectDropdown;
 
-    private const string MnemonicKey = "MnemonicST";
-
     private const string ResolutionKey = "ResolutionST";
 
     private List<TargetNetwork> targetNetworks = new List<TargetNetwork>();
@@ -78,7 +76,7 @@ public class LoginWindow : WindowBase
 
         this.LogInButton.onClick.AddListener(async delegate
         {
-            await this.logInAsync();
+            await this.LogInAsync();
         });
 
         RemovePlayerPrefsButton.onClick.AddListener(delegate
@@ -119,7 +117,7 @@ public class LoginWindow : WindowBase
 
     public override UniTask ShowAsync(bool hideOtherWindows = true)
     {
-        bool mnemonicExists = PlayerPrefs.HasKey(MnemonicKey);
+        bool mnemonicExists = NFTWallet.Instance.IsMnemonicSaved();
 
         if (mnemonicExists)
         {
@@ -137,20 +135,10 @@ public class LoginWindow : WindowBase
         Screen.SetResolution((int)SupportedResolutions[currentResolutionIndex].x, (int)SupportedResolutions[currentResolutionIndex].y, false);
     }
 
-    public bool IsMnemonicSaved()
+    // mnemonic should exist
+    public async UniTask LogInAsync()
     {
-        return PlayerPrefs.HasKey(MnemonicKey);
-    }
-
-    public async UniTask LogInIfMnemonicSavedAsync()
-    {
-        if (IsMnemonicSaved())
-            await this.logInAsync();
-    }
-
-    private async UniTask logInAsync()
-    {
-        bool presavedMnemonicExists = IsMnemonicSaved();
+        bool presavedMnemonicExists = NFTWallet.Instance.IsMnemonicSaved();
         bool mnemonicEntered = !string.IsNullOrEmpty(MnemonicInputField.text);
 
         PlayerPrefs.SetInt(ResolutionKey, currentResolutionIndex);
@@ -162,7 +150,7 @@ public class LoginWindow : WindowBase
             return;
         }
 
-        string mnemonic = mnemonicEntered ? MnemonicInputField.text : PlayerPrefs.GetString(MnemonicKey);
+        string mnemonic = mnemonicEntered ? MnemonicInputField.text : NFTWallet.Instance.GetSavedMnemonic();
 
         // Validate mnemonic
         try
@@ -176,7 +164,7 @@ public class LoginWindow : WindowBase
             return;
         }
 
-        PlayerPrefs.SetString(MnemonicKey, mnemonic);
+        NFTWallet.Instance.SaveMnemonic(mnemonic);
 
         string passphrase = this.PassphraseInputField.text;
         if (string.IsNullOrEmpty(passphrase))
