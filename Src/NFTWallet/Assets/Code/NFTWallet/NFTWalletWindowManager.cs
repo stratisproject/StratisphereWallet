@@ -6,7 +6,7 @@ public class NFTWalletWindowManager : MonoBehaviour
 {
     public static NFTWalletWindowManager Instance;
 
-    public LoginWindow LoginWindow;
+    public LoginWindow LoginWindow; // TODO remove
     public PopupWindow PopupWindow;
 
     public WalletWindow WalletWindow;
@@ -20,6 +20,12 @@ public class NFTWalletWindowManager : MonoBehaviour
     public QRWindow QRWindow;
     public DisplayAnimationWIndow AnimationWindow;
 
+    // Onboarding windows
+    public WelcomeWindow WelcomeWindow;
+    public RestoreWalletWindow RestoreWalletWindow;
+    public CheckMnemonicWindow CheckMnemonicWindow;
+    public DisplayMnemonicWindow DisplayMnemonicWindow;
+
     public bool IsMobile;
 
     private List<WindowBase> allWindows;
@@ -29,7 +35,9 @@ public class NFTWalletWindowManager : MonoBehaviour
         Instance = this;
 
         this.allWindows = new List<WindowBase>() { LoginWindow, PopupWindow, WalletWindow, MyCollectionWindow, CreateNftWindow,
-            SendWindow, MintWindow, BurnWindow, WaitTransactionWindow, MarketplaceWindow, QRWindow, AnimationWindow };
+            SendWindow, MintWindow, BurnWindow, WaitTransactionWindow, MarketplaceWindow, QRWindow, AnimationWindow,
+            WelcomeWindow, RestoreWalletWindow, CheckMnemonicWindow, DisplayMnemonicWindow
+        };
     }
 
     async void Start()

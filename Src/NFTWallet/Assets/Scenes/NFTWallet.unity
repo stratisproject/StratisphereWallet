@@ -675,6 +675,7 @@ GameObject:
   - component: {fileID: 19536731}
   - component: {fileID: 19536733}
   - component: {fileID: 19536732}
+  - component: {fileID: 19536734}
   m_Layer: 5
   m_Name: RestoreWallet_Window
   m_TagString: Untagged
@@ -745,6 +746,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 19536730}
   m_CullTransparentMesh: 1
+--- !u!114 &19536734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 19536730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32effe82917f3ec4fa80dbb990379f81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BackButton: {fileID: 465826895}
+  RestoreWalletButton: {fileID: 643467535}
+  MnemonicInputField: {fileID: 55435940}
 --- !u!1 &19776464
 GameObject:
   m_ObjectHideFlags: 0
@@ -5361,7 +5377,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99
+  m_Text: 3
 --- !u!222 &136697410
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6556,13 +6572,14 @@ GameObject:
   - component: {fileID: 188609277}
   - component: {fileID: 188609279}
   - component: {fileID: 188609278}
+  - component: {fileID: 188609280}
   m_Layer: 5
-  m_Name: Onboarding_Window
+  m_Name: Welcome_Window
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &188609277
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6624,6 +6641,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 188609276}
   m_CullTransparentMesh: 1
+--- !u!114 &188609280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188609276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9744e8c7a51583b418c2044b6c5d43ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CreateWalletButton: {fileID: 1104845348}
+  RestoreWalletButton: {fileID: 1874814751}
 --- !u!1 &192354119
 GameObject:
   m_ObjectHideFlags: 0
@@ -10527,7 +10558,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e0324694c5881744b18346bf5fa9759, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AutoLoginEnabled: 1
   DefaultNetwork: 1
   TestnetApiUrl: https://api-node1-test.stratisplatform.com
   MainnetApiUrl: https://unity-api-ha.stratisplatform.com/
@@ -10651,7 +10681,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99
+  m_Text: 11
 --- !u!222 &310180500
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -18861,6 +18891,7 @@ GameObject:
   - component: {fileID: 548150187}
   - component: {fileID: 548150189}
   - component: {fileID: 548150188}
+  - component: {fileID: 548150190}
   m_Layer: 5
   m_Name: CheckMnemonic_Window
   m_TagString: Untagged
@@ -18933,6 +18964,24 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 548150186}
   m_CullTransparentMesh: 1
+--- !u!114 &548150190
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 548150186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75d31b7f80f011e47b82b9a28fc387e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BackButton: {fileID: 736673063}
+  ContinueButton: {fileID: 301242015}
+  WordInputFields:
+  - {fileID: 203565899}
+  - {fileID: 1281684616}
+  - {fileID: 1998640098}
 --- !u!1 &549313384
 GameObject:
   m_ObjectHideFlags: 0
@@ -19696,6 +19745,10 @@ MonoBehaviour:
   MarketplaceWindow: {fileID: 1168222996}
   QRWindow: {fileID: 535882787}
   AnimationWindow: {fileID: 2114238693}
+  WelcomeWindow: {fileID: 188609280}
+  RestoreWalletWindow: {fileID: 19536734}
+  CheckMnemonicWindow: {fileID: 548150190}
+  DisplayMnemonicWindow: {fileID: 2134635805}
   IsMobile: 1
 --- !u!1 &575674832
 GameObject:
@@ -23014,7 +23067,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.052, y: 0.9454337}
   m_AnchorMax: {x: 0.18057574, y: 0.95212054}
-  m_AnchoredPosition: {x: -4.7919617, y: -0.4675064}
+  m_AnchoredPosition: {x: -4.851486, y: -0.4675064}
   m_SizeDelta: {x: -10.044739, y: -4.411377}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &652102783
@@ -23125,7 +23178,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99
+  m_Text: 7
 --- !u!222 &652816271
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -26237,7 +26290,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99
+  m_Text: 9
 --- !u!222 &780681950
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -31000,7 +31053,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99
+  m_Text: 5
 --- !u!222 &906587296
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -32484,7 +32537,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99
+  m_Text: 8
 --- !u!222 &943285753
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -33426,7 +33479,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99
+  m_Text: 6
 --- !u!222 &981047966
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -40013,7 +40066,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.05530794, y: 0.032185186}
   m_AnchorMax: {x: 0.9480001, y: 0.42000002}
-  m_AnchoredPosition: {x: 6.880615, y: 387.00397}
+  m_AnchoredPosition: {x: 6.880554, y: 387.00397}
   m_SizeDelta: {x: 15.204726, y: 142.99768}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1231098374
@@ -45117,7 +45170,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99
+  m_Text: 12
 --- !u!222 &1407436537
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -50241,7 +50294,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99
+  m_Text: 4
 --- !u!222 &1560458954
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -50579,7 +50632,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.046000004, y: 0.947235}
   m_AnchorMax: {x: 0.23700002, y: 0.975}
-  m_AnchoredPosition: {x: 0.45663452, y: 1.2912598}
+  m_AnchoredPosition: {x: 0.456604, y: 1.2912598}
   m_SizeDelta: {x: 47.07077, y: 11.163315}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1567201430
@@ -58120,9 +58173,9 @@ RectTransform:
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.62100005, y: 0}
-  m_AnchorMax: {x: 0.746111, y: 1}
-  m_AnchoredPosition: {x: 1.75, y: 0.80000305}
-  m_SizeDelta: {x: -1.5, y: 0.3999939}
+  m_AnchorMax: {x: 0.74700004, y: 0.98911166}
+  m_AnchoredPosition: {x: 1.25, y: 0.33000183}
+  m_SizeDelta: {x: -2.5, y: -0.53}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1797828675
 MonoBehaviour:
@@ -58763,7 +58816,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99
+  m_Text: 1
 --- !u!222 &1822670909
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -64267,6 +64320,10 @@ MonoBehaviour:
   MarketplaceWindow: {fileID: 1744560439}
   QRWindow: {fileID: 1892170181}
   AnimationWindow: {fileID: 1542710119}
+  WelcomeWindow: {fileID: 0}
+  RestoreWalletWindow: {fileID: 0}
+  CheckMnemonicWindow: {fileID: 0}
+  DisplayMnemonicWindow: {fileID: 0}
   IsMobile: 0
 --- !u!1 &1973599161
 GameObject:
@@ -64964,7 +65021,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99
+  m_Text: 2
 --- !u!222 &1991897141
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -68018,7 +68075,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99
+  m_Text: 10
 --- !u!222 &2076904152
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -69654,6 +69711,7 @@ GameObject:
   - component: {fileID: 2134635802}
   - component: {fileID: 2134635804}
   - component: {fileID: 2134635803}
+  - component: {fileID: 2134635805}
   m_Layer: 5
   m_Name: DisplayMnemonic_Window
   m_TagString: Untagged
@@ -69727,6 +69785,34 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2134635801}
   m_CullTransparentMesh: 1
+--- !u!114 &2134635805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2134635801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b45a4499f6ee624ebe0dfeb98631348, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BackButton: {fileID: 361343096}
+  CopyButton: {fileID: 449460334}
+  ContinueButton: {fileID: 2017112252}
+  TwelveWordsTexts:
+  - {fileID: 1619272496}
+  - {fileID: 1330724827}
+  - {fileID: 1572340770}
+  - {fileID: 907723151}
+  - {fileID: 2124029851}
+  - {fileID: 1557942684}
+  - {fileID: 2073744850}
+  - {fileID: 1320921140}
+  - {fileID: 1659100118}
+  - {fileID: 1721941187}
+  - {fileID: 476027415}
+  - {fileID: 833871640}
 --- !u!1 &2136509720
 GameObject:
   m_ObjectHideFlags: 0
