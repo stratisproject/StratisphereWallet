@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UI;
 
 public class WelcomeWindow : WindowBase
@@ -9,5 +6,16 @@ public class WelcomeWindow : WindowBase
 
     void Awake()
     {
+        CreateWalletButton.onClick.AddListener(async () =>
+        {
+            NFTWalletWindowManager.Instance.DisplayMnemonicWindow.GenerateAndSetNewMnemonic();
+
+            await NFTWalletWindowManager.Instance.DisplayMnemonicWindow.ShowAsync();
+        });
+
+        RestoreWalletButton.onClick.AddListener(async () =>
+        {
+            await NFTWalletWindowManager.Instance.RestoreWalletWindow.ShowAsync();
+        });
     }
 }

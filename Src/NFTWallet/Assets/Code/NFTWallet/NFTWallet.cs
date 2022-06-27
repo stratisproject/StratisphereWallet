@@ -31,6 +31,8 @@ public class NFTWallet : MonoBehaviour
 
     public Network Network => network;
 
+    public bool DEBUG_ResetMnemonicAtStart = false;
+
     private Network network;
 
     [HideInInspector]
@@ -47,6 +49,9 @@ public class NFTWallet : MonoBehaviour
 
     void Awake()
     {
+        if (DEBUG_ResetMnemonicAtStart)
+            DeleteMnemonic();
+
         Instance = this;
 
         MediaConverterManager manager = new MediaConverterManager(new MediaConverterClient(MediaConversionApiUrl));
@@ -209,6 +214,11 @@ public class NFTWallet : MonoBehaviour
     public void SaveMnemonic(string mnemonic)
     {
         PlayerPrefs.SetString(MnemonicKey, mnemonic);
+    }
+
+    public void DeleteMnemonic()
+    {
+        PlayerPrefs.DeleteKey(MnemonicKey);
     }
 }
 

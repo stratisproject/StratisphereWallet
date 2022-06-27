@@ -13,7 +13,7 @@ public class WalletWindow : WindowBase
     public Text AddressText, BalanceText;
 
     public InputField DestinationAddressInputField, AmountInputField;
-    
+
     void Awake()
     {
         CopyAddressButton.onClick.AddListener(delegate { GUIUtility.systemCopyBuffer = this.AddressText.text; });
@@ -37,7 +37,7 @@ public class WalletWindow : WindowBase
                 long currentBalanceSat = await NFTWallet.Instance.StratisUnityManager.Client.GetAddressBalanceAsync(destAddress);
 
                 Task<string> sendTxTask = NFTWallet.Instance.StratisUnityManager.SendTransactionAsync(destAddress, amount);
-            
+
                 await NFTWalletWindowManager.Instance.WaitTransactionWindow.DisplayUntilDestBalanceChanges(destAddress, currentBalanceSat, sendTxTask);
 
                 await this.RefreshBalanceAsync();
@@ -62,14 +62,14 @@ public class WalletWindow : WindowBase
                 await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync("You've already received faucet funds.", "ERROR");
                 return;
             }
-            
+
             string faucetMnemonic = "matter solar quote boat resource peasant home resource sail damage tonight silent";
             Money faucetAmount = new Money(5, MoneyUnit.BTC);
             string destAddr = NFTWallet.Instance.StratisUnityManager.GetAddress().ToString();
 
             StratisUnityManager stratisUnityManager = new StratisUnityManager(new Unity3dClient(NFTWallet.Instance.ApiUrl), NFTWallet.Instance.Network,
                 new Mnemonic(faucetMnemonic, Wordlist.English));
-            
+
             Task<string> sendTxTask = stratisUnityManager.SendTransactionAsync(destAddr, faucetAmount);
 
             long currentBalanceSat = await NFTWallet.Instance.StratisUnityManager.Client.GetAddressBalanceAsync(destAddr);
