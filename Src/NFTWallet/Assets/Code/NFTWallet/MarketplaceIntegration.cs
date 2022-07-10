@@ -49,9 +49,8 @@ public class MarketplaceIntegration : MonoBehaviour
         return result;
     }
 
-    public async UniTask ExecuteMarketplaceRequestAsync(string transferData)
+    public async UniTask ExecuteMarketplaceRequestAsync(MarketplaceRequestModel model)
     {
-        MarketplaceRequestModel model = JsonConvert.DeserializeObject<MarketplaceRequestModel>(transferData);
         string[] parameters = model.parameters.Select(x => x.value).ToArray();
         Money amount = new Money(Decimal.Parse(model.amount.ToString()), MoneyUnit.BTC);
         Task<string> sendTask = NFTWallet.Instance.StratisUnityManager.SendCallContractTransactionAsync(model.to, model.method, parameters, amount);

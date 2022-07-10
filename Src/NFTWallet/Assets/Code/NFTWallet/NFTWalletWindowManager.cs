@@ -8,6 +8,7 @@ public class NFTWalletWindowManager : MonoBehaviour
 
     public LoginWindow LoginWindow; // TODO remove
     public PopupWindow PopupWindow;
+    public PopupWindowYesNo PopupWindowYesNo;
 
     public WalletWindow WalletWindow;
     public MyCollectionWindow MyCollectionWindow;
@@ -36,7 +37,7 @@ public class NFTWalletWindowManager : MonoBehaviour
 
         this.allWindows = new List<WindowBase>() { LoginWindow, PopupWindow, WalletWindow, MyCollectionWindow, CreateNftWindow,
             SendWindow, MintWindow, BurnWindow, WaitTransactionWindow, MarketplaceWindow, QRWindow, AnimationWindow,
-            WelcomeWindow, RestoreWalletWindow, CheckMnemonicWindow, DisplayMnemonicWindow
+            WelcomeWindow, RestoreWalletWindow, CheckMnemonicWindow, DisplayMnemonicWindow, PopupWindowYesNo
         };
     }
 

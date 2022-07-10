@@ -32,6 +32,7 @@ public class MyCollectionWindow : WindowBase
 
     void Awake()
     {
+        client.Timeout = TimeSpan.FromSeconds(10);
         defaultScrollRectVerticalPosition = ScrollRect.verticalNormalizedPosition;
     }
 

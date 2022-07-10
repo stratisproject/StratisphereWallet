@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
 using ZXing;
@@ -41,9 +43,9 @@ public class MarketplaceWindow : WindowBase
             }
             else
             {
+                isScanning = false;
                 ScanQrButtonText.text = "Scan QR";
                 Image.gameObject.SetActive(false);
-                QrCode = "qwe";
             }
         });
     }
@@ -83,7 +85,7 @@ public class MarketplaceWindow : WindowBase
 
         Image.gameObject.SetActive(false);
         isScanning = false;
-
+        ScanQrButtonText.text = "Scan QR";
 
 
         Task.Run(async () =>
@@ -108,7 +110,26 @@ public class MarketplaceWindow : WindowBase
         }
         else
         {
+            Debug.Log("Executing request: " + qrCode);
 
+            MarketplaceRequestModel model = JsonConvert.DeserializeObject<MarketplaceRequestModel>(qrCode);
+
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine("Sender: " + model.sender);
+            builder.AppendLine("To: " + model.to);
+            builder.AppendLine("Amount: " + model.amount);
+            builder.AppendLine("Method: " + model.method);
+
+            builder.AppendLine();
+            builder.AppendLine("Parameters:");
+
+            foreach (Parameter parameter in model.parameters)
+                builder.AppendLine(parameter.label + ": " + parameter.value);
+
+            await NFTWalletWindowManager.Instance.PopupWindowYesNo.ShowPopupAsync(builder.ToString(), "Send transaction", async delegate
+            {
+                await MarketplaceIntegration.Instance.ExecuteMarketplaceRequestAsync(model);
+            });
         }
     }
 }
