@@ -78,10 +78,16 @@ public class MarketplaceIntegration : MonoBehaviour
         // Send
         string jsonString = JsonConvert.SerializeObject(signed);
 
-        Debug.Log(jsonString);
+        Debug.Log("callback json content: " + jsonString);
 
         StringContent stringContent = new StringContent(jsonString, Encoding.UTF8, "application/json");
-        HttpResponseMessage callbackResult = await client.PostAsync("https://" + parsed.CallbackURI, stringContent);
+
+
+        string callbackUri = "https://" + parsed.CallbackURI;
+
+        Debug.Log("Callback url: " + callbackUri);
+
+        HttpResponseMessage callbackResult = await client.PostAsync(callbackUri, stringContent);
 
         Debug.Log(callbackResult);
     }

@@ -103,7 +103,7 @@ public class MarketplaceWindow : WindowBase
 
     private async Task QRCodeScannedAsync(string qrCode)
     {
-        if (qrCode.Contains("login-callback"))
+        if (qrCode.Contains("callback"))
         {
             Debug.Log("Logging in");
             await MarketplaceIntegration.Instance.LogInToNFTMarketplaceAsync(qrCode);

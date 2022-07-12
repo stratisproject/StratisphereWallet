@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
@@ -30,149 +31,200 @@ public class MyCollectionWindow : WindowBase
 
     private HttpClient client = new HttpClient();
 
+    private CancellationTokenSource cancellation;
+
+    private bool collectionLoadingInProgress = false;
+
+
     void Awake()
     {
         client.Timeout = TimeSpan.FromSeconds(10);
         defaultScrollRectVerticalPosition = ScrollRect.verticalNormalizedPosition;
     }
 
+    public override async UniTask HideAsync()
+    {
+        this.cancellation?.Cancel();
+
+        while (collectionLoadingInProgress)
+            await Task.Delay(50);
+
+        await base.HideAsync();
+    }
+
     public override async UniTask ShowAsync(bool hideOtherWindows = true)
     {
-        this.StatusText.text = "loading collection";
-        ScrollRect.verticalNormalizedPosition = this.defaultScrollRectVerticalPosition;
+        collectionLoadingInProgress = true;
 
-        // Disable prev spawned items.
-        foreach (CollectionItem prevSpawn in SpawnedItems)
-            prevSpawn.gameObject.SetActive(false);
+        UniTask showTask = this.showAsync(hideOtherWindows);
 
-        await base.ShowAsync(hideOtherWindows);
+        await showTask;
 
-        // Populates SpawnedItems
-        await this.LoadCollectionItemsAsync();
+        collectionLoadingInProgress = false;
+    }
 
-        // Resize content transform
-        RectTransform contentTransform = ContentGameObject.GetComponent<RectTransform>();
-        GridLayoutGroup gridLayoutGroup = ContentGameObject.GetComponent<GridLayoutGroup>();
-        float cellSize = gridLayoutGroup.cellSize.y;
-        float spacing = gridLayoutGroup.spacing.y;
-        int rows = (int)Math.Ceiling(((decimal) SpawnedItems.Count / 3));
-        contentTransform.sizeDelta = new Vector2(contentTransform.sizeDelta.x, (cellSize + spacing) * rows);
-
-        // Load images
-        List<CollectionItem> notLoaded = this.SpawnedItems.Where(x => !x.ImageLoadedOrAttemptedToLoad && x.NFTUri.StartsWith("https://")).ToList();
-
-        List<UniTask<Texture2D>> loadTasks = new List<UniTask<Texture2D>>();
-
-        // Preload json
-        Dictionary<string, string> jsonUriToJson = await this.LoadJsonFilesAsync(notLoaded.Select(x => x.NFTUri).Where(x => x.EndsWith(".json")));
-
-        // Load textures and animations
-        List<string> animationsToConvert = new List<string>();
-        List<NFTMetadataModel> metadataModels = new List<NFTMetadataModel>();
-
-        for (int i = 0; i < notLoaded.Count; i++)
+    private async UniTask showAsync(bool hideOtherWindows = true)
+    {
+        try
         {
-            this.StatusText.text = "requesting textures " + (i + 1).ToString() + " / " + notLoaded.Count;
+            this.cancellation = new CancellationTokenSource();
 
-            try
+            Debug.Log("Loading collection started");
+
+            this.StatusText.text = "loading collection";
+            ScrollRect.verticalNormalizedPosition = this.defaultScrollRectVerticalPosition;
+
+            // Disable prev spawned items.
+            foreach (CollectionItem prevSpawn in SpawnedItems)
+                prevSpawn.gameObject.SetActive(false);
+
+            await base.ShowAsync(hideOtherWindows);
+
+            Debug.Log("Loading collection items");
+
+            // Populates SpawnedItems
+            await this.LoadCollectionItemsAsync(this.cancellation.Token);
+
+            // Resize content transform
+            RectTransform contentTransform = ContentGameObject.GetComponent<RectTransform>();
+            GridLayoutGroup gridLayoutGroup = ContentGameObject.GetComponent<GridLayoutGroup>();
+            float cellSize = gridLayoutGroup.cellSize.y;
+            float spacing = gridLayoutGroup.spacing.y;
+            int rows = (int)Math.Ceiling(((decimal)SpawnedItems.Count / 3));
+            contentTransform.sizeDelta = new Vector2(contentTransform.sizeDelta.x, (cellSize + spacing) * rows);
+
+            // Load images
+            List<CollectionItem> notLoaded = this.SpawnedItems.Where(x => !x.ImageLoadedOrAttemptedToLoad && x.NFTUri.StartsWith("https://")).ToList();
+
+            List<UniTask<Texture2D>> loadTasks = new List<UniTask<Texture2D>>();
+
+            Debug.Log("Loading json metadata for " + notLoaded.Count + " items.");
+
+            if (this.cancellation.IsCancellationRequested)
+                return;
+
+            // Preload json
+            Dictionary<string, string> jsonUriToJson = await this.LoadJsonFilesAsync(notLoaded.Select(x => x.NFTUri).Where(x => x.EndsWith(".json")), this.cancellation.Token);
+
+            Debug.Log("Loading textures");
+            this.StatusText.text = "loading textures...";
+
+            // Load textures and animations
+            List<string> animationsToConvert = new List<string>();
+            List<NFTMetadataModel> metadataModels = new List<NFTMetadataModel>();
+
+            for (int i = 0; i < notLoaded.Count; i++)
             {
-                string uri = notLoaded[i].NFTUri;
-                string imageUri;
+                if (this.cancellation.IsCancellationRequested)
+                    return;
 
-                bool animationAvailable = false;
-                string animationUrl = null;
+                this.StatusText.text = "requesting textures " + (i + 1).ToString() + " / " + notLoaded.Count;
 
-                string json = jsonUriToJson[uri];
-                var settings = new JsonSerializerSettings();
-                settings.DateFormatString = "YYYY-MM-DD";
-                settings.ContractResolver = new CustomMetadataResolver();
-                NFTMetadataModel model = JsonConvert.DeserializeObject<NFTMetadataModel>(json, settings);
-
-                metadataModels.Add(model);
-
-                imageUri = model.Image;
-                notLoaded[i].TitleText.text = model.Name;
-
-                string animationUri = (!string.IsNullOrEmpty(model.AnimationUrl)) ? model.AnimationUrl :
-                                        (model.Image.EndsWith(".webp") || model.Image.EndsWith(".gif") || model.Image.EndsWith(".mp4")) ? model.Image : null;
-
-                if (animationUri != null)
+                try
                 {
-                    animationAvailable = true;
-                    animationUrl = animationUri;
-                    animationsToConvert.Add(model.AnimationUrl);
-                }
+                    string uri = notLoaded[i].NFTUri;
+                    string imageUri;
 
-                notLoaded[i].DisplayAnimationButton.gameObject.SetActive(animationAvailable);
+                    bool animationAvailable = false;
+                    string animationUrl = null;
 
-                if (animationAvailable)
-                    notLoaded[i].NFTImage.sprite = NoImageButAnimationSprite;
+                    string json = jsonUriToJson[uri];
+                    var settings = new JsonSerializerSettings();
+                    settings.DateFormatString = "YYYY-MM-DD";
+                    settings.ContractResolver = new CustomMetadataResolver();
+                    NFTMetadataModel model = JsonConvert.DeserializeObject<NFTMetadataModel>(json, settings);
 
-                bool image = !(imageUri.EndsWith(".gif") || imageUri.EndsWith(".mov") || imageUri.EndsWith(".webm") || imageUri.EndsWith(".avi"));
-                if (image)
-                {
-                    UniTask<Texture2D> loadTask = this.GetRemoteTextureAsync(imageUri);
-                    loadTasks.Add(loadTask);
-                }
-                else
-                    loadTasks.Add(GetNullTextureAsync());
+                    metadataModels.Add(model);
 
-                if (animationAvailable)
-                {
-                    var index = i;
-                    notLoaded[i].DisplayAnimationButton.onClick.RemoveAllListeners();
-                    notLoaded[i].DisplayAnimationButton.onClick.AddListener(async delegate
+                    imageUri = model.Image;
+                    notLoaded[i].TitleText.text = model.Name;
+
+                    string animationUri = (!string.IsNullOrEmpty(model.AnimationUrl)) ? model.AnimationUrl :
+                                            (model.Image.EndsWith(".webp") || model.Image.EndsWith(".gif") || model.Image.EndsWith(".mp4")) ? model.Image : null;
+
+                    if (animationUri != null)
                     {
-                        await NFTWalletWindowManager.Instance.AnimationWindow.ShowPopupAsync(animationUrl,
-                            "NFTID: " + notLoaded[index].NFTID);
-                    });
+                        animationAvailable = true;
+                        animationUrl = animationUri;
+                        animationsToConvert.Add(model.AnimationUrl);
+                    }
+
+                    notLoaded[i].DisplayAnimationButton.gameObject.SetActive(animationAvailable);
+
+                    if (animationAvailable)
+                        notLoaded[i].NFTImage.sprite = NoImageButAnimationSprite;
+
+                    bool image = !(imageUri.EndsWith(".gif") || imageUri.EndsWith(".mov") || imageUri.EndsWith(".webm") || imageUri.EndsWith(".avi")) && !string.IsNullOrEmpty(imageUri);
+                    if (image)
+                    {
+                        UniTask<Texture2D> loadTask = this.GetRemoteTextureAsync(imageUri, this.cancellation.Token);
+                        loadTasks.Add(loadTask);
+                    }
+                    else
+                        loadTasks.Add(GetNullTextureAsync());
+
+                    if (animationAvailable)
+                    {
+                        var index = i;
+                        notLoaded[i].DisplayAnimationButton.onClick.RemoveAllListeners();
+                        notLoaded[i].DisplayAnimationButton.onClick.AddListener(async delegate
+                        {
+                            await NFTWalletWindowManager.Instance.AnimationWindow.ShowPopupAsync(animationUrl,
+                                "NFTID: " + notLoaded[index].NFTID);
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.Log(e.ToString());
                 }
             }
-            catch (Exception e)
+
+            var allModels = JsonConvert.SerializeObject(metadataModels);
+            Debug.Log(allModels);
+
+            // Convert animations. Fire and forget
+            PreconvertAnimations(animationsToConvert);
+
+            Texture2D[] loaded = await UniTask.WhenAll(loadTasks);
+
+            this.StatusText.text = "creating sprites...";
+
+            for (int i = 0; i < loaded.Length; i++)
             {
-                Debug.Log(e.ToString());
+                if (this.cancellation.IsCancellationRequested)
+                    return;
+
+                Texture2D texture = loaded[i];
+
+                notLoaded[i].ImageLoadedOrAttemptedToLoad = true;
+
+                if (texture == null)
+                {
+                    if (!notLoaded[i].DisplayAnimationButton.gameObject.activeSelf)
+                        notLoaded[i].NFTImage.sprite = ImageNotAvailableSprite;
+
+                    continue;
+                }
+
+                Sprite sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
+
+                notLoaded[i].NFTImage.sprite = sprite;
             }
+
+            this.StatusText.text = "Collection loaded";
         }
-
-        var allModels = JsonConvert.SerializeObject(metadataModels);
-        Debug.Log(allModels);
-
-        // Convert animations. Fire and forget
-        PreconvertAnimations(animationsToConvert);
-
-        this.StatusText.text = "loading textures...";
-
-        Texture2D[] loaded = await UniTask.WhenAll(loadTasks);
-
-        this.StatusText.text = "creating sprites...";
-
-        for (int i = 0; i < loaded.Length; i++)
+        catch (Exception e)
         {
-            Texture2D texture = loaded[i];
-
-            notLoaded[i].ImageLoadedOrAttemptedToLoad = true;
-
-            if (texture == null)
-            {
-                if (!notLoaded[i].DisplayAnimationButton.gameObject.activeSelf)
-                    notLoaded[i].NFTImage.sprite = ImageNotAvailableSprite;
-
-                continue;
-            }
-
-            Sprite sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
-
-            notLoaded[i].NFTImage.sprite = sprite;
+            Debug.LogError("Error while loading collection: " + e.ToString());
         }
-
-        this.StatusText.text = "Collection loaded";
     }
 
     /// <summary>
     /// Spawns collection items and adds them to SpawnedItems if it's not there.
     /// Loads URIs.
     /// </summary>
-    private async Task LoadCollectionItemsAsync()
+    private async Task LoadCollectionItemsAsync(CancellationToken token)
     {
         List<DeployedNFTModel> knownNfts = NFTWallet.Instance.LoadKnownNfts();
         OwnedNFTsModel myNfts = await NFTWallet.Instance.StratisUnityManager.Client.GetOwnedNftsAsync(NFTWallet.Instance.StratisUnityManager.GetAddress().ToString());
@@ -181,6 +233,9 @@ public class MyCollectionWindow : WindowBase
 
         foreach (KeyValuePair<string, ICollection<long>> contrAddrToOwnedIds in myNfts.OwnedIDsByContractAddress)
         {
+            if (token.IsCancellationRequested)
+                return;
+
             string contractAddr = contrAddrToOwnedIds.Key;
             List<long> ownedIds = contrAddrToOwnedIds.Value.Distinct().ToList();
 
@@ -232,7 +287,7 @@ public class MyCollectionWindow : WindowBase
     /// Returns mapping jsonUri to json
     /// </summary>
     /// <returns></returns>
-    private async Task<Dictionary<string, string>> LoadJsonFilesAsync(IEnumerable<string> uris)
+    private async Task<Dictionary<string, string>> LoadJsonFilesAsync(IEnumerable<string> uris, CancellationToken token)
     {
         this.StatusText.text = "loading json metadata";
 
@@ -242,6 +297,9 @@ public class MyCollectionWindow : WindowBase
 
         foreach (string uri in uris)
         {
+            if (token.IsCancellationRequested)
+                return null;
+
             string u = uri;
             var task = Task.Run(async () =>
             {
@@ -265,15 +323,14 @@ public class MyCollectionWindow : WindowBase
             tasks.Add(task);
         }
 
-        while (true)
+        while (!token.IsCancellationRequested)
         {
             if (tasks.Count > 0)
                 await Task.WhenAny(tasks);
 
             int completedCount = tasks.Count(x => x.IsCompleted);
 
-            await Task.Delay(1);
-            Debug.Log(completedCount);
+            await Task.Delay(10);
             this.StatusText.text = string.Format("loading json metadata {0} / {1}", completedCount, tasks.Count);
             LayoutRebuilder.ForceRebuildLayoutImmediate(this.StatusText.transform as RectTransform);
 
@@ -284,7 +341,7 @@ public class MyCollectionWindow : WindowBase
         return jsonUriToJson;
     }
 
-    private async UniTask<Texture2D> GetRemoteTextureAsync(string url)
+    private async UniTask<Texture2D> GetRemoteTextureAsync(string url, CancellationToken token)
     {
         Texture2D texture;
 
@@ -293,7 +350,12 @@ public class MyCollectionWindow : WindowBase
             var asyncOp = www.SendWebRequest();
 
             while (asyncOp.isDone == false)
+            {
                 await Task.Delay(1000 / 30);//30 hertz
+
+                if (token.IsCancellationRequested)
+                    return null;
+            }
 
             if (www.result != UnityWebRequest.Result.Success)
             {

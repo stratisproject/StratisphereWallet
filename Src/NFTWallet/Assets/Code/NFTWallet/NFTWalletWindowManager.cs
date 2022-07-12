@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 
@@ -51,9 +52,9 @@ public class NFTWalletWindowManager : MonoBehaviour
             await this.WelcomeWindow.ShowAsync();
     }
 
-    public async UniTask HideAllWindowsAsync()
+    public async UniTask HideAllWindowsAsync(WindowBase windowNotToHide)
     {
-        foreach (WindowBase window in this.allWindows)
+        foreach (WindowBase window in this.allWindows.Where(x => x != windowNotToHide))
         {
             await window.HideAsync();
         }

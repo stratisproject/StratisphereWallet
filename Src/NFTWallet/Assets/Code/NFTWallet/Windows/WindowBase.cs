@@ -6,7 +6,7 @@ public class WindowBase : MonoBehaviour
     public virtual async UniTask ShowAsync(bool hideOtherWindows = true)
     {
         if (hideOtherWindows)
-            await NFTWalletWindowManager.Instance.HideAllWindowsAsync();
+            await NFTWalletWindowManager.Instance.HideAllWindowsAsync(this);
 
         this.gameObject.SetActive(true);
     }
