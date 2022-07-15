@@ -307,7 +307,10 @@ public class MyCollectionWindow : WindowBase
 
                 try
                 {
-                    json = await this.client.GetStringAsync(u);
+                    HttpResponseMessage result = await this.client.GetAsync(u, token);
+                    result.EnsureSuccessStatusCode();
+
+                    json = await result.Content.ReadAsStringAsync();
                 }
                 catch (Exception e)
                 {
