@@ -172,7 +172,7 @@ public class LoginWindow : WindowBase
 
         this.PassphraseInputField.text = string.Empty;
 
-        bool success = await NFTWallet.Instance.InitializeAsync(mnemonic, selectedNetwork, passphrase);
+        bool success = await NFTWallet.Instance.InitializeAsync(mnemonic, NFTWallet.Instance.DefaultNetwork, passphrase);
 
         if (success)
             await NFTWalletWindowManager.Instance.WalletWindow.ShowAsync();
