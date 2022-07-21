@@ -50,14 +50,19 @@ public class MarketplaceWindow : WindowBase
         });
     }
 
-    async void Start()
-    {
-        webcamTexture = new WebCamTexture(512, 512);
-        Image.texture = webcamTexture;
-    }
-
     private IEnumerator GetQRCode()
     {
+        if (webcamTexture == null) {
+            yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
+            if (Application.HasUserAuthorization(UserAuthorization.WebCam))
+            {
+                webcamTexture = new WebCamTexture(512, 512);
+                Image.texture = webcamTexture;
+            } else {
+                yield break;
+            }
+        }
+
         IBarcodeReader barCodeReader = new BarcodeReader();
         webcamTexture.Play();
         Texture2D snap = new Texture2D(webcamTexture.width, webcamTexture.height, TextureFormat.ARGB32, false);
