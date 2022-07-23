@@ -115,7 +115,7 @@ public class MarketplaceWindow : WindowBase
             HttpStatusCode status = await MarketplaceIntegration.Instance.LogInToNFTMarketplaceAsync(qrCode);
 
             string displayResult = status == HttpStatusCode.OK ? "Logged in successfully" : "Error while logging in";
-            await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(displayResult);
+            await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(displayResult, "Login");
         }
         else
         {
