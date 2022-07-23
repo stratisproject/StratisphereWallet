@@ -95,16 +95,12 @@ public class MyCollectionWindow : WindowBase
             int rows = (int) Math.Ceiling(((decimal) SpawnedItems.Count / 3));
             contentTransform.sizeDelta = new Vector2(contentTransform.sizeDelta.x, (cellSize + spacing) * rows);
 
-            // Load images
-            List<UniTask<Texture2D>> loadTasks = new List<UniTask<Texture2D>>();
-
             Debug.Log("Loading json metadata for " + SpawnedItems.Count + " items.");
 
             this.cancellation.Token.ThrowIfCancellationRequested();
 
             // Preload json
-            Dictionary<string, string> jsonUriToJson =
-                await this.LoadJsonFilesAsync(SpawnedItems.Select(x => x.NFTUri).Where(x => x.EndsWith(".json")), this.cancellation.Token);
+            Dictionary<string, string> jsonUriToJson = await this.LoadJsonFilesAsync(SpawnedItems.Select(x => x.NFTUri).Where(x => x.EndsWith(".json")), this.cancellation.Token);
 
             Debug.Log("Loading textures");
             this.StatusText.text = "loading textures...";
@@ -115,23 +111,37 @@ public class MyCollectionWindow : WindowBase
 
             this.StatusText.text = "Requesting " + SpawnedItems.Count + " textures";
 
+            // Load images
+            List<UniTask<NFTUriToTexture>> loadTexturesTasks = new List<UniTask<NFTUriToTexture>>();
+
             for (int i = 0; i < SpawnedItems.Count; i++)
             {
                 this.cancellation.Token.ThrowIfCancellationRequested();
 
                 try
                 {
-                    string uri = SpawnedItems[i].NFTUri;
+                    string nftUri = SpawnedItems[i].NFTUri;
                     string imageUri;
 
                     bool animationAvailable = false;
                     string animationUrl = null;
 
-                    string json = jsonUriToJson[uri];
+                    string json = jsonUriToJson[nftUri];
                     var settings = new JsonSerializerSettings();
                     settings.DateFormatString = "YYYY-MM-DD";
                     settings.ContractResolver = new CustomMetadataResolver();
-                    NFTMetadataModel model = JsonConvert.DeserializeObject<NFTMetadataModel>(json, settings);
+
+                    NFTMetadataModel model = null;
+
+                    if (json == null)
+                    {
+                        model = new NFTMetadataModel();
+                        model.Name = model.Description = model.Image = "[No metadata]";
+                    }
+                    else
+                    {
+                        model = JsonConvert.DeserializeObject<NFTMetadataModel>(json, settings);
+                    }
 
                     metadataModels.Add(model);
 
@@ -157,11 +167,11 @@ public class MyCollectionWindow : WindowBase
                                  !string.IsNullOrEmpty(imageUri);
                     if (image)
                     {
-                        UniTask<Texture2D> loadTask = this.GetRemoteTextureAsync(imageUri, this.cancellation.Token);
-                        loadTasks.Add(loadTask);
+                        UniTask<NFTUriToTexture> loadTask = this.GetRemoteTextureAsync(nftUri, imageUri, this.cancellation.Token);
+                        loadTexturesTasks.Add(loadTask);
                     }
                     else
-                        loadTasks.Add(GetNullTextureAsync());
+                        loadTexturesTasks.Add(GetNullTextureAsync(nftUri));
 
                     if (animationAvailable)
                     {
@@ -176,7 +186,7 @@ public class MyCollectionWindow : WindowBase
                 }
                 catch (Exception e)
                 {
-                    Debug.Log(e.ToString());
+                    Debug.LogError(e.ToString());
                 }
             }
 
@@ -186,29 +196,31 @@ public class MyCollectionWindow : WindowBase
             // Convert animations. Fire and forget
             PreconvertAnimations(animationsToConvert);
 
-            Texture2D[] loaded = await UniTask.WhenAll(loadTasks);
+            NFTUriToTexture[] loadedTextures = await UniTask.WhenAll(loadTexturesTasks);
 
             this.StatusText.text = "creating sprites...";
 
-            for (int i = 0; i < loaded.Length; i++)
+            for (int i = 0; i < loadedTextures.Length; i++)
             {
                 this.cancellation.Token.ThrowIfCancellationRequested();
 
-                Texture2D texture = loaded[i];
+                Texture2D texture = loadedTextures[i].Texture;
 
-                SpawnedItems[i].ImageLoadedOrAttemptedToLoad = true;
+                CollectionItem targetItem = SpawnedItems.FirstOrDefault(x => x.NFTUri == loadedTextures[i].NFTUri);
+
+                targetItem.ImageLoadedOrAttemptedToLoad = true;
 
                 if (texture == null)
                 {
-                    if (!SpawnedItems[i].DisplayAnimationButton.gameObject.activeSelf)
-                        SpawnedItems[i].NFTImage.sprite = ImageNotAvailableSprite;
+                    if (!targetItem.DisplayAnimationButton.gameObject.activeSelf)
+                        targetItem.NFTImage.sprite = ImageNotAvailableSprite;
 
                     continue;
                 }
 
                 Sprite sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
 
-                SpawnedItems[i].NFTImage.sprite = sprite;
+                targetItem.NFTImage.sprite = sprite;
             }
 
             this.StatusText.text = "Collection loaded";
@@ -355,17 +367,21 @@ public class MyCollectionWindow : WindowBase
         return jsonUriToJson;
     }
 
-    private async UniTask<Texture2D> GetRemoteTextureAsync(string url, CancellationToken token)
+    private async UniTask<NFTUriToTexture> GetRemoteTextureAsync(string NFTUri, string url, CancellationToken token, int timeoutSeconds = 15)
     {
         Texture2D texture;
 
+        int msPassed = 0;
+
         using (UnityWebRequest www = UnityWebRequestTexture.GetTexture(url))
         {
-            var asyncOp = www.SendWebRequest();
+            UnityWebRequestAsyncOperation asyncOp = www.SendWebRequest();
+            int waitTime = 1000 / 30;
 
-            while (asyncOp.isDone == false)
+            while (asyncOp.isDone == false && msPassed < timeoutSeconds * 1000)
             {
-                await Task.Delay(1000 / 30);//30 hertz
+                await Task.Delay(waitTime);//30 hertz
+                msPassed += waitTime;
 
                 token.ThrowIfCancellationRequested();
             }
@@ -373,7 +389,7 @@ public class MyCollectionWindow : WindowBase
             if (www.result != UnityWebRequest.Result.Success)
             {
                 UnityEngine.Debug.Log($"{www.error}, URL:{www.url}");
-                return null;
+                return new NFTUriToTexture(NFTUri, null);
             }
 
             texture = DownloadHandlerTexture.GetContent(www);
@@ -385,10 +401,10 @@ public class MyCollectionWindow : WindowBase
 
             Object.Destroy(texture);
 
-            return resized;
+            return new NFTUriToTexture(NFTUri, resized);
         }
 
-        return texture;
+        return new NFTUriToTexture(NFTUri, texture);
     }
 
     private Texture2D ResizeTexture(Texture2D source, int newWidth, int newHeight)
@@ -406,9 +422,9 @@ public class MyCollectionWindow : WindowBase
         return nTex;
     }
 
-    private async UniTask<Texture2D> GetNullTextureAsync()
+    private async UniTask<NFTUriToTexture> GetNullTextureAsync(string nftUri)
     {
-        return null;
+        return new NFTUriToTexture(nftUri, null);
     }
 
     private void PreconvertAnimations(List<string> externalLinks)
@@ -418,5 +434,18 @@ public class MyCollectionWindow : WindowBase
             await Task.Delay(1);
             await MediaConverterManager.Instance.Client.RequestLinksConversionAsync(externalLinks);
         });
+    }
+
+    private class NFTUriToTexture
+    {
+        public NFTUriToTexture(string NFTUri, Texture2D texture)
+        {
+            this.NFTUri = NFTUri;
+            this.Texture = texture;
+        }
+
+        public string NFTUri { get; set; }
+
+        public Texture2D Texture { get; set; }
     }
 }
