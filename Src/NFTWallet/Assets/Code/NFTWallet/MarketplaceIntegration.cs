@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,7 +67,7 @@ public class MarketplaceIntegration : MonoBehaviour
     }
 
     // TODO check if expired
-    public async UniTask LogInToNFTMarketplaceAsync(string loginData)
+    public async UniTask<HttpStatusCode> LogInToNFTMarketplaceAsync(string loginData)
     {
         //string testData = "sid:nftmarketplacetest.azurewebsites.net/api/login/login-callback?uid=CBN3hhkyh3ddkl98JTa4e3zn1yohMnQScs7UuG-Ok9m7uupyF4z9eM9UhBw1qOTP&exp=1642262570";
 
@@ -90,6 +91,8 @@ public class MarketplaceIntegration : MonoBehaviour
         HttpResponseMessage callbackResult = await client.PostAsync(callbackUri, stringContent);
 
         Debug.Log(callbackResult);
+
+        return callbackResult.StatusCode;
     }
 
     private async UniTask<QRDataParseResult> CallApiRequestLoginAsync()

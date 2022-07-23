@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -111,7 +112,10 @@ public class MarketplaceWindow : WindowBase
         if (qrCode.Contains("callback"))
         {
             Debug.Log("Logging in");
-            await MarketplaceIntegration.Instance.LogInToNFTMarketplaceAsync(qrCode);
+            HttpStatusCode status = await MarketplaceIntegration.Instance.LogInToNFTMarketplaceAsync(qrCode);
+
+            string displayResult = status == HttpStatusCode.OK ? "Logged in successfully" : "Error while logging in";
+            await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(displayResult);
         }
         else
         {
