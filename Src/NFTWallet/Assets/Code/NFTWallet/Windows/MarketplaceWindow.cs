@@ -101,12 +101,21 @@ public class MarketplaceWindow : WindowBase
     {
         Debug.Log("QR data: " + qrCode);
 
-        bool validRequest = false;
+        bool validExecutionRequest = false;
+        MarketplaceRequestModel marketplaceRequestModel = null;
 
         try
         {
-            MarketplaceRequestModel marketplaceRequestModel = JsonConvert.DeserializeObject<MarketplaceRequestModel>(qrCode);
+            marketplaceRequestModel = JsonConvert.DeserializeObject<MarketplaceRequestModel>(qrCode);
+            validExecutionRequest = true;
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
 
+        try
+        {
             StringBuilder builder = new StringBuilder();
             builder.AppendLine("Sender: " + marketplaceRequestModel.sender);
             builder.AppendLine("To: " + marketplaceRequestModel.to);
@@ -124,21 +133,19 @@ public class MarketplaceWindow : WindowBase
                 await MarketplaceIntegration.Instance.ExecuteMarketplaceRequestAsync(marketplaceRequestModel);
             });
 
-            validRequest = true;
+            if (!validExecutionRequest)
+            {
+                // Try login
+                Debug.Log("Logging in");
+                HttpStatusCode status = await MarketplaceIntegration.Instance.LogInToNFTMarketplaceAsync(qrCode);
+
+                string displayResult = status == HttpStatusCode.OK ? "Logged in successfully" : "Error while logging in";
+                await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(displayResult, "Login");
+            }
         }
         catch (Exception e)
         {
-            Debug.Log(e);
-        }
-
-        if (!validRequest)
-        {
-            // Try login
-            Debug.Log("Logging in");
-            HttpStatusCode status = await MarketplaceIntegration.Instance.LogInToNFTMarketplaceAsync(qrCode);
-
-            string displayResult = status == HttpStatusCode.OK ? "Logged in successfully" : "Error while logging in";
-            await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(displayResult, "Login");
+            await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(e.ToString(), "Error");
         }
     }
 }
