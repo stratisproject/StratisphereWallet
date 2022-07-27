@@ -3,6 +3,7 @@ using System.Collections;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UI;
@@ -93,52 +94,51 @@ public class MarketplaceWindow : WindowBase
         isScanning = false;
         ScanQrButtonText.text = "Scan QR";
 
-
-        Task.Run(async () =>
-        {
-            try
-            {
-                await QRCodeScannedAsync(QrCode);
-            }
-            catch (Exception e)
-            {
-                 Debug.LogError(e);
-            }
-        });
+        QRCodeScannedAsync(QrCode).GetAwaiter().GetResult();
     }
 
-    private async Task QRCodeScannedAsync(string qrCode)
+    private async UniTask QRCodeScannedAsync(string qrCode)
     {
-        if (qrCode.Contains("callback"))
+        Debug.Log("QR data: " + qrCode);
+
+        bool validRequest = false;
+
+        try
         {
+            MarketplaceRequestModel marketplaceRequestModel = JsonConvert.DeserializeObject<MarketplaceRequestModel>(qrCode);
+
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine("Sender: " + marketplaceRequestModel.sender);
+            builder.AppendLine("To: " + marketplaceRequestModel.to);
+            builder.AppendLine("Amount: " + marketplaceRequestModel.amount);
+            builder.AppendLine("Method: " + marketplaceRequestModel.method);
+
+            builder.AppendLine();
+            builder.AppendLine("Parameters:");
+
+            foreach (Parameter parameter in marketplaceRequestModel.parameters)
+                builder.AppendLine(parameter.label + ": " + parameter.value);
+
+            await NFTWalletWindowManager.Instance.PopupWindowYesNo.ShowPopupAsync(builder.ToString(), "Send transaction", async delegate
+            {
+                await MarketplaceIntegration.Instance.ExecuteMarketplaceRequestAsync(marketplaceRequestModel);
+            });
+
+            validRequest = true;
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e);
+        }
+
+        if (!validRequest)
+        {
+            // Try login
             Debug.Log("Logging in");
             HttpStatusCode status = await MarketplaceIntegration.Instance.LogInToNFTMarketplaceAsync(qrCode);
 
             string displayResult = status == HttpStatusCode.OK ? "Logged in successfully" : "Error while logging in";
             await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(displayResult, "Login");
-        }
-        else
-        {
-            Debug.Log("Executing request: " + qrCode);
-
-            MarketplaceRequestModel model = JsonConvert.DeserializeObject<MarketplaceRequestModel>(qrCode);
-
-            StringBuilder builder = new StringBuilder();
-            builder.AppendLine("Sender: " + model.sender);
-            builder.AppendLine("To: " + model.to);
-            builder.AppendLine("Amount: " + model.amount);
-            builder.AppendLine("Method: " + model.method);
-
-            builder.AppendLine();
-            builder.AppendLine("Parameters:");
-
-            foreach (Parameter parameter in model.parameters)
-                builder.AppendLine(parameter.label + ": " + parameter.value);
-
-            await NFTWalletWindowManager.Instance.PopupWindowYesNo.ShowPopupAsync(builder.ToString(), "Send transaction", async delegate
-            {
-                await MarketplaceIntegration.Instance.ExecuteMarketplaceRequestAsync(model);
-            });
         }
     }
 }
