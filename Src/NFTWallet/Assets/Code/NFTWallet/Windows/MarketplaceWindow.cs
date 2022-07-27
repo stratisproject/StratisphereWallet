@@ -94,7 +94,7 @@ public class MarketplaceWindow : WindowBase
         isScanning = false;
         ScanQrButtonText.text = "Scan QR";
 
-        QRCodeScannedAsync(QrCode).GetAwaiter().GetResult();
+        QRCodeScannedAsync(QrCode);
     }
 
     private async UniTask QRCodeScannedAsync(string qrCode)
@@ -116,24 +116,26 @@ public class MarketplaceWindow : WindowBase
 
         try
         {
-            StringBuilder builder = new StringBuilder();
-            builder.AppendLine("Sender: " + marketplaceRequestModel.sender);
-            builder.AppendLine("To: " + marketplaceRequestModel.to);
-            builder.AppendLine("Amount: " + marketplaceRequestModel.amount);
-            builder.AppendLine("Method: " + marketplaceRequestModel.method);
-
-            builder.AppendLine();
-            builder.AppendLine("Parameters:");
-
-            foreach (Parameter parameter in marketplaceRequestModel.parameters)
-                builder.AppendLine(parameter.label + ": " + parameter.value);
-
-            await NFTWalletWindowManager.Instance.PopupWindowYesNo.ShowPopupAsync(builder.ToString(), "Send transaction", async delegate
+            if (validExecutionRequest)
             {
-                await MarketplaceIntegration.Instance.ExecuteMarketplaceRequestAsync(marketplaceRequestModel);
-            });
+                StringBuilder builder = new StringBuilder();
+                builder.AppendLine("Sender: " + marketplaceRequestModel.sender);
+                builder.AppendLine("To: " + marketplaceRequestModel.to);
+                builder.AppendLine("Amount: " + marketplaceRequestModel.amount);
+                builder.AppendLine("Method: " + marketplaceRequestModel.method);
 
-            if (!validExecutionRequest)
+                builder.AppendLine();
+                builder.AppendLine("Parameters:");
+
+                foreach (Parameter parameter in marketplaceRequestModel.parameters)
+                    builder.AppendLine(parameter.label + ": " + parameter.value);
+
+                await NFTWalletWindowManager.Instance.PopupWindowYesNo.ShowPopupAsync(builder.ToString(), "Send transaction", async delegate
+                {
+                    await MarketplaceIntegration.Instance.ExecuteMarketplaceRequestAsync(marketplaceRequestModel);
+                });
+            }
+            else
             {
                 // Try login
                 Debug.Log("Logging in");
@@ -145,6 +147,7 @@ public class MarketplaceWindow : WindowBase
         }
         catch (Exception e)
         {
+            Debug.LogError(e);
             await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(e.ToString(), "Error");
         }
     }
