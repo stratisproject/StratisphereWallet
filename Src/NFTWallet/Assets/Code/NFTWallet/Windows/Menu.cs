@@ -10,7 +10,7 @@ public class Menu : MonoBehaviour
         Wallet_Button.onClick.AddListener(async delegate { await NFTWalletWindowManager.Instance.WalletWindow.ShowAsync(); });
         MyCollection_Button.onClick.AddListener(async delegate { await NFTWalletWindowManager.Instance.MyCollectionWindow.ShowAsync(); });
         CreateNFT_Button.onClick.AddListener(async delegate { await NFTWalletWindowManager.Instance.CreateNftWindow.ShowAsync(); });
-        Send_Button.onClick.AddListener(async delegate { await NFTWalletWindowManager.Instance.SendWindow.ShowAsync(); });
+        //Send_Button.onClick.AddListener(async delegate { await NFTWalletWindowManager.Instance.SendWindow.ShowAsync(); });
         Mint_Button.onClick.AddListener(async delegate { await NFTWalletWindowManager.Instance.MintWindow.ShowAsync(); });
         Burn_Button.onClick.AddListener(async delegate { await NFTWalletWindowManager.Instance.BurnWindow.ShowAsync(); });
         LogOutButton.onClick.AddListener(async delegate { await NFTWalletWindowManager.Instance.WelcomeWindow.ShowAsync(); });

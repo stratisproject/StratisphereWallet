@@ -46,17 +46,17 @@ public class SendWindow : WindowBase
 
 
             NFTWrapper wrapper = new NFTWrapper(NFTWallet.Instance.StratisUnityManager, selectedContract);
-            
+
             Task<string> sendTask = wrapper.TransferFromAsync(NFTWallet.Instance.StratisUnityManager.GetAddress().ToString(), destAddr, sendId);
-            
+
             ReceiptResponse receipt = await NFTWalletWindowManager.Instance.WaitTransactionWindow.DisplayUntilSCReceiptReadyAsync(sendTask);
-            
+
             bool success = receipt?.Success ?? false;
-            
+
             string resultString = string.Format("NFT send success: {0}", success);
-            
+
             await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(resultString, "NFT SEND");
-            
+
             this.ownedNfts.OwnedIDsByContractAddress.First(x => x.Key == selectedContract).Value.Remove((long)sendId);
             DisplayAvailableIdsForSelectedContract();
         });
@@ -68,7 +68,7 @@ public class SendWindow : WindowBase
 
         string myAddress = NFTWallet.Instance.StratisUnityManager.GetAddress().ToString();
         ownedNfts = await NFTWallet.Instance.StratisUnityManager.Client.GetOwnedNftsAsync(myAddress);
-        
+
         this.contractAddresses = ownedNfts.OwnedIDsByContractAddress.Keys.ToList();
         this.selectedContract = this.contractAddresses.FirstOrDefault();
 
@@ -92,7 +92,7 @@ public class SendWindow : WindowBase
 
         DisplayAvailableIdsForSelectedContract();
     }
-    
+
     private void DisplayAvailableIdsForSelectedContract()
     {
         KeyValuePair<string, ICollection<long>> contractToIds = this.ownedNfts.OwnedIDsByContractAddress.FirstOrDefault(x => x.Key == selectedContract);
