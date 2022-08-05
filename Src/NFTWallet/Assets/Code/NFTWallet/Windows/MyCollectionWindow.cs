@@ -43,7 +43,7 @@ public class MyCollectionWindow : WindowBase, ItemUpdateListener
     {
         try
         {
-            UnityEngine.Debug.Log("Loading collection started");
+            Debug.Log("Loading collection started");
 
             this.StatusText.text = "loading collection";
             ScrollRect.verticalNormalizedPosition = this.defaultScrollRectVerticalPosition;
@@ -62,11 +62,11 @@ public class MyCollectionWindow : WindowBase, ItemUpdateListener
         }
         catch (OperationCanceledException)
         {
-            UnityEngine.Debug.Log("Loading collection cancelled");
+            Debug.Log("Loading collection cancelled");
         }
         catch (Exception e)
         {
-            UnityEngine.Debug.LogError("Error while loading collection: " + e.ToString());
+            Debug.LogError("Error while loading collection: " + e.ToString());
         }
     }
 
@@ -149,10 +149,7 @@ public class MyCollectionWindow : WindowBase, ItemUpdateListener
             collectionItem.DisplayAnimationButton.onClick.RemoveAllListeners();
             collectionItem.DisplayAnimationButton.onClick.AddListener(async delegate
             {
-                await NFTWalletWindowManager.Instance.AnimationWindow.ShowPopupAsync(
-                    item.AnimationURL,
-                    "NFTID: " + item.TokenID
-                );
+                await NFTWalletWindowManager.Instance.AnimationWindow.ShowPopupAsync(item.AnimationURL, "NFTID: " + item.TokenID);
             });
         }
     }
