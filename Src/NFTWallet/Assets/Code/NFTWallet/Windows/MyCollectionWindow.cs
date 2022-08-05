@@ -1,18 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using Newtonsoft.Json;
-using Stratis.SmartContracts;
-using Unity3dApi;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
-using Object = UnityEngine.Object;
 
 public class MyCollectionWindow : WindowBase, ItemUpdateListener
 {

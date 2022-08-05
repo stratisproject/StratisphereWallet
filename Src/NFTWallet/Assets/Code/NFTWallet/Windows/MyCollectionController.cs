@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -12,8 +11,6 @@ using Stratis.SmartContracts;
 using Unity3dApi;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.UI;
-using Object = UnityEngine.Object;
 
 public class MyCollectionController
 {
@@ -336,7 +333,7 @@ public class MyCollectionController
         {
             Texture2D resized = texture.ResizeTexture(600, 600);
 
-            Object.Destroy(texture);
+            UnityEngine.Object.Destroy(texture);
 
             return resized;
         }
