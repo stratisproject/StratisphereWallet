@@ -52,10 +52,18 @@ public class MyCollectionController
 
         if (!itemsLoaded)
         {
-            await this.LoadItems(cancellation.Token);
+            try
+            {
+                CollectionLoadingInProgress = true;
+                await this.LoadItems(cancellation.Token);
+                itemsLoaded = true;
+            }
+            catch (OperationCanceledException exception)
+            {
+                CollectionLoadingInProgress = false;
+                throw exception;
+            }
         }
-
-        itemsLoaded = true;
     }
 
     public async UniTask OnHide()
@@ -69,8 +77,6 @@ public class MyCollectionController
     public async UniTask LoadItems(CancellationToken token)
     {
         NFTMetadataModels = new List<NFTMetadataModel>(NFTMetadataModels.Count);
-
-        CollectionLoadingInProgress = true;
 
         await UniTask.SwitchToThreadPool();
 
