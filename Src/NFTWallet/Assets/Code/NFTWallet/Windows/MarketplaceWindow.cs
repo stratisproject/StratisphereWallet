@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -11,11 +10,13 @@ using ZXing;
 
 public class MarketplaceWindow : WindowBase
 {
-    public Button ScanQRButton;
+    public Button ScanQRButton, ProcessQRTextButton;
 
     public Text ScanQrButtonText;
 
     public RawImage Image;
+
+    public InputField PasteQRCodeInputField;
 
     private WebCamTexture webcamTexture;
 
@@ -49,6 +50,13 @@ public class MarketplaceWindow : WindowBase
                 ScanQrButtonText.text = "Scan QR";
                 Image.gameObject.SetActive(false);
             }
+        });
+
+        ProcessQRTextButton.onClick.AddListener(async () =>
+        {
+            string qrCode = PasteQRCodeInputField.text;
+            PasteQRCodeInputField.text = string.Empty;
+            await QRCodeScannedAsync(qrCode);
         });
     }
 
