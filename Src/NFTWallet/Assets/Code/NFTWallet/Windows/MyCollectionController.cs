@@ -55,10 +55,9 @@ public class MyCollectionController
                 await this.LoadItems(cancellation.Token);
                 itemsLoaded = true;
             }
-            catch (OperationCanceledException exception)
+            finally
             {
                 CollectionLoadingInProgress = false;
-                throw exception;
             }
         }
     }
