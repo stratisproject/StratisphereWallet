@@ -57,6 +57,7 @@ public class MyCollectionWindow : WindowBase, ItemUpdateListener
             await base.ShowAsync(hideOtherWindows);
 
             await this.myCollectionController.OnShowAsync();
+            await UniTask.SwitchToMainThread();
 
             this.StatusText.text = "Collection loaded";
         }

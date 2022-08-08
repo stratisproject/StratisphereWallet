@@ -74,8 +74,6 @@ public class MyCollectionController
     {
         NFTMetadataModels = new List<NFTMetadataModel>(NFTMetadataModels.Count);
 
-        await UniTask.SwitchToThreadPool();
-
         var items = await this.LoadCollectionItemsAsync(token);
 
         foreach (var item in items)
@@ -136,8 +134,11 @@ public class MyCollectionController
 
     private async UniTask<List<NFTItem>> LoadCollectionItemsAsync(CancellationToken token)
     {
+        await UniTask.SwitchToMainThread();
         List<DeployedNFTModel> knownNfts = NFTWallet.Instance.LoadKnownNfts();
         token.ThrowIfCancellationRequested();
+
+        await UniTask.SwitchToThreadPool();
 
         OwnedNFTsModel myNfts = await NFTWallet.Instance.StratisUnityManager.Client.GetOwnedNftsAsync(this.WalletAddress, token);
         List<NFTItem> items = new List<NFTItem>();
@@ -280,7 +281,7 @@ public class MyCollectionController
 
         NFTMetadataModel model = null;
 
-        if (json == null)
+        if (json == null || string.IsNullOrEmpty(json))
         {
             model = new NFTMetadataModel();
             model.Name = model.Description = model.Image = "[No metadata]";
@@ -305,11 +306,11 @@ public class MyCollectionController
         await UniTask.SwitchToThreadPool();
     }
 
-    private async UniTask<Texture2D> GetRemoteTextureAsync(string url, CancellationToken token, int timeoutSeconds = 15)
+    private async UniTask<Texture2D> GetRemoteTextureAsync(string url, CancellationToken token, int timeoutSeconds = 30)
     {
         Texture2D texture;
 
-        await UniTask.SwitchToThreadPool();
+        await UniTask.SwitchToMainThread();
 
         using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(url))
         {
@@ -325,8 +326,6 @@ public class MyCollectionController
 
             texture = DownloadHandlerTexture.GetContent(request);
         }
-
-        await UniTask.SwitchToMainThread();
 
         if (texture != null && (texture.width > 600 || texture.height > 600))
         {
