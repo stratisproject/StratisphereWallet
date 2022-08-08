@@ -30,7 +30,7 @@ public class MyCollectionWindow : WindowBase, ItemUpdateListener
 
     public override async UniTask HideAsync()
     {
-        await myCollectionController.OnHide();
+        await myCollectionController.OnHideAsync();
         await base.HideAsync();
     }
 
@@ -56,7 +56,7 @@ public class MyCollectionWindow : WindowBase, ItemUpdateListener
 
             await base.ShowAsync(hideOtherWindows);
 
-            await this.myCollectionController.OnShow();
+            await this.myCollectionController.OnShowAsync();
 
             this.StatusText.text = "Collection loaded";
         }
@@ -70,7 +70,7 @@ public class MyCollectionWindow : WindowBase, ItemUpdateListener
         }
     }
 
-    public async UniTask OnItemsLoaded(List<NFTItem> items)
+    public async UniTask OnItemsLoadedAsync(List<NFTItem> items)
     {
         foreach (var item in items)
         {
@@ -81,7 +81,7 @@ public class MyCollectionWindow : WindowBase, ItemUpdateListener
         this.ResizeContent();
     }
 
-    public async UniTask OnItemUpdated(NFTItem item)
+    public async UniTask OnItemUpdatedAsync(NFTItem item)
     {
         var collectionItem = SpawnedItems.Find((collectionItem) =>
         {

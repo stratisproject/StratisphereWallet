@@ -43,7 +43,7 @@ public class MyCollectionController
         client.Timeout = TimeSpan.FromSeconds(10);
     }
 
-    public async UniTask OnShow()
+    public async UniTask OnShowAsync()
     {
         cancellation = new CancellationTokenSource();
 
@@ -52,7 +52,7 @@ public class MyCollectionController
             try
             {
                 CollectionLoadingInProgress = true;
-                await this.LoadItems(cancellation.Token);
+                await this.LoadItemsAsync(cancellation.Token);
                 itemsLoaded = true;
             }
             finally
@@ -62,7 +62,7 @@ public class MyCollectionController
         }
     }
 
-    public async UniTask OnHide()
+    public async UniTask OnHideAsync()
     {
         this.cancellation?.Cancel();
 
@@ -70,7 +70,7 @@ public class MyCollectionController
             await UniTask.Delay(50);
     }
 
-    public async UniTask LoadItems(CancellationToken token)
+    public async UniTask LoadItemsAsync(CancellationToken token)
     {
         NFTMetadataModels = new List<NFTMetadataModel>(NFTMetadataModels.Count);
 
@@ -85,7 +85,7 @@ public class MyCollectionController
 
         await UniTask.SwitchToMainThread();
 
-        this.ItemsListener.OnItemsLoaded(items);
+        await this.ItemsListener.OnItemsLoadedAsync(items);
 
         await UniTask.SwitchToThreadPool();
 
@@ -94,7 +94,7 @@ public class MyCollectionController
         foreach (var item in items)
         {
             itemsLoadingTasks.Add(
-                UniTask.Defer(async () => await this.LoadItemInfo(item.ContractAddress, item.TokenID, token))
+                UniTask.Defer(async () => await this.LoadItemInfoAsync(item.ContractAddress, item.TokenID, token))
             );
         }
 
@@ -170,24 +170,24 @@ public class MyCollectionController
         return items;
     }
 
-    private async UniTask LoadItemInfo(string contractAddress, long tokenID, CancellationToken cancellationToken)
+    private async UniTask LoadItemInfoAsync(string contractAddress, long tokenID, CancellationToken cancellationToken)
     {
         var item = this.GetItem(contractAddress, tokenID);
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        await this.LoadItemMetadata(contractAddress, tokenID, cancellationToken);
+        await this.LoadItemMetadataAsync(contractAddress, tokenID, cancellationToken);
 
-        await RequestImageLoading(item, cancellationToken);
+        await RequestImageLoadingAsync(item, cancellationToken);
     }
 
-    private async UniTask LoadItemMetadata(string contractAddress, long tokenID, CancellationToken token)
+    private async UniTask LoadItemMetadataAsync(string contractAddress, long tokenID, CancellationToken token)
     {
-        var tokenURI = await GetTokenURL(contractAddress, tokenID);
+        var tokenURI = await GetTokenURLAsync(contractAddress, tokenID);
 
         token.ThrowIfCancellationRequested();
 
-        var metadata = ConvertToNFTMetadata(await this.LoadJson(tokenURI, token));
+        var metadata = ConvertToNFTMetadata(await this.LoadJsonAsync(tokenURI, token));
 
         NFTMetadataModels.Add(metadata);
 
@@ -195,7 +195,7 @@ public class MyCollectionController
         HandleImageURIs(item, metadata);
     }
 
-    private async UniTask HandleImageURIs(NFTItem item, NFTMetadataModel metadata)
+    private void HandleImageURIs(NFTItem item, NFTMetadataModel metadata)
     {
         string imageUri = !IsAnimationURI(metadata.Image) ? metadata.Image : null;
         string animationUri = (!string.IsNullOrEmpty(metadata.AnimationUrl))
@@ -206,14 +206,14 @@ public class MyCollectionController
         item.AnimationURL = animationUri;
     }
 
-    private async UniTask RequestImageLoading(NFTItem item, CancellationToken token)
+    private async UniTask RequestImageLoadingAsync(NFTItem item, CancellationToken token)
     {
         if (!string.IsNullOrEmpty(item.ImageURL))
         {
             item.ImageIsLoading = true;
         }
 
-        RequestItemUpdate(item);
+        await RequestItemUpdateAsync(item);
 
         try
         {
@@ -232,7 +232,7 @@ public class MyCollectionController
             item.ImageIsLoading = false;
         }
 
-        RequestItemUpdate(item);
+        await RequestItemUpdateAsync(item);
     }
 
     private bool IsAnimationURI(string uri)
@@ -245,14 +245,14 @@ public class MyCollectionController
             uri.EndsWith(".avi");
     }
 
-    private async UniTask<string> GetTokenURL(string contractAddress, long tokenID)
+    private async UniTask<string> GetTokenURLAsync(string contractAddress, long tokenID)
     {
         //TODO: we can implement Object Pool optimization here
         NFTWrapper wrapper = new NFTWrapper(NFTWallet.Instance.StratisUnityManager, contractAddress);
         return await wrapper.TokenURIAsync((UInt256)tokenID);
     }
 
-    private async UniTask<string> LoadJson(string url, CancellationToken token)
+    private async UniTask<string> LoadJsonAsync(string url, CancellationToken token)
     {
         try
         {
@@ -293,13 +293,13 @@ public class MyCollectionController
         return model;
     }
 
-    private async UniTask RequestItemUpdate(NFTItem item)
+    private async UniTask RequestItemUpdateAsync(NFTItem item)
     {
         await UniTask.SwitchToMainThread();
 
         if (ItemsListener != null)
         {
-            ItemsListener.OnItemUpdated(item);
+            await ItemsListener.OnItemUpdatedAsync(item);
         }
 
         await UniTask.SwitchToThreadPool();
@@ -370,6 +370,6 @@ public class NFTItem
 
 public interface ItemUpdateListener
 {
-    public UniTask OnItemsLoaded(List<NFTItem> items);
-    public UniTask OnItemUpdated(NFTItem item);
+    public UniTask OnItemsLoadedAsync(List<NFTItem> items);
+    public UniTask OnItemUpdatedAsync(NFTItem item);
 }
