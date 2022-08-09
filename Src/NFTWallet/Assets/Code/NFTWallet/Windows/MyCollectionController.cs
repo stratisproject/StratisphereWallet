@@ -61,6 +61,10 @@ public class MyCollectionController
                 CollectionLoadingInProgress = false;
             }
         }
+        else
+        {
+            await this.ItemsListener.OnItemsLoadedAsync(itemsList);
+        }
     }
 
     public async UniTask OnHideAsync()
