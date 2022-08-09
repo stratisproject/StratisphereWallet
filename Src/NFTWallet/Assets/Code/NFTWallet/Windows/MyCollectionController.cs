@@ -11,6 +11,7 @@ using Stratis.SmartContracts;
 using Unity3dApi;
 using UnityEngine;
 using UnityEngine.Networking;
+using Debug = System.Diagnostics.Debug;
 
 public class MyCollectionController
 {
@@ -74,9 +75,11 @@ public class MyCollectionController
     {
         NFTMetadataModels = new List<NFTMetadataModel>(NFTMetadataModels.Count);
 
-        var items = await this.LoadCollectionItemsAsync(token);
+        List<NFTItem> items = await this.LoadCollectionItemsAsync(token);
 
-        foreach (var item in items)
+        UnityEngine.Debug.Log(string.Format("Loading {0} items", items.Count));
+
+        foreach (NFTItem item in items)
         {
             this.SaveItemToStorage(item);
         }
