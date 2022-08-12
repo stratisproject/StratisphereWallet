@@ -62,13 +62,16 @@ public class MarketplaceWindow : WindowBase
 
     private IEnumerator GetQRCode()
     {
-        if (webcamTexture == null) {
+        if (webcamTexture == null)
+        {
             yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
             if (Application.HasUserAuthorization(UserAuthorization.WebCam))
             {
                 webcamTexture = new WebCamTexture(512, 512);
                 Image.texture = webcamTexture;
-            } else {
+            }
+            else
+            {
                 yield break;
             }
         }
@@ -79,8 +82,16 @@ public class MarketplaceWindow : WindowBase
 
         while (string.IsNullOrEmpty(QrCode))
         {
+            if (!isScanning) break;
+
             try
             {
+                if (snap.width != webcamTexture.width || snap.height != webcamTexture.height)
+                {
+                    UnityEngine.Object.Destroy(snap);
+                    snap = new Texture2D(webcamTexture.width, webcamTexture.height, TextureFormat.ARGB32, false);
+                }
+
                 snap.SetPixels32(webcamTexture.GetPixels32());
                 Result result = barCodeReader.Decode(snap.GetRawTextureData(), webcamTexture.width, webcamTexture.height, RGBLuminanceSource.BitmapFormat.ARGB32);
                 if (result != null)
@@ -102,7 +113,10 @@ public class MarketplaceWindow : WindowBase
         isScanning = false;
         ScanQrButtonText.text = "Scan QR";
 
-        QRCodeScannedAsync(QrCode);
+        if (!string.IsNullOrEmpty(QrCode))
+        {
+            QRCodeScannedAsync(QrCode);
+        }
     }
 
     private async UniTask QRCodeScannedAsync(string qrCode)
