@@ -1,6 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using NBitcoin;
+using Stratis.SmartContracts;
+using Unity3dApi;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -60,6 +64,7 @@ public class MyCollectionWindow : WindowBase, ItemUpdateListener
             await UniTask.SwitchToMainThread();
 
             this.StatusText.text = "Collection loaded";
+            Debug.Log("Loading collection finished");
         }
         catch (OperationCanceledException)
         {
@@ -122,7 +127,17 @@ public class MyCollectionWindow : WindowBase, ItemUpdateListener
         collectionItem.TitleText.text = item.Name;
         collectionItem.DescriptionText.text = item.Description;
 
+        collectionItem.Sell_Button.onClick.RemoveAllListeners();
         collectionItem.Sell_Button.onClick.AddListener(delegate { Application.OpenURL(item.SellURL); });
+
+        collectionItem.Send_Button.onClick.RemoveAllListeners();
+        collectionItem.Send_Button.onClick.AddListener(async delegate
+        {
+            await NFTWalletWindowManager.Instance.SendNFTPopupWindow.ShowPopupAsync(item.ContractAddress, item.TokenID, async delegate(string destinationAddress)
+            {
+                await OnSendNFTConfirmedAsync(item.ContractAddress, item.TokenID, destinationAddress);
+            });
+        });
 
         if (item.ImageIsLoading)
         {
@@ -153,5 +168,46 @@ public class MyCollectionWindow : WindowBase, ItemUpdateListener
                 await NFTWalletWindowManager.Instance.AnimationWindow.ShowPopupAsync(item.AnimationURL, "NFTID: " + item.TokenID);
             });
         }
+    }
+
+    private async Task OnSendNFTConfirmedAsync(string contractAddress, long nftId, string destinationAddress)
+    {
+        Debug.Log(string.Format("OnSendNFTConfirmedAsync contractAddress: {0}, nftId: {1}, destinationAddress: {2}", contractAddress, nftId, destinationAddress));
+
+        if (string.IsNullOrEmpty(contractAddress) || string.IsNullOrEmpty(destinationAddress))
+        {
+            await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync("Destination address or contract address is incorrect.", "ERROR");
+            return;
+        }
+
+        try
+        {
+            // Check that address is a valid address
+            var addr = new BitcoinPubKeyAddress(destinationAddress, NFTWallet.Instance.Network);
+        }
+        catch (FormatException)
+        {
+            await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync("Destination address is invalid.", "ERROR");
+            return;
+        }
+
+        UInt256 sendId = UInt256.Parse(nftId.ToString());
+
+        NFTWrapper wrapper = new NFTWrapper(NFTWallet.Instance.StratisUnityManager, contractAddress);
+
+        Task<string> sendTask = wrapper.TransferFromAsync(NFTWallet.Instance.StratisUnityManager.GetAddress().ToString(), destinationAddress, sendId);
+
+        ReceiptResponse receipt = await NFTWalletWindowManager.Instance.WaitTransactionWindow.DisplayUntilSCReceiptReadyAsync(sendTask);
+
+        bool success = receipt?.Success ?? false;
+
+        string resultString = string.Format("NFT send success: {0}", success);
+
+        if (success)
+        {
+            resultString += Environment.NewLine + "Item that was sent will disappear from your collection after refresh once backend indexes this nft contract.";
+        }
+
+        await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(resultString, "NFT SEND");
     }
 }
