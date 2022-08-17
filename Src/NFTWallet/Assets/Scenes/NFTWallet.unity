@@ -13176,7 +13176,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.07848487, y: 0.85810846}
   m_AnchorMax: {x: 0.95466226, y: 0.9006627}
-  m_AnchoredPosition: {x: -8.216003, y: 142.52002}
+  m_AnchoredPosition: {x: -8.21582, y: 142.52002}
   m_SizeDelta: {x: 287.71, y: -53.39}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &377111036
@@ -31644,6 +31644,8 @@ MonoBehaviour:
   CancelButton: {fileID: 561082979}
   TitleText: {fileID: 1235995174}
   MessageText: {fileID: 1502245384}
+  ConfirmButtonText: {fileID: 1184717464}
+  CancelButtonText: {fileID: 2029150766}
 --- !u!114 &926000715
 MonoBehaviour:
   m_ObjectHideFlags: 0
