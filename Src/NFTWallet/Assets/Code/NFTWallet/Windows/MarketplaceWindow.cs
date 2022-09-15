@@ -27,12 +27,14 @@ public class MarketplaceWindow : WindowBase
     async void Awake()
     {
         if (Application.platform == RuntimePlatform.IPhonePlayer)
-            this.Image.transform.Rotate(0, 180, 180);
+            this.Image?.transform.Rotate(0, 180, 180);
 
-        Image.gameObject.SetActive(false);
-        ScanQrButtonText.text = "Scan QR";
+        Image?.gameObject.SetActive(false);
 
-        ScanQRButton.onClick.AddListener(async () =>
+        if (ScanQrButtonText != null)
+            ScanQrButtonText.text = "Scan QR";
+
+        ScanQRButton?.onClick.AddListener(async () =>
         {
             if (!isScanning)
             {
