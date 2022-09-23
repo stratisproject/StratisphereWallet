@@ -127,9 +127,6 @@ public class MyCollectionWindow : WindowBase, ItemUpdateListener
         collectionItem.TitleText.text = item.Name;
         collectionItem.DescriptionText.text = item.Description;
 
-        collectionItem.Sell_Button.onClick.RemoveAllListeners();
-        collectionItem.Sell_Button.onClick.AddListener(delegate { Application.OpenURL(item.SellURL); });
-
         collectionItem.Send_Button.onClick.RemoveAllListeners();
         collectionItem.Send_Button.onClick.AddListener(async delegate
         {
