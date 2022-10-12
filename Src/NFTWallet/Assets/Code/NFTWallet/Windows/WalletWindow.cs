@@ -17,6 +17,12 @@ public class WalletWindow : WindowBase
 
     public InputField DestinationAddressInputField, AmountInputField;
 
+    public Dropdown NetworkDropDown;
+
+    private TargetNetwork selectedNetwork;
+
+    private List<TargetNetwork> targetNetworks = new List<TargetNetwork>();
+
     void Awake()
     {
         CopyAddressButton.onClick.AddListener(delegate { GUIUtility.systemCopyBuffer = this.AddressText.text; });
@@ -88,11 +94,29 @@ public class WalletWindow : WindowBase
         {
             await NFTWalletWindowManager.Instance.QRWindow.ShowPopupAsync(NFTWallet.Instance.StratisUnityManager.GetAddress().ToString());
         });
+
+        NetworkDropDown?.onValueChanged.AddListener(async delegate (int optionNumber)
+        {
+            selectedNetwork = targetNetworks[optionNumber];
+            
+            await NFTWalletWindowManager.Instance.LoginWindow.LogInAsync(selectedNetwork);
+        });
+
+        targetNetworks.Add(TargetNetwork.CirrusTest);
+        targetNetworks.Add(TargetNetwork.CirrusMain);
+
+        NetworkDropDown.ClearOptions();
+        List<string> options = targetNetworks.Select(x => x.ToString()).ToList();
+        NetworkDropDown.AddOptions(options);
     }
 
     public override async UniTask ShowAsync(bool hideOtherWindows = true)
     {
         this.AddressText.text = NFTWallet.Instance.StratisUnityManager.GetAddress().ToString();
+        
+        selectedNetwork = NFTWallet.Instance.CurrentNetwork;
+
+        NetworkDropDown.value = (int)selectedNetwork;
 
         await base.ShowAsync(hideOtherWindows);
 

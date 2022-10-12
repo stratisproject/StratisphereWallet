@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using Cysharp.Threading.Tasks;
 using NBitcoin;
 using UnityEngine;
@@ -14,13 +15,9 @@ public class LoginWindow : WindowBase
 
     public Text MnemonicInputFieldPlaceholderText;
 
-    public Dropdown NetworkDropDown, LanguageSelectDropdown;
+    public Dropdown LanguageSelectDropdown;
 
     private const string ResolutionKey = "ResolutionST";
-
-    private List<TargetNetwork> targetNetworks = new List<TargetNetwork>();
-
-    private TargetNetwork selectedNetwork;
 
     private Wordlist selectedWordlist = Wordlist.English;
 
@@ -64,10 +61,7 @@ public class LoginWindow : WindowBase
             }
         });
 
-        NetworkDropDown.onValueChanged.AddListener(delegate (int optionNumber)
-        {
-            selectedNetwork = targetNetworks[optionNumber];
-        });
+       
 
         LanguageSelectDropdown.onValueChanged.AddListener(delegate (int optionNumber)
         {
@@ -83,20 +77,7 @@ public class LoginWindow : WindowBase
         {
             PlayerPrefs.DeleteAll();
         });
-
-        targetNetworks.Add(NFTWallet.Instance.DefaultNetwork);
-
-        if (NFTWallet.Instance.DefaultNetwork == TargetNetwork.CirrusMain)
-            targetNetworks.Add(TargetNetwork.CirrusTest);
-        else
-            targetNetworks.Add(TargetNetwork.CirrusMain);
-
-        selectedNetwork = NFTWallet.Instance.DefaultNetwork;
-
-        NetworkDropDown.ClearOptions();
-        List<string> options = targetNetworks.Select(x => x.ToString()).ToList();
-        NetworkDropDown.AddOptions(options);
-
+        
         #if !UNITY_ANDROID && !UNITY_IPHONE
                 if (PlayerPrefs.HasKey(ResolutionKey) && PlayerPrefs.GetInt(ResolutionKey) >= 0)
                 {
@@ -136,8 +117,10 @@ public class LoginWindow : WindowBase
     }
 
     // mnemonic should exist
-    public async UniTask LogInAsync()
+    public async UniTask LogInAsync(TargetNetwork? _targetNetwork = null)
     {
+        TargetNetwork targetNetwork = _targetNetwork == null ? NFTWallet.Instance.DefaultNetwork : _targetNetwork.Value;
+
         bool presavedMnemonicExists = NFTWallet.Instance.IsMnemonicSaved();
         bool mnemonicEntered = !string.IsNullOrEmpty(MnemonicInputField.text);
 
@@ -172,7 +155,7 @@ public class LoginWindow : WindowBase
 
         this.PassphraseInputField.text = string.Empty;
 
-        bool success = await NFTWallet.Instance.InitializeAsync(mnemonic, NFTWallet.Instance.DefaultNetwork, passphrase);
+        bool success = await NFTWallet.Instance.InitializeAsync(mnemonic, targetNetwork, passphrase);
 
         if (success)
             await NFTWalletWindowManager.Instance.WalletWindow.ShowAsync();
