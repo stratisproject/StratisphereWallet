@@ -8272,7 +8272,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.044231307, y: 0.46643934}
   m_AnchorMax: {x: 0.5303061, y: 0.87381315}
-  m_AnchoredPosition: {x: -1.8500974, y: -0.29206848}
+  m_AnchoredPosition: {x: -1.8500977, y: -0.29206848}
   m_SizeDelta: {x: 156.33, y: 35.473}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &206801070
@@ -15686,11 +15686,9 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Option A
+    - m_Text: Cirrus Main
       m_Image: {fileID: 0}
-    - m_Text: Option B
-      m_Image: {fileID: 0}
-    - m_Text: Option C
+    - m_Text: Cirrus Test
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
@@ -35459,7 +35457,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.08800001, y: 0.55200005}
   m_AnchorMax: {x: 0.24630795, y: 0.57600003}
-  m_AnchoredPosition: {x: 4.0833893, y: -0.4239807}
+  m_AnchoredPosition: {x: 4.083374, y: -0.4239807}
   m_SizeDelta: {x: 59.6702, y: 4.197323}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &922742863
@@ -37902,7 +37900,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.7785489, y: 0.07300001}
   m_AnchorMax: {x: 0.93500006, y: 0.23050305}
-  m_AnchoredPosition: {x: 72.47803, y: 676.5188}
+  m_AnchoredPosition: {x: 72.47797, y: 676.5188}
   m_SizeDelta: {x: -167.3946, y: -116.49786}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &985707393
@@ -42400,7 +42398,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.19643591, y: 0.749}
   m_AnchorMax: {x: 0.76756424, y: 0.80100006}
-  m_AnchoredPosition: {x: 0.0005493164, y: -95.2}
+  m_AnchoredPosition: {x: 0.0005493164, y: -95.19999}
   m_SizeDelta: {x: 855.67, y: 46.75}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1130799650
@@ -46039,7 +46037,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.120790005, y: 0.17500001}
   m_AnchorMax: {x: 0.87684, y: 0.23300001}
-  m_AnchoredPosition: {x: 0.21606445, y: 105.29994}
+  m_AnchoredPosition: {x: 0.21606445, y: 105.29979}
   m_SizeDelta: {x: 1.0822144, y: 0.13999939}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1264142947
@@ -47398,7 +47396,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -499.40002, y: 41}
+  m_AnchoredPosition: {x: -499.4, y: 41}
   m_SizeDelta: {x: 423.375, y: 59.770996}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1290256787
@@ -60378,7 +60376,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.23843591, y: 0.32818484}
   m_AnchorMax: {x: 0.75723946, y: 0.4778152}
-  m_AnchoredPosition: {x: 2.0986023, y: 35.848}
+  m_AnchoredPosition: {x: 2.0986023, y: 35.847996}
   m_SizeDelta: {x: 364.23, y: 43.829}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1631180661
@@ -60655,7 +60653,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 532.9715, y: 98.999985}
+  m_AnchoredPosition: {x: 532.97156, y: 98.999985}
   m_SizeDelta: {x: 599.622, y: 52.344}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1653353037
@@ -72651,7 +72649,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Option A
+  m_Text: Cirrus Main
 --- !u!222 &1962078039
 CanvasRenderer:
   m_ObjectHideFlags: 0

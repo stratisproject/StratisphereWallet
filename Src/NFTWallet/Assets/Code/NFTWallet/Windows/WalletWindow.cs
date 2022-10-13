@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using NBitcoin;
-using Stratis.SmartContracts;
 using Unity3dApi;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,8 +17,6 @@ public class WalletWindow : WindowBase
     public InputField DestinationAddressInputField, AmountInputField;
 
     public Dropdown NetworkDropDown;
-
-    private TargetNetwork selectedNetwork;
 
     private List<TargetNetwork> targetNetworks = new List<TargetNetwork>();
 
@@ -95,28 +92,31 @@ public class WalletWindow : WindowBase
             await NFTWalletWindowManager.Instance.QRWindow.ShowPopupAsync(NFTWallet.Instance.StratisUnityManager.GetAddress().ToString());
         });
 
-        NetworkDropDown?.onValueChanged.AddListener(async delegate (int optionNumber)
-        {
-            selectedNetwork = targetNetworks[optionNumber];
-            
-            await NFTWalletWindowManager.Instance.LoginWindow.LogInAsync(selectedNetwork);
-        });
-
         targetNetworks.Add(TargetNetwork.CirrusTest);
         targetNetworks.Add(TargetNetwork.CirrusMain);
-
+        
         NetworkDropDown.ClearOptions();
         List<string> options = targetNetworks.Select(x => x.ToString()).ToList();
         NetworkDropDown.AddOptions(options);
+
+        NetworkDropDown.value = (int) NFTWallet.Instance.CurrentNetwork;
+
+        NetworkDropDown?.onValueChanged.AddListener(async delegate (int optionNumber)
+        {
+            Debug.Log("OPTRION: " + optionNumber + "   networksCount " + targetNetworks.Count);
+            TargetNetwork newNetwork = targetNetworks[optionNumber];
+
+            if (newNetwork != NFTWallet.Instance.CurrentNetwork)
+                await NFTWalletWindowManager.Instance.LoginWindow.LogInAsync(newNetwork);
+        });
     }
 
     public override async UniTask ShowAsync(bool hideOtherWindows = true)
     {
         this.AddressText.text = NFTWallet.Instance.StratisUnityManager.GetAddress().ToString();
         
-        selectedNetwork = NFTWallet.Instance.CurrentNetwork;
-
-        NetworkDropDown.value = (int)selectedNetwork;
+        NetworkDropDown.value = (int)NFTWallet.Instance.CurrentNetwork;
+        Debug.Log("Wallet window, current network: " + NFTWallet.Instance.CurrentNetwork + "  dropdown: " + NetworkDropDown.value);
 
         await base.ShowAsync(hideOtherWindows);
 

@@ -164,14 +164,14 @@ public class NFTWallet : MonoBehaviour
     {
         List<DeployedNFTModel> knownNfts = LoadKnownNfts();
 
-        try
-        {
-            await this.StratisUnityManager.Client.WatchNftContractAsync(contractAddress);
-        }
-        catch (Exception e)
-        {
-            Debug.Log("Cant watch nft contracts...");
-        }
+        //try
+        //{
+        //    await this.StratisUnityManager.Client.WatchNftContractAsync(contractAddress);
+        //}
+        //catch (Exception e)
+        //{
+        //    Debug.Log("Cant watch nft contracts...");
+        //}
 
         if (knownNfts.Any(x => x.ContractAddress == contractAddress))
             return;
