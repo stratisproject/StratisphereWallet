@@ -59,7 +59,7 @@ public class StratisUnityManager
 
     public async Task<decimal> GetBalanceAsync()
     {
-        long balanceSat = await NFTWallet.Instance.GetBlockCoreApi().GetBalanceAsync(this.address.ToString());
+        ulong balanceSat = await NFTWallet.Instance.GetBlockCoreApi().GetBalanceAsync(this.address.ToString());
 
         decimal balance = new Money(balanceSat).ToUnit(MoneyUnit.BTC);
 

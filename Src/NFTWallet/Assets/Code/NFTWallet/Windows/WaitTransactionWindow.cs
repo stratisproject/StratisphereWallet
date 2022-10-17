@@ -43,7 +43,7 @@ public class WaitTransactionWindow : WindowBase
     }
 
     /// <summary>Waits till target address' balance is changed.</summary>
-    public async UniTask DisplayUntilDestBalanceChanges(string address, long currentBalanceSat, Task<string> sendTxTask)
+    public async UniTask DisplayUntilDestBalanceChanges(string address, ulong currentBalanceSat, Task<string> sendTxTask)
     {
         await this.ShowAsync(false);
 
@@ -54,7 +54,7 @@ public class WaitTransactionWindow : WindowBase
 
             while (true)
             {
-                long balanceSat = await NFTWallet.Instance.GetBlockCoreApi().GetBalanceAsync(address);
+                ulong balanceSat = await NFTWallet.Instance.GetBlockCoreApi().GetBalanceAsync(address);
 
                 if (balanceSat != currentBalanceSat)
                     break;

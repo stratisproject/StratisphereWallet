@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using UnityEngine;
 
 public class BlockCoreApi
 {
@@ -72,9 +73,10 @@ public class BlockCoreApi
         return allItems;
     }
 
-    public async Task<long> GetBalanceAsync(string address)
+    public async Task<ulong> GetBalanceAsync(string address)
     {
         string result = await this.client.GetStringAsync(baseUri + "query/address/" + address);
+
         AddressInfoModel root = JsonConvert.DeserializeObject<AddressInfoModel>(result);
 
         return root.balance;
@@ -132,16 +134,16 @@ public class BlockCoreApi
     public class AddressInfoModel
     {
         public string address { get; set; }
-        public long balance { get; set; }
-        public long totalReceived { get; set; }
-        public int totalStake { get; set; }
-        public long totalMine { get; set; }
-        public long totalSent { get; set; }
-        public int totalReceivedCount { get; set; }
-        public int totalSentCount { get; set; }
-        public int totalStakeCount { get; set; }
-        public int totalMineCount { get; set; }
-        public int pendingSent { get; set; }
-        public int pendingReceived { get; set; }
+        public ulong balance { get; set; }
+        public ulong totalReceived { get; set; }
+        public ulong totalStake { get; set; }
+        public ulong totalMine { get; set; }
+        public ulong totalSent { get; set; }
+        public ulong totalReceivedCount { get; set; }
+        public ulong totalSentCount { get; set; }
+        public ulong totalStakeCount { get; set; }
+        public ulong totalMineCount { get; set; }
+        public ulong pendingSent { get; set; }
+        public ulong pendingReceived { get; set; }
     }
 }
