@@ -40,7 +40,7 @@ public class WalletWindow : WindowBase
                     return;
                 }
 
-                long currentBalanceSat = await NFTWallet.Instance.StratisUnityManager.Client.GetAddressBalanceAsync(destAddress);
+                long currentBalanceSat = await NFTWallet.Instance.GetBlockCoreApi().GetBalanceAsync(destAddress);
 
                 Task<string> sendTxTask = NFTWallet.Instance.StratisUnityManager.SendTransactionAsync(destAddress, amount);
 
@@ -78,7 +78,7 @@ public class WalletWindow : WindowBase
 
             Task<string> sendTxTask = stratisUnityManager.SendTransactionAsync(destAddr, faucetAmount);
 
-            long currentBalanceSat = await NFTWallet.Instance.StratisUnityManager.Client.GetAddressBalanceAsync(destAddr);
+            long currentBalanceSat = await NFTWallet.Instance.GetBlockCoreApi().GetBalanceAsync(destAddr);
 
             await NFTWalletWindowManager.Instance.WaitTransactionWindow.DisplayUntilDestBalanceChanges(destAddr, currentBalanceSat, sendTxTask);
 

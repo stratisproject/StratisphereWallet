@@ -54,7 +54,7 @@ public class WaitTransactionWindow : WindowBase
 
             while (true)
             {
-                long balanceSat = await NFTWallet.Instance.StratisUnityManager.Client.GetAddressBalanceAsync(address);
+                long balanceSat = await NFTWallet.Instance.GetBlockCoreApi().GetBalanceAsync(address);
 
                 if (balanceSat != currentBalanceSat)
                     break;

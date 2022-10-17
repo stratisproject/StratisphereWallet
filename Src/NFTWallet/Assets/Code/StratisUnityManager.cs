@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,7 +59,7 @@ public class StratisUnityManager
 
     public async Task<decimal> GetBalanceAsync()
     {
-        long balanceSat = await Client.GetAddressBalanceAsync(this.address.ToString());
+        long balanceSat = await NFTWallet.Instance.GetBlockCoreApi().GetBalanceAsync(this.address.ToString());
 
         decimal balance = new Money(balanceSat).ToUnit(MoneyUnit.BTC);
 
@@ -136,9 +137,9 @@ public class StratisUnityManager
 
     private async Task<Coin[]> GetCoinsAsync()
     {
-        GetUTXOsResponseModel utxos = await Client.GetUTXOsForAddressAsync(this.address.ToString());
+        List<BlockCoreApi.UTXOModel> utxos = await NFTWallet.Instance.GetBlockCoreApi().GetUTXOsAsync(this.address.ToString());
 
-        Coin[] coins = utxos.Utxos.Select(x => new Coin(new OutPoint(uint256.Parse(x.Hash), x.N), new TxOut(new Money(x.Satoshis), address))).ToArray();
+        Coin[] coins = utxos.Select(x => new Coin(new OutPoint(uint256.Parse(x.Hash), x.N), new TxOut(new Money(x.Satoshis), address))).ToArray();
 
         return coins;
     }
