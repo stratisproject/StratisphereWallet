@@ -86,7 +86,7 @@ public class NFTWallet : MonoBehaviour
     /// <returns><c>true</c> if success.</returns>
     public async UniTask<bool> InitializeAsync(string mnemonic, TargetNetwork initNetwork, string passphrase = null)
     {
-        Debug.Log("Initializing: " + initNetwork.ToString());
+        Debug.Log("Initializing on " + initNetwork);
 
         this.currentNetwork = initNetwork;
 

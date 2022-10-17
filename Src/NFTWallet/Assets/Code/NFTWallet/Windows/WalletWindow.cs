@@ -116,7 +116,6 @@ public class WalletWindow : WindowBase
         this.AddressText.text = NFTWallet.Instance.StratisUnityManager.GetAddress().ToString();
         
         NetworkDropDown.value = (int)NFTWallet.Instance.CurrentNetwork;
-        Debug.Log("Wallet window, current network: " + NFTWallet.Instance.CurrentNetwork + "  dropdown: " + NetworkDropDown.value);
 
         await base.ShowAsync(hideOtherWindows);
 

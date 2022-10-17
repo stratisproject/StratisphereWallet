@@ -67,7 +67,7 @@ public class BurnWindow : WindowBase
 
         string myAddress = NFTWallet.Instance.StratisUnityManager.GetAddress().ToString();
 
-        List<BlockCoreApi.OwnedNFTItem> ownedNfts = await NFTWallet.Instance.GetBlockCoreApi().GetOwnedNFTIds(myAddress);
+        this.ownedNfts = await NFTWallet.Instance.GetBlockCoreApi().GetOwnedNFTIds(myAddress);
 
         //this.LogAvailableIds();
 
