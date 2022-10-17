@@ -73,7 +73,7 @@ public class WalletWindow : WindowBase
             Money faucetAmount = new Money(5, MoneyUnit.BTC);
             string destAddr = NFTWallet.Instance.StratisUnityManager.GetAddress().ToString();
 
-            StratisUnityManager stratisUnityManager = new StratisUnityManager(new Unity3dClient(NFTWallet.Instance.ApiUrl), NFTWallet.Instance.Network,
+            StratisUnityManager stratisUnityManager = new StratisUnityManager(new Unity3dClient(NFTWallet.Instance.UnityApiUrl), NFTWallet.Instance.Network,
                 new Mnemonic(faucetMnemonic, Wordlist.English));
 
             Task<string> sendTxTask = stratisUnityManager.SendTransactionAsync(destAddr, faucetAmount);

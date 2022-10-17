@@ -18,7 +18,7 @@ public class SendWindow : WindowBase
 
     private List<string> contractAddresses;
 
-    private OwnedNFTsModel ownedNfts;
+    private List<BlockCoreApi.OwnedNFTItem> ownedNfts;
     private string selectedContract;
 
     void Awake()
@@ -44,7 +44,6 @@ public class SendWindow : WindowBase
 
             DestinationAddrInputField.text = SendIdInputField.text = string.Empty;
 
-
             NFTWrapper wrapper = new NFTWrapper(NFTWallet.Instance.StratisUnityManager, selectedContract);
 
             Task<string> sendTask = wrapper.TransferFromAsync(NFTWallet.Instance.StratisUnityManager.GetAddress().ToString(), destAddr, sendId);
@@ -57,7 +56,7 @@ public class SendWindow : WindowBase
 
             await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(resultString, "NFT SEND");
 
-            this.ownedNfts.OwnedIDsByContractAddress.First(x => x.Key == selectedContract).Value.Remove((long)sendId);
+            this.ownedNfts.Remove(this.ownedNfts.Single(x => x.contractId == selectedContract && x.id == sendId));
             DisplayAvailableIdsForSelectedContract();
         });
     }
@@ -67,9 +66,10 @@ public class SendWindow : WindowBase
         await base.ShowAsync(hideOtherWindows);
 
         string myAddress = NFTWallet.Instance.StratisUnityManager.GetAddress().ToString();
-        ownedNfts = await NFTWallet.Instance.StratisUnityManager.Client.GetOwnedNftsAsync(myAddress);
 
-        this.contractAddresses = ownedNfts.OwnedIDsByContractAddress.Keys.ToList();
+        this.ownedNfts = await NFTWallet.Instance.GetBlockCoreApi().GetOwnedNFTIds(myAddress);
+
+        this.contractAddresses = ownedNfts.Select(x => x.contractId).Distinct().ToList();
         this.selectedContract = this.contractAddresses.FirstOrDefault();
 
         List<DeployedNFTModel> knownContracts = NFTWallet.Instance.LoadKnownNfts();
@@ -95,12 +95,12 @@ public class SendWindow : WindowBase
 
     private void DisplayAvailableIdsForSelectedContract()
     {
-        KeyValuePair<string, ICollection<long>> contractToIds = this.ownedNfts.OwnedIDsByContractAddress.FirstOrDefault(x => x.Key == selectedContract);
+        List<long> ownedIds = this.ownedNfts.Where(x => x.contractId == selectedContract).Select(x => x.id).ToList();
 
         string idsString;
-        if (contractToIds.Value == null || !contractToIds.Value.Any())
+        if (ownedIds.Count == 0)
             idsString = "You don't own any NFTs of that type.";
-        else idsString = string.Join(",", contractToIds.Value.Distinct().OrderBy(x => x));
+        else idsString = string.Join(",", ownedIds.OrderBy(x => x));
 
         OwnedIdsText.text = "OwnedIDs:" + idsString;
     }

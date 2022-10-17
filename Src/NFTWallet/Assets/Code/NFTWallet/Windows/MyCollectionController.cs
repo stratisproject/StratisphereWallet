@@ -147,55 +147,45 @@ public class MyCollectionController
 
         await UniTask.SwitchToThreadPool();
 
-        OwnedNFTsModel myNfts = await NFTWallet.Instance.StratisUnityManager.Client.GetOwnedNftsAsync(this.WalletAddress, token);
+        List<BlockCoreApi.OwnedNFTItem> myNfts = await NFTWallet.Instance.GetBlockCoreApi().GetOwnedNFTIds(this.WalletAddress);
+        
         List<NFTItem> items = new List<NFTItem>();
 
-        foreach (var contractAddressToOwnedIds in myNfts.OwnedIDsByContractAddress)
+        foreach (BlockCoreApi.OwnedNFTItem myNft in myNfts)
         {
-            token.ThrowIfCancellationRequested();
-
-            string contractAddress = contractAddressToOwnedIds.Key;
-            List<long> ownedIds = contractAddressToOwnedIds.Value.Distinct().ToList();
-
-            DeployedNFTModel knownNft = knownNfts.FirstOrDefault(x => x.ContractAddress == contractAddress);
+            DeployedNFTModel knownNft = knownNfts.FirstOrDefault(x => x.ContractAddress == myNft.contractId);
             string nftName = (knownNft == null) ? string.Empty : knownNft.NftName;
 
-            foreach (var id in ownedIds)
+            items.Add(new NFTItem()
             {
-                items.Add(
-                    new NFTItem()
-                    {
-                        ContractAddress = contractAddress,
-                        TokenID = id,
-                        Name = string.Format("{0}  ({1})", nftName, id),
-                        SellURL = MarketplaceIntegration.Instance.GetSellURI(contractAddress, id),
-                        ImageIsLoading = true
-                    }
-                );
-            }
+                ContractAddress = myNft.contractId,
+                TokenID = myNft.id,
+                Name = string.Format("{0}  ({1})", nftName, myNft.id),
+                SellURL = MarketplaceIntegration.Instance.GetSellURI(myNft.contractId, myNft.id),
+                ImageIsLoading = true,
+                MetadataUri = myNft.uri
+            });
         }
-
+        
         return items;
     }
 
     private async UniTask LoadItemInfoAsync(string contractAddress, long tokenID, CancellationToken cancellationToken)
     {
-        var item = this.GetItem(contractAddress, tokenID);
+        NFTItem item = this.GetItem(contractAddress, tokenID);
 
         cancellationToken.ThrowIfCancellationRequested();
 
-        await this.LoadItemMetadataAsync(contractAddress, tokenID, cancellationToken);
+        await this.LoadItemMetadataAsync(contractAddress, tokenID, item.MetadataUri, cancellationToken);
 
         await RequestImageLoadingAsync(item, cancellationToken);
     }
 
-    private async UniTask LoadItemMetadataAsync(string contractAddress, long tokenID, CancellationToken token)
+    private async UniTask LoadItemMetadataAsync(string contractAddress, long tokenID, string metadataUri, CancellationToken token)
     {
-        var tokenURI = await GetTokenURLAsync(contractAddress, tokenID);
-
         token.ThrowIfCancellationRequested();
 
-        var metadata = ConvertToNFTMetadata(await this.LoadJsonAsync(tokenURI, token));
+        var metadata = ConvertToNFTMetadata(await this.LoadJsonAsync(metadataUri, token));
 
         NFTMetadataModels.Add(metadata);
 
@@ -251,13 +241,6 @@ public class MyCollectionController
             uri.EndsWith(".webm") ||
             uri.EndsWith(".webp") ||
             uri.EndsWith(".avi");
-    }
-
-    private async UniTask<string> GetTokenURLAsync(string contractAddress, long tokenID)
-    {
-        //TODO: we can implement Object Pool optimization here
-        NFTWrapper wrapper = new NFTWrapper(NFTWallet.Instance.StratisUnityManager, contractAddress);
-        return await wrapper.TokenURIAsync((UInt256)tokenID);
     }
 
     private async UniTask<string> LoadJsonAsync(string url, CancellationToken token)
@@ -370,6 +353,7 @@ public class NFTItem
     public string SellURL;
     public string ImageURL;
     public string AnimationURL;
+    public string MetadataUri;
     public Texture2D ImageTexture;
     public bool ImageIsLoading;
 }

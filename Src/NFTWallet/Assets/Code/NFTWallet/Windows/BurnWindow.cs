@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
@@ -20,7 +21,7 @@ public class BurnWindow : WindowBase
 
     private List<string> contractAddresses;
 
-    private OwnedNFTsModel ownedNfts;
+    private List<BlockCoreApi.OwnedNFTItem> ownedNfts;
     private string selectedContract;
 
     void Awake()
@@ -54,7 +55,8 @@ public class BurnWindow : WindowBase
             
             await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(resultString, "NFT BURN");
 
-            this.ownedNfts.OwnedIDsByContractAddress.First(x => x.Key == selectedContract).Value.Remove((long)burnId);
+            this.ownedNfts.Remove(this.ownedNfts.Single(x => x.contractId == selectedContract && x.id == burnId));
+
             DisplayAvailableIdsForSelectedContract();
         });
     }
@@ -64,11 +66,12 @@ public class BurnWindow : WindowBase
         await base.ShowAsync(hideOtherWindows);
 
         string myAddress = NFTWallet.Instance.StratisUnityManager.GetAddress().ToString();
-        ownedNfts = await NFTWallet.Instance.StratisUnityManager.Client.GetOwnedNftsAsync(myAddress);
+
+        List<BlockCoreApi.OwnedNFTItem> ownedNfts = await NFTWallet.Instance.GetBlockCoreApi().GetOwnedNFTIds(myAddress);
 
         //this.LogAvailableIds();
 
-        this.contractAddresses = ownedNfts.OwnedIDsByContractAddress.Keys.ToList();
+        this.contractAddresses = ownedNfts.Select(x => x.contractId).Distinct().ToList();
         this.selectedContract = this.contractAddresses.FirstOrDefault();
 
         List<DeployedNFTModel> knownContracts = NFTWallet.Instance.LoadKnownNfts();
@@ -92,24 +95,13 @@ public class BurnWindow : WindowBase
         DisplayAvailableIdsForSelectedContract();
     }
 
-    private void LogAvailableIds()
-    {
-        string allOwnedNfts = "Owned NFTs" + Environment.NewLine;
-        foreach (KeyValuePair<string, ICollection<long>> contrAddrToIds in ownedNfts.OwnedIDsByContractAddress)
-        {
-            allOwnedNfts += contrAddrToIds.Key + " " + string.Join(",", contrAddrToIds.Value) + Environment.NewLine;
-        }
-        
-        Debug.Log(allOwnedNfts);
-    }
-
     private void DisplayAvailableIdsForSelectedContract()
     {
-        KeyValuePair<string, ICollection<long>> contractToIds = this.ownedNfts.OwnedIDsByContractAddress.FirstOrDefault(x => x.Key == selectedContract);
-
-        if (contractToIds.Value == null || !contractToIds.Value.Any())
+        List<long> ownedIds = this.ownedNfts.Where(x => x.contractId == selectedContract).Select(x => x.id).ToList();
+        
+        if (ownedIds.Count == 0)
             OwnedIdsText.text = "You don't own any NFTs of that type.";
         else
-            OwnedIdsText.text = "OwnedIDs:" + string.Join(",", contractToIds.Value.Distinct().OrderBy(x => x));
+            OwnedIdsText.text = "OwnedIDs:" + string.Join(",", ownedIds.OrderBy(x => x));
     }
 }

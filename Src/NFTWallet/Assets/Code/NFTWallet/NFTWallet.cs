@@ -25,9 +25,15 @@ public class NFTWallet : MonoBehaviour
     public string TestnetApiUrl = "https://api-sfn-test.stratisphere.com/"; //http://localhost:44336/
     public string MainnetApiUrl = "https://api-sfn.stratisphere.com/";
 
+    public string MainnetBlockCoreIndexerApi = "https://crs.indexer.thedude.pro/api/";
+
+    public string TestnetBlockCoreIndexerApi = "https://tcrs.indexer.blockcore.net/api/";
+
     public string MediaConversionApiUrl = "http://148.251.15.126:7110/";
 
-    public string ApiUrl => CurrentNetwork == TargetNetwork.CirrusMain ? MainnetApiUrl : TestnetApiUrl;
+    public string UnityApiUrl => CurrentNetwork == TargetNetwork.CirrusMain ? MainnetApiUrl : TestnetApiUrl;
+
+    public string BlockCoreApiUrl => CurrentNetwork == TargetNetwork.CirrusMain ? MainnetBlockCoreIndexerApi : TestnetBlockCoreIndexerApi;
 
     public Network Network => network;
 
@@ -72,6 +78,11 @@ public class NFTWallet : MonoBehaviour
             o.SetActive(enableStandalone);
     }
 
+    public BlockCoreApi GetBlockCoreApi()
+    {
+        return new BlockCoreApi(BlockCoreApiUrl);
+    }
+
     /// <returns><c>true</c> if success.</returns>
     public async UniTask<bool> InitializeAsync(string mnemonic, TargetNetwork initNetwork, string passphrase = null)
     {
@@ -88,7 +99,7 @@ public class NFTWallet : MonoBehaviour
         {
             Wordlist wordlist = Wordlist.AutoDetect(mnemonic);
 
-            this.StratisUnityManager = new StratisUnityManager(new Unity3dClient(ApiUrl), Network,
+            this.StratisUnityManager = new StratisUnityManager(new Unity3dClient(UnityApiUrl), Network,
                 new Mnemonic(mnemonic, wordlist), passphrase);
 
             await this.StratisUnityManager.GetBalanceAsync();
@@ -117,9 +128,9 @@ public class NFTWallet : MonoBehaviour
     {
         try
         {
-            OwnedNFTsModel ownedNfts = await this.StratisUnityManager.Client.GetOwnedNftsAsync(this.StratisUnityManager.GetAddress().ToString());
+            List<BlockCoreApi.OwnedNFTItem> ownedNfts = await this.GetBlockCoreApi().GetOwnedNFTIds(this.StratisUnityManager.GetAddress().ToString());
 
-            var contracts = ownedNfts.OwnedIDsByContractAddress.Keys.ToList();
+            List<string> contracts = ownedNfts.Select(x => x.contractId).Distinct().ToList();
 
             var loaded = LoadKnownNfts().Select(x => x.ContractAddress);
 
