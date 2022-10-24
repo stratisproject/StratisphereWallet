@@ -8,7 +8,7 @@ using MediaConverterApi;
 using NBitcoin;
 using Newtonsoft.Json;
 using Stratis.Sidechains.Networks;
-using Unity3dApi;
+using StratisNodeApi;
 using UnityEngine;
 using Network = NBitcoin.Network;
 
@@ -99,7 +99,7 @@ public class NFTWallet : MonoBehaviour
         {
             Wordlist wordlist = Wordlist.AutoDetect(mnemonic);
 
-            this.StratisUnityManager = new StratisUnityManager(new Unity3dClient(UnityApiUrl), Network,
+            this.StratisUnityManager = new StratisUnityManager(new StratisNodeClient(UnityApiUrl), Network,
                 new Mnemonic(mnemonic, wordlist), passphrase);
 
             await this.StratisUnityManager.GetBalanceAsync();

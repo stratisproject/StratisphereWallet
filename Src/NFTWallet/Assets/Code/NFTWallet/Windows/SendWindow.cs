@@ -3,7 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Stratis.SmartContracts;
-using Unity3dApi;
+using StratisNodeApi;
 using UnityEngine.UI;
 
 public class SendWindow : WindowBase

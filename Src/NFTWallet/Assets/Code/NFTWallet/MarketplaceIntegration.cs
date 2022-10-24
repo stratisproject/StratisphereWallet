@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using NBitcoin;
 using Newtonsoft.Json;
-using Unity3dApi;
+using StratisNodeApi;
 using UnityEngine;
 
 public class MarketplaceIntegration : MonoBehaviour

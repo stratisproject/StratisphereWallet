@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using NBitcoin;
 using Stratis.SmartContracts;
-using Unity3dApi;
+using StratisNodeApi;
 using UnityEngine;
 using UnityEngine.UI;
 

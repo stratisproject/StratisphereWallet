@@ -8,13 +8,13 @@ using Stratis.SmartContracts.CLR;
 using Stratis.SmartContracts.CLR.Serialization;
 using Stratis.SmartContracts.Core;
 using Stratis.SmartContracts.RuntimeObserver;
-using Unity3dApi;
+using StratisNodeApi;
 using UnityEngine;
 using Network = NBitcoin.Network;
 
 public class StratisUnityManager
 {
-    public readonly Unity3dClient Client;
+    public readonly StratisNodeClient Client;
 
     private Network network;
 
@@ -37,7 +37,7 @@ public class StratisUnityManager
 
     private CallDataSerializer callDataSerializer;
 
-    public StratisUnityManager(Unity3dClient client, Network network, Mnemonic mnemonic, string passPhrase = null)
+    public StratisUnityManager(StratisNodeClient client, Network network, Mnemonic mnemonic, string passPhrase = null)
     {
         this.Client = client;
         this.network = network;

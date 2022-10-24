@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
 using Stratis.SmartContracts;
-using Unity3dApi;
+using StratisNodeApi;
 using UnityEngine;
 using UnityEngine.Networking;
 using Debug = System.Diagnostics.Debug;
