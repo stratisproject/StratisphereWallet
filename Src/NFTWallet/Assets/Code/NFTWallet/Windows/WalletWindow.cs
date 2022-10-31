@@ -103,7 +103,6 @@ public class WalletWindow : WindowBase
 
         NetworkDropDown?.onValueChanged.AddListener(async delegate (int optionNumber)
         {
-            Debug.Log("OPTRION: " + optionNumber + "   networksCount " + targetNetworks.Count);
             TargetNetwork newNetwork = targetNetworks[optionNumber];
 
             if (newNetwork != NFTWallet.Instance.CurrentNetwork)
