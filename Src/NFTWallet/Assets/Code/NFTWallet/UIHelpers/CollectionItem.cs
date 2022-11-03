@@ -7,7 +7,7 @@ public class CollectionItem : MonoBehaviour
 
     public Image NFTImage;
 
-    public Button Send_Button;
+    public Button Send_Button, Sell_Button;
 
     public Button DisplayAnimationButton;
 
