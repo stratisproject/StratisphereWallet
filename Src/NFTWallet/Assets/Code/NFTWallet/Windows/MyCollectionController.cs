@@ -18,7 +18,6 @@ public class MyCollectionController
     public bool CollectionLoadingInProgress { get; private set; }
     public ItemUpdateListener ItemsListener;
 
-    private bool itemsLoaded = false;
     private ConcurrentDictionary<string, NFTItem> storage;
 
     private List<NFTItem> itemsList
@@ -48,22 +47,14 @@ public class MyCollectionController
     {
         cancellation = new CancellationTokenSource();
 
-        if (!itemsLoaded)
+        try
         {
-            try
-            {
-                CollectionLoadingInProgress = true;
-                await this.LoadItemsAsync(cancellation.Token);
-                itemsLoaded = true;
-            }
-            finally
-            {
-                CollectionLoadingInProgress = false;
-            }
+            CollectionLoadingInProgress = true;
+            await this.LoadItemsAsync(cancellation.Token);
         }
-        else
+        finally
         {
-            await this.ItemsListener.OnItemsLoadedAsync(itemsList);
+            CollectionLoadingInProgress = false;
         }
     }
 
@@ -148,7 +139,7 @@ public class MyCollectionController
         await UniTask.SwitchToThreadPool();
 
         List<BlockCoreApi.OwnedNFTItem> myNfts = await NFTWallet.Instance.GetBlockCoreApi().GetOwnedNFTIds(this.WalletAddress);
-        
+
         List<NFTItem> items = new List<NFTItem>();
 
         foreach (BlockCoreApi.OwnedNFTItem myNft in myNfts)
@@ -166,7 +157,7 @@ public class MyCollectionController
                 MetadataUri = myNft.uri
             });
         }
-        
+
         return items;
     }
 
