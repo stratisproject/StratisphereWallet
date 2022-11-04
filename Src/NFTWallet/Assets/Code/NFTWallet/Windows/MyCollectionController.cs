@@ -181,6 +181,7 @@ public class MyCollectionController
         NFTMetadataModels.Add(metadata);
 
         var item = GetItem(contractAddress, tokenID);
+        item.Description = metadata.Description;
         HandleImageURIs(item, metadata);
     }
 
@@ -265,7 +266,7 @@ public class MyCollectionController
         if (json == null || string.IsNullOrEmpty(json))
         {
             model = new NFTMetadataModel();
-            model.Name = model.Description = model.Image = "[No metadata]";
+            model.Name = model.Description = model.Image = "";
         }
         else
         {
