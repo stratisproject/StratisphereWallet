@@ -22,6 +22,10 @@ public class MyCollectionWindow : WindowBase, ItemUpdateListener
 
     public Sprite ImageNotAvailableSprite, LoadingImageSprite, NoImageButAnimationSprite;
 
+
+    [Range(0, 512)]
+    public int MaxDescriptionLength = 64;
+
     private float defaultScrollRectVerticalPosition;
 
     private MyCollectionController myCollectionController = new MyCollectionController();
@@ -125,7 +129,15 @@ public class MyCollectionWindow : WindowBase, ItemUpdateListener
         collectionItem.ContractAddr = item.ContractAddress;
         collectionItem.NFTID = item.TokenID;
         collectionItem.TitleText.text = item.Name;
-        collectionItem.DescriptionText.text = item.Description;
+
+        string descriptionText = item.Description;
+        if (!string.IsNullOrEmpty(descriptionText))
+        {
+            string truncatedText = descriptionText.Substring(0, Math.Min(descriptionText.Length, MaxDescriptionLength));
+            if (truncatedText.Length != descriptionText.Length) truncatedText += "…";
+            descriptionText = truncatedText;
+        }
+        collectionItem.DescriptionText.text = descriptionText;
 
         collectionItem.Sell_Button.onClick.RemoveAllListeners();
         collectionItem.Sell_Button.onClick.AddListener(delegate { Application.OpenURL(item.SellURL); });
@@ -133,7 +145,7 @@ public class MyCollectionWindow : WindowBase, ItemUpdateListener
         collectionItem.Send_Button.onClick.RemoveAllListeners();
         collectionItem.Send_Button.onClick.AddListener(async delegate
         {
-            await NFTWalletWindowManager.Instance.SendNFTPopupWindow.ShowPopupAsync(item.ContractAddress, item.TokenID, async delegate(string destinationAddress)
+            await NFTWalletWindowManager.Instance.SendNFTPopupWindow.ShowPopupAsync(item.ContractAddress, item.TokenID, async delegate (string destinationAddress)
             {
                 await OnSendNFTConfirmedAsync(item.ContractAddress, item.TokenID, destinationAddress);
             });
