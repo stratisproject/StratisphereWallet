@@ -20,9 +20,19 @@ public class WaitTransactionWindow : WindowBase
     {
         await this.ShowAsync(false);
 
+        string txHash = null;
+
         try
         {
-            string txHash = await callSmartContractTask;
+            txHash = await callSmartContractTask;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error while executing smart contract call. " + e.ToString());
+        }
+
+        try
+        {
             this.TxHashText.text = txHash;
 
             ReceiptResponse receipt = await NFTWallet.Instance.StratisUnityManager.WaitTillReceiptAvailable(txHash);
@@ -37,7 +47,7 @@ public class WaitTransactionWindow : WindowBase
 
             await NFTWalletWindowManager.Instance.PopupWindow.ShowPopupAsync(e.ToString(), "Error while executing smart contract call");
 
-            Debug.Log(e.ToString());
+            Debug.LogError(e.ToString());
             return null;
         }
     }

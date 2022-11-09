@@ -46,7 +46,7 @@ public class BlockCoreApi
 
         for (int offset = 0; offset < int.MaxValue; offset += limit)
         {
-            string endpoint = baseUri + "query/address/" + address + "/transactions/unspent?confirmations=1&offset=" + offset + "&limit=" + limit;
+            string endpoint = baseUri + "query/address/" + address + "/transactions/unspent?confirmations=0&offset=" + offset + "&limit=" + limit;
 
             HttpResponseMessage response = await client.GetAsync(endpoint);
 
