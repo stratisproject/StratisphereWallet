@@ -27,11 +27,18 @@ public class BlockCoreApi
 
         for (int offset = 0; offset < int.MaxValue; offset += limit)
         {
-            string result = await this.client.GetStringAsync(baseUri + "query/cirrus/collectables/" + ownerAddress + "?offset=" + offset + "&limit=" + limit);
-            OwnedNFTIdsRoot root = JsonConvert.DeserializeObject<OwnedNFTIdsRoot>(result);
-            allItems.AddRange(root.items);
+            string endpoint = baseUri + "query/cirrus/collectables/" + ownerAddress + "?offset=" + offset + "&limit=" + limit;
 
-            if (root.total < offset + limit)
+            HttpResponseMessage response = await client.GetAsync(endpoint);
+
+            var totalString = response.Headers.GetValues("pagination-total").First();
+            int total = int.Parse(totalString);
+            string result = await response.Content.ReadAsStringAsync();
+
+            List<OwnedNFTItem> items = JsonConvert.DeserializeObject<List<OwnedNFTItem>>(result);
+            allItems.AddRange(items);
+
+            if (total < offset + limit)
                 break;
         }
 
@@ -92,14 +99,6 @@ public class BlockCoreApi
         public object pricePaid { get; set; }
         public string transactionId { get; set; }
         public string contractId { get; set; }
-    }
-
-    public class OwnedNFTIdsRoot
-    {
-        public int offset { get; set; }
-        public int limit { get; set; }
-        public int total { get; set; }
-        public List<OwnedNFTItem> items { get; set; }
     }
     #endregion
 
