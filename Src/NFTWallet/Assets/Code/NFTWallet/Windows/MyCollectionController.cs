@@ -7,11 +7,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Newtonsoft.Json;
-using Stratis.SmartContracts;
-using StratisNodeApi;
 using UnityEngine;
 using UnityEngine.Networking;
-using Debug = System.Diagnostics.Debug;
 
 public class MyCollectionController
 {
@@ -237,6 +234,9 @@ public class MyCollectionController
 
     private async UniTask<string> LoadJsonAsync(string url, CancellationToken token)
     {
+        if (url.StartsWith("ipfs://"))
+            url = "https://cloudflare-ipfs.com/ipfs/" + url.Replace("ipfs://", string.Empty);
+
         try
         {
             HttpResponseMessage result = await this.client.GetAsync(url, token);
@@ -293,6 +293,9 @@ public class MyCollectionController
         Texture2D texture;
 
         await UniTask.SwitchToMainThread();
+
+        if (url.StartsWith("ipfs://"))
+            url = "https://cloudflare-ipfs.com/ipfs/" + url.Replace("ipfs://", string.Empty);
 
         using (UnityWebRequest request = UnityWebRequestTexture.GetTexture(url))
         {

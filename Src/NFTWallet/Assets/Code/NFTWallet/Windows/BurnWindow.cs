@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using Stratis.SmartContracts;
 using StratisNodeApi;
-using UnityEngine;
 using UnityEngine.UI;
 
 public class BurnWindow : WindowBase

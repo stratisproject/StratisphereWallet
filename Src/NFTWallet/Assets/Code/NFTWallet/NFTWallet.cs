@@ -7,6 +7,7 @@ using Cysharp.Threading.Tasks;
 using MediaConverterApi;
 using NBitcoin;
 using Newtonsoft.Json;
+using Pinata.Client;
 using Stratis.Sidechains.Networks;
 using StratisNodeApi;
 using UnityEngine;
@@ -31,6 +32,10 @@ public class NFTWallet : MonoBehaviour
 
     public string MediaConversionApiUrl = "http://148.251.15.126:7110/";
 
+    public string Pinata_APIKey = "771ae30ada3e6674cfbf";
+
+    public string Pinata_APISecret = "9c710214ec7220e84f625455d2b5f9fa44152928128572bc1be7b3af91770de8";
+
     public string UnityApiUrl => CurrentNetwork == TargetNetwork.CirrusMain ? MainnetApiUrl : TestnetApiUrl;
 
     public string BlockCoreApiUrl => CurrentNetwork == TargetNetwork.CirrusMain ? MainnetBlockCoreIndexerApi : TestnetBlockCoreIndexerApi;
@@ -44,6 +49,9 @@ public class NFTWallet : MonoBehaviour
     [HideInInspector]
     public StratisUnityManager StratisUnityManager;
 
+    [HideInInspector]
+    public PinataClient PinataClient;
+
     public GameObject[] MobileSpecific;
     public GameObject[] StandaloneSpecific;
 
@@ -55,6 +63,12 @@ public class NFTWallet : MonoBehaviour
 
     void Awake()
     {
+        this.PinataClient = new PinataClient(new Config()
+        {
+            ApiKey = this.Pinata_APIKey,
+            ApiSecret = this.Pinata_APISecret
+        });
+
         if (DEBUG_ResetMnemonicAtStart)
             DeleteMnemonic();
 
