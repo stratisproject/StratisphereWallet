@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using Newtonsoft.Json;
+using Pinata.Client.Models;
 using StratisNodeApi;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +18,8 @@ public class MintWindow : WindowBase
     public Button MintButton, TrackButton, CopySelectedContractButton, UntrackAllButton;
 
     public InputField MintToAddrInputField, UriInputField, DescriptionInputField, AttributesInputField, TrackContractInputField, AnimationInputField, NameInputField;
+
+    public Toggle UploadToIPFSToggle;
 
     private List<DeployedNFTModel> nftsForDeployment;
 
@@ -80,7 +86,7 @@ public class MintWindow : WindowBase
 
             try
             {
-                jsonUri = await MarketplaceIntegration.Instance.UploadMetadataAsync(new NFTMetadataModel()
+                NFTMetadataModel model = new NFTMetadataModel()
                 {
                     Name = name,
                     Image = uri,
@@ -88,7 +94,29 @@ public class MintWindow : WindowBase
                     Attributes = attributesCollection.ToArray(),
                     Category = selectedCategory,
                     AnimationUrl = animationUri
-                });
+                };
+
+                if (!this.UploadToIPFSToggle.isOn)
+                {
+                    jsonUri = await MarketplaceIntegration.Instance.UploadMetadataAsync(model);
+                }
+                else
+                {
+                    string json = JsonConvert.SerializeObject(model);
+                    PinJsonToIpfsResponse response = await NFTWallet.Instance.PinataClient.Pinning.PinJsonToIpfsAsync(json);
+
+                    if (response.IsSuccess)
+                    {
+                        jsonUri = "ipfs://" + response.IpfsHash;
+
+                        Debug.Log("Uploaded json metadata to IPFS. Link: " + jsonUri);
+                    }
+                    else
+                    {
+                        Debug.LogError("Failed to upload json metadata to IPFS");
+                    }
+                }
+                 
             }
             catch (Exception e)
             {
