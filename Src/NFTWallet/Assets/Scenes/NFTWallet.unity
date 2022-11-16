@@ -3741,7 +3741,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.00038146973}
+  m_AnchoredPosition: {x: 0, y: 1.9212799}
   m_SizeDelta: {x: 0, y: 1077.751}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &73172092
@@ -7914,10 +7914,10 @@ RectTransform:
   m_Father: {fileID: 119318241}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.7172313, y: 0.06956072}
-  m_AnchorMax: {x: 0.89423126, y: 0.19260438}
-  m_AnchoredPosition: {x: 1.8863525, y: 0}
-  m_SizeDelta: {x: -1.9771423, y: -21.386932}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: -18, y: 185}
+  m_SizeDelta: {x: 228.02286, y: 85.61307}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &192354121
 MonoBehaviour:
@@ -9279,7 +9279,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &223350969
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13534,10 +13534,10 @@ RectTransform:
   m_Father: {fileID: 119318241}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.10030635, y: 0.37030917}
-  m_AnchorMax: {x: 0.33100003, y: 0.4106183}
-  m_AnchoredPosition: {x: -0.040039062, y: 1.2079163}
-  m_SizeDelta: {x: 71.49538, y: 9.234131}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 280.45996, y: -396.4999}
+  m_SizeDelta: {x: 372.49536, y: 44.23413}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &343028880
 MonoBehaviour:
@@ -13572,7 +13572,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Royalty %
+  m_Text: Royalty Percentage
 --- !u!222 &343028881
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -16741,7 +16741,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Name for your NFT (example: StraxApe)'
+  m_Text: 'Your Collection Name (Example: Vincent Van Gogh)'
 --- !u!222 &433773955
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -17377,7 +17377,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Select NFT to mint:'
+  m_Text: 'Collection:'
 --- !u!222 &444718091
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -20056,8 +20056,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.28077605, y: 0.1866815}
   m_AnchorMax: {x: 0.98010415, y: 0.81200004}
-  m_AnchoredPosition: {x: 0.75057983, y: 0.39996338}
-  m_SizeDelta: {x: 63.24402, y: 9.614998}
+  m_AnchoredPosition: {x: 3.9440002, y: 0.39996338}
+  m_SizeDelta: {x: 79.175, y: 9.615}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &525634417
 MonoBehaviour:
@@ -20092,7 +20092,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Deploy
+  m_Text: Create Collection
 --- !u!222 &525634418
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -20893,10 +20893,10 @@ RectTransform:
   m_Father: {fileID: 119318241}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.10030635, y: 0.78400004}
-  m_AnchorMax: {x: 0.89423126, y: 0.85300004}
-  m_AnchoredPosition: {x: 1.5994873, y: 1.4624939}
-  m_SizeDelta: {x: 2.795044, y: -2.112091}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 648.0995, y: -155.5375}
+  m_SizeDelta: {x: 1035.795, y: 57.88791}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &538237540
 MonoBehaviour:
@@ -23440,10 +23440,10 @@ RectTransform:
   m_Father: {fileID: 119318241}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.10030635, y: 0.455}
-  m_AnchorMax: {x: 0.89423126, y: 0.51884544}
-  m_AnchoredPosition: {x: -0.5, y: 2}
-  m_SizeDelta: {x: 2.7956543, y: 2.3677063}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 646, y: -312.70782}
+  m_SizeDelta: {x: 1035.7957, y: 57.367706}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &594132442
 MonoBehaviour:
@@ -34987,7 +34987,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Any number between 0 and 100
+  m_Text: 0-100
 --- !u!222 &886174946
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -35258,8 +35258,8 @@ RectTransform:
   m_Father: {fileID: 893241153}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0, y: 0.012004187}
+  m_AnchorMax: {x: 1, y: 0.99821734}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -35353,7 +35353,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &903617334
 RectTransform:
   m_ObjectHideFlags: 0
@@ -35370,10 +35370,10 @@ RectTransform:
   m_Father: {fileID: 119318241}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.095000006, y: 0.1775949}
-  m_AnchorMax: {x: 0.44853774, y: 0.23300001}
-  m_AnchoredPosition: {x: -0.34106445, y: -0.6300049}
-  m_SizeDelta: {x: -0.6822815, y: -5.763275}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 353.15894, y: -558.8378}
+  m_SizeDelta: {x: 458.31772, y: 42.236694}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &903617335
 MonoBehaviour:
@@ -36355,7 +36355,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.08800001, y: 0.55200005}
   m_AnchorMax: {x: 0.24630795, y: 0.57600003}
-  m_AnchoredPosition: {x: 4.0850067, y: -0.4239807}
+  m_AnchoredPosition: {x: 4.08519, y: -0.4239807}
   m_SizeDelta: {x: 59.6702, y: 4.197323}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &922742863
@@ -38418,10 +38418,10 @@ RectTransform:
   m_Father: {fileID: 119318241}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.10030635, y: 0.53738165}
-  m_AnchorMax: {x: 0.33100003, y: 0.58169085}
-  m_AnchoredPosition: {x: -0.040283203, y: 0.7078247}
-  m_SizeDelta: {x: 71.49538, y: 6.234123}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 280.45972, y: -251}
+  m_SizeDelta: {x: 372.49536, y: 45.23413}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &974641322
 MonoBehaviour:
@@ -40335,7 +40335,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: NFT Deployment
+  m_Text: Create Collection
 --- !u!222 &1037977975
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -52437,8 +52437,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 894859175}
   m_HandleRect: {fileID: 894859174}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 0.8706982
+  m_Size: 0.98621315
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -53590,8 +53590,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.120790005, y: 0.54200006}
   m_AnchorMax: {x: 0.88310504, y: 0.601}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -1.9177856, y: 0.13999939}
+  m_AnchoredPosition: {x: 18.120003, y: 0}
+  m_SizeDelta: {x: 34.321, y: 0.14}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1422156994
 MonoBehaviour:
@@ -58663,7 +58663,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1564216379
 RectTransform:
   m_ObjectHideFlags: 0
@@ -69583,10 +69583,10 @@ RectTransform:
   m_Father: {fileID: 119318241}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.10261292, y: 0.87600005}
-  m_AnchorMax: {x: 0.22900002, y: 0.9167731}
-  m_AnchoredPosition: {x: -0.4741211, y: -0.087371826}
-  m_SizeDelta: {x: 43.905, y: 9.154999}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 282.88098, y: -89.58737}
+  m_SizeDelta: {x: 378.547, y: 44.155}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1841232521
 MonoBehaviour:
@@ -69621,7 +69621,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: NFT Name
+  m_Text: Collection Name
 --- !u!222 &1841232522
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -74114,10 +74114,10 @@ RectTransform:
   m_Father: {fileID: 119318241}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.10030635, y: 0.2886183}
-  m_AnchorMax: {x: 0.89800006, y: 0.35900003}
-  m_AnchoredPosition: {x: -3.8979492, y: 0.5}
-  m_SizeDelta: {x: -2.2043457, y: -2.6322937}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 645.10205, y: -455.2078}
+  m_SizeDelta: {x: 1035.7957, y: 58.367676}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1949547264
 MonoBehaviour:
@@ -77487,8 +77487,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.100328065, y: 0.1866815}
   m_AnchorMax: {x: 0.20856783, y: 0.81200004}
-  m_AnchoredPosition: {x: 0.49993896, y: 0.3999939}
-  m_SizeDelta: {x: 0.8043976, y: -0.1955986}
+  m_AnchoredPosition: {x: -5.0976257, y: 0.40000916}
+  m_SizeDelta: {x: -3.1180801, y: -0.19555664}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2037119280
 MonoBehaviour:
