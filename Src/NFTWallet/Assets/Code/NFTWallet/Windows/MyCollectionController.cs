@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using Flurl;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -190,6 +191,10 @@ public class MyCollectionController
             : IsAnimationURI(metadata.Image) ? metadata.Image : null;
 
         item.ImageURL = imageUri;
+
+        if (animationUri != null && animationUri.StartsWith("ipfs://"))
+            animationUri = "https://cloudflare-ipfs.com/ipfs/" + animationUri.Replace("ipfs://", string.Empty);
+
         item.AnimationURL = animationUri;
     }
 
@@ -270,7 +275,17 @@ public class MyCollectionController
         }
         else
         {
-            model = JsonConvert.DeserializeObject<NFTMetadataModel>(json, settings);
+            try
+            {
+                model = JsonConvert.DeserializeObject<NFTMetadataModel>(json, settings);
+            }
+            catch (JsonReaderException)
+            {
+                Debug.LogWarning("Broken json file!");
+                model = new NFTMetadataModel();
+                model.Description = model.AnimationUrl = model.Name = "[broken metadata]";
+                model.Category = model.Category = model.ExternalUrl = model.Image = string.Empty;
+            }
         }
 
         return model;
