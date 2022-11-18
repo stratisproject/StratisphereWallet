@@ -162,7 +162,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.05530794, y: 0.032185186}
   m_AnchorMax: {x: 0.9480001, y: 0.42000002}
-  m_AnchoredPosition: {x: 9.450439, y: -2.0424805}
+  m_AnchoredPosition: {x: 9.450378, y: -2.0424805}
   m_SizeDelta: {x: 15.204848, y: 1.3476849}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &878433
@@ -12278,7 +12278,7 @@ MonoBehaviour:
   DefaultNetwork: 1
   TestnetApiUrl: https://cirrustestapi.stratisplatform.com
   MainnetApiUrl: https://cirrus-api-ha.stratisplatform.com
-  MainnetBlockCoreIndexerApi: https://crs.indexer.thedude.pro/api/
+  MainnetBlockCoreIndexerApi: https://cirrusindexer.stratisnetwork.com/api/
   TestnetBlockCoreIndexerApi: https://tcrs.indexer.blockcore.net/api/
   MediaConversionApiUrl: http://148.251.15.126:7110/
   Pinata_APIKey: 771ae30ada3e6674cfbf
