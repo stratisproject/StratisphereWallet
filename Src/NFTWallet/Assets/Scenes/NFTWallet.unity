@@ -12279,7 +12279,7 @@ MonoBehaviour:
   TestnetApiUrl: https://cirrustestapi.stratisplatform.com
   MainnetApiUrl: https://cirrus-api-ha.stratisplatform.com
   MainnetBlockCoreIndexerApi: https://cirrusindexer.stratisnetwork.com/api/
-  TestnetBlockCoreIndexerApi: https://tcrs.indexer.blockcore.net/api/
+  TestnetBlockCoreIndexerApi: https://cirrustestindexer.stratisnetwork.com/api/
   MediaConversionApiUrl: http://148.251.15.126:7110/
   Pinata_APIKey: 771ae30ada3e6674cfbf
   Pinata_APISecret: 9c710214ec7220e84f625455d2b5f9fa44152928128572bc1be7b3af91770de8
