@@ -40,7 +40,7 @@ public class MarketplaceIntegration : MonoBehaviour
 
         string result = await callbackResult.Content.ReadAsStringAsync();
 
-        if (result.Length > 1000 || !result.EndsWith(".json"))
+        if (result.Length > 1000 || (!result.EndsWith(".json") && !result.StartsWith("ipfs:")))
         {
             Debug.Log("No json metadata! " + result);
             throw new Exception("Can't upload json metadata");
