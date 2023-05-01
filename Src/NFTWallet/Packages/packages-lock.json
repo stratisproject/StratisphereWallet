@@ -13,7 +13,7 @@
       "dependencies": {}
     },
     "com.unity.collab-proxy": {
-      "version": "2.0.1",
+      "version": "2.0.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -27,7 +27,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.rider": {
-      "version": "3.0.18",
+      "version": "3.0.20",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -36,7 +36,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.ide.visualstudio": {
-      "version": "2.0.17",
+      "version": "2.0.18",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -52,25 +52,25 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.nuget.newtonsoft-json": {
-      "version": "3.0.2",
+      "version": "3.1.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.sysroot": {
-      "version": "1.0.0",
+      "version": "2.0.5",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
     "com.unity.sysroot.linux-x86_64": {
-      "version": "1.0.0",
+      "version": "2.0.4",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.sysroot": "1.0.0"
+        "com.unity.sysroot": "2.0.5"
       },
       "url": "https://packages.unity.com"
     },
@@ -107,12 +107,12 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.toolchain.win-x86_64-linux-x86_64": {
-      "version": "1.0.0",
+      "version": "2.0.4",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.sysroot": "1.0.0",
-        "com.unity.sysroot.linux-x86_64": "1.0.0"
+        "com.unity.sysroot": "2.0.5",
+        "com.unity.sysroot.linux-x86_64": "2.0.4"
       },
       "url": "https://packages.unity.com"
     },
