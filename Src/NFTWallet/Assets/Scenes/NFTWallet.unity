@@ -12276,7 +12276,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DefaultNetwork: 1
-  TestnetApiUrl: https://cirrustestapi.stratisplatform.com
+  TestnetApiUrl: https://cirrustest-api-ha.stratisplatform.com
   MainnetApiUrl: https://cirrus-api-ha.stratisplatform.com
   MainnetBlockCoreIndexerApi: https://cirrusindexer.stratisnetwork.com/api/
   TestnetBlockCoreIndexerApi: https://cirrustestindexer.stratisnetwork.com/api/
